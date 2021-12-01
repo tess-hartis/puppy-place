@@ -106,6 +106,23 @@ public static class DogTools
         }
     }
 
+    public static void ShowDog( int chosenDog)
+    {
+        var realIndex = chosenDog - 1;
+        try
+        {
+            var kjmjhj= Dogs[realIndex];
+
+            Console.WriteLine($"Name: {kjmjhj.Name}");
+            Console.WriteLine($"Age: {kjmjhj.Age}");
+            Console.WriteLine($"Breed: {kjmjhj.Breed}");
+        }
+        catch (Exception e)
+        {
+            Prompt.MainMenu();
+        }
+    }
+
     public static void AddDogToList(Dog dog)
     {
         Dogs.Add(dog);
