@@ -87,9 +87,22 @@ public static class DogTools
     
     public static void ShowDogs()
     {
+        var dogCount = 1;
         foreach (var dog in Dogs)
         {
-            Console.WriteLine(dog.Name);
+            Console.WriteLine($"{dogCount} {dog.Name}");
+            dogCount++;
+        }
+
+        var chosenDog = Console.ReadLine();
+        try
+        {
+            var inputToInt = int.Parse(chosenDog);
+            ShowDog(inputToInt);
+        }
+        catch (Exception e)
+        {
+            Prompt.MainMenu();
         }
     }
 
