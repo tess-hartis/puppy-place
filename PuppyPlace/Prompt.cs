@@ -26,10 +26,10 @@ public class Prompt
                 DogTools.AddDog();
                 break;
             case "3":
-                PersonTools.ShowPeople();
+                PersonTools.ShowListOfPeople();
                 break;
             case "4":
-                DogTools.ShowDogs();
+                DogTools.ShowListOfDogs();
                 break;
             case "q":
                 Console.WriteLine("You have entered q");
@@ -50,4 +50,20 @@ public class Prompt
         MainMenu();
     }
 
+    public static void PromptToReturnToMainMenu()
+    {
+        Console.WriteLine("Press 'm' to return to the Main Menu");
+        var userInput = Console.ReadLine();
+        switch (userInput)
+        {
+            case "m":
+                ReturnToMainMenu();
+                break;
+            default:
+                Console.WriteLine("Input invalid");
+                Thread.Sleep(1000);
+                PromptToReturnToMainMenu();
+                break;
+        }
+    }
 }

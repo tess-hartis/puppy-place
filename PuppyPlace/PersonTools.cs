@@ -27,21 +27,7 @@ public static class PersonTools
     {
         Console.WriteLine("Add another person? Choose: yes/no");
         var yesNo = Console.ReadLine();
-        // if (yesNo == "yes")
-        // {
-        //     AddPerson();
-        // }
-        //
-        // if (yesNo == "no")
-        // {
-        //     Prompt.MainMenu();
-        // }
-        //
-        // if (yesNo != "yes" & yesNo != "no")
-        // {
-        //     Console.Clear();
-        //     PromptToAddAnotherPerson();
-        // }
+        
         switch (yesNo)
         {
             case "yes":
@@ -63,15 +49,55 @@ public static class PersonTools
         new Person("tess"),
         new Person("anthony")
     };
-
-    public static void ShowPeople()
+    
+    private static readonly List<Person> Owners = new List<Person>()
     {
+
+    };
+    public static void ShowListOfPeople()
+    {
+        Console.Clear();
+        var personCount = 1;
         foreach (var person in Persons)
         {
-            Console.WriteLine(person.Name);
+            Console.WriteLine($"{personCount} {person.Name}");
+            personCount++;
+        }
+        var chosenPerson = Console.ReadLine();
+        try
+        {
+            var inputToInt = int.Parse(chosenPerson);
+            ShowPerson(inputToInt);
+        }
+        catch (Exception e)
+        {
+            Prompt.MainMenu();
+        }
+        
+    }
+    
+    public static void ShowPerson( int chosenPerson)
+    {
+        Console.Clear();
+        var realIndex = chosenPerson - 1;
+        try
+        {
+            var personRealIndex= Persons[realIndex];
+
+            Console.WriteLine($"Getting {personRealIndex.Name}'s information...");
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine($"Name: {personRealIndex.Name}");
+            Console.WriteLine($"ID: {personRealIndex.Id}");
+            Console.WriteLine($"Dogs: {personRealIndex.Dogs}");
+            Prompt.PromptToReturnToMainMenu();
+        }
+        catch (Exception e)
+        {
+            Prompt.MainMenu();
         }
     }
-
+    
     public static void AddPersonsToList(Person person)
     {
         Persons.Add(person);

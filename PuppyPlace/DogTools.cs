@@ -43,21 +43,6 @@ public static class DogTools
     {
         Console.WriteLine("Add another dog? Choose: yes/no");
         var yesNo = Console.ReadLine();
-        // if (yesNo == "yes")
-        // {
-        //     AddDog();
-        // }
-        //
-        // if (yesNo == "no")
-        // {
-        //     Prompt.MainMenu();
-        // }
-        //
-        // if (yesNo != "yes" & yesNo != "no")
-        // {
-        //     Console.Clear();
-        //     PromptToAddAnotherDog();
-        // }
 
         switch (yesNo)
         {
@@ -85,8 +70,11 @@ public static class DogTools
          new Dog("Speckles", 16, "Red Heeler")
     };
     
-    public static void ShowDogs()
+    public static void ShowListOfDogs()
     {
+        Console.Clear();
+        Console.WriteLine("Enter a number to select a dog and view options"+
+                          "\n");
         var dogCount = 1;
         foreach (var dog in Dogs)
         {
@@ -104,27 +92,76 @@ public static class DogTools
         {
             Prompt.MainMenu();
         }
+        
+
     }
 
     public static void ShowDog( int chosenDog)
     {
+        Console.Clear();
         var realIndex = chosenDog - 1;
         try
         {
-            var kjmjhj= Dogs[realIndex];
+            var dogRealIndex= Dogs[realIndex];
 
-            Console.WriteLine($"Name: {kjmjhj.Name}");
-            Console.WriteLine($"Age: {kjmjhj.Age}");
-            Console.WriteLine($"Breed: {kjmjhj.Breed}");
+            Console.WriteLine($"Name: {dogRealIndex.Name}");
+            Console.WriteLine($"Age: {dogRealIndex.Age}");
+            Console.WriteLine($"Breed: {dogRealIndex.Breed}");
+            Console.WriteLine($"Owners: {dogRealIndex.Owner}");
+            Console.WriteLine("\nWhat would you like to do?" +
+                              "\n" + 
+                              "\n(1)Add Owner (2)Delete Dog (3)Main Menu");
+            var userInput = int.Parse(Console.ReadLine());
+            switch (userInput)
+            {
+                case 1:
+                    Console.WriteLine($"Let's give {dogRealIndex.Name} an owner");
+                    
+                    break;
+                case 2:
+                    Console.Clear();
+                    Console.WriteLine($"Are you sure you want to delete {dogRealIndex.Name} from the database? Type 'yes' or 'no'");
+                    var yesNo = Console.ReadLine();
+                    switch (yesNo)
+                    {
+                        case "yes":
+                            Dogs.Remove(dogRealIndex);
+                            Console.Clear();
+                            Console.WriteLine($"{dogRealIndex.Name} has been deleted.");
+                            Thread.Sleep(1500);
+                            ShowListOfDogs();
+                            break;
+                        case "no":
+                            Console.Clear();
+                            ShowListOfDogs();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Choose 'yes' or 'no'");
+                            break;
+                    }
+                    break;
+                case 3:
+                    Prompt.ReturnToMainMenu();
+                    break;
+
+                default:
+                    ShowListOfDogs();
+                    break;
+            }
+
         }
         catch (Exception e)
         {
             Prompt.MainMenu();
         }
+        
     }
-
+    
+    
     public static void AddDogToList(Dog dog)
     {
         Dogs.Add(dog);
     }
+    
+    
 }
