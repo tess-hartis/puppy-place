@@ -173,6 +173,7 @@ public static class DogTools
         var ownerIndex = selectedOwner - 1;
         var owner = PersonTools.Persons[ownerIndex];
         specificcDogg.Owner = owner;
+        owner.Dogs.Add(specificcDogg);
         Prompt.MainMenu();
     }
     
