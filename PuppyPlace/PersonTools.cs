@@ -44,17 +44,12 @@ public static class PersonTools
         }
     }
     
-    private static readonly List<Person> Persons = new List<Person>()
+   public static readonly List<Person> Persons = new List<Person>()
     {
         new Person("tess"),
         new Person("anthony")
     };
-    
-    private static readonly List<Person> Owners = new List<Person>()
-    {
-
-    };
-    public static void ShowListOfPeople()
+   public static void ShowListOfPeople()
     {
         Console.Clear();
         var personCount = 1;
