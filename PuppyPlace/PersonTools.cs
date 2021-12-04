@@ -84,8 +84,20 @@ public static class PersonTools
             Console.Clear();
             Console.WriteLine($"Name: {personRealIndex.Name}");
             Console.WriteLine($"ID: {personRealIndex.Id}");
-            Console.WriteLine($"Dogs: {personRealIndex.Dogs}");
-            Prompt.PromptToReturnToMainMenu();
+            Console.WriteLine("Dogs:");
+            if (personRealIndex.Dogs.Count > 0)
+            {
+                foreach (var dog in personRealIndex.Dogs)
+                {
+                    Console.WriteLine(dog.Name);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"{personRealIndex.Name} has no dogs to show");
+            }
+
+                Prompt.PromptToReturnToMainMenu();
         }
         catch (Exception e)
         {
