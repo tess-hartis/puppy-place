@@ -136,29 +136,34 @@ public static class DogTools
 
         Console.WriteLine("\nWhat would you like to do?" +
                           "\n" + 
-                          "\n(1)Add Owner (2)Delete Dog (3)Main Menu");
-            var userInput = int.Parse(Console.ReadLine());
-            switch (userInput)
-            {
-                case 1:
-                    Console.WriteLine($"Let's give {dog.Name} an owner!");
-                    SelectDogOwner(dog);
-                    break;
-                case 2:
-                    DeleteDog(dog);
-                    break;
-                case 3:
-                    Prompt.ReturnToMainMenu();
-                    break;
-                default:
-                    Console.WriteLine("Invalid selection. Please select option number.");
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                    ShowListOfDogs();
-                    break;
-            }
+                          "\n(A)dd Owner (D)elete Dog (M)ain Menu");
+    //     var userInput = Console.ReadKey();
+    //     switch (userInput.Key)
+    //     {
+    //         case ConsoleKey.D1:
+    //         
+    // }
+        var userInput = Console.ReadKey();
+        switch (userInput.Key)
+        {
+            case ConsoleKey.A:
+                Console.WriteLine($"Let's give {dog.Name} an owner!");
+                SelectDogOwner(dog);
+                break;
+            case ConsoleKey.D1:
+                DeleteDog(dog);
+                break;
+            case ConsoleKey.M:
+                Prompt.ReturnToMainMenu();
+                break;
+            default:
+                Console.WriteLine("Invalid selection. Please select option number.");
+                Thread.Sleep(1000);
+                Console.Clear();
+                ShowListOfDogs();
+                break;
+        }
     }
-    
     public static void SelectDogOwner(Dog specificcDogg)
     {
         Console.Clear();
