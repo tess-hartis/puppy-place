@@ -185,24 +185,24 @@ public static class DogTools
     public static void DeleteDog(Dog dogToDelete)
     {
         Console.Clear();
-        Console.WriteLine($"Are you sure you want to delete {dogToDelete.Name} from the database? Type 'yes' or 'no'");
-        var yesNo = Console.ReadLine();
-        switch (yesNo)
+        Console.WriteLine($"Are you sure you want to delete {dogToDelete.Name} from the database? (Y)es (N)o");
+        var yesNo = Console.ReadKey();
+        switch (yesNo.Key)
         {
-            case "yes":
+            case ConsoleKey.Y:
                 Dogs.Remove(dogToDelete);
                 Console.Clear();
                 Console.WriteLine($"{dogToDelete.Name} has been deleted.");
                 Thread.Sleep(1500);
                 ShowListOfDogs();
                 break;
-            case "no":
+            case ConsoleKey.N:
                 Console.Clear();
                 ShowListOfDogs();
                 break;
             default:
                 Console.Clear();
-                Console.WriteLine("Invalid choice. Choose 'yes' or 'no'");
+                Console.WriteLine("Invalid Key Selection");
                 Console.WriteLine("Returning to list of dogs...");
                 Thread.Sleep(1000);
                 ShowListOfDogs();
