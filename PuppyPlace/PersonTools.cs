@@ -25,15 +25,15 @@ public static class PersonTools
     }
     static void PromptToAddAnotherPerson()
     {
-        Console.WriteLine("Add another person? Choose: yes/no");
-        var yesNo = Console.ReadLine();
+        Console.WriteLine("Add another person? (Y)es (N)o");
+        var yesNo = Console.ReadKey();
         
-        switch (yesNo)
+        switch (yesNo.Key)
         {
-            case "yes":
+            case ConsoleKey.Y:
                 AddPerson();
                 break;
-            case "no":
+            case ConsoleKey.N:
                 Prompt.ReturnToMainMenu();
                 break;
             default:
@@ -104,7 +104,25 @@ public static class PersonTools
             Prompt.MainMenu();
         }
     }
-    
+
+    public static void AdoptDog(Person specificcPerson)
+    {
+        Console.Clear();
+        var dogCount = 1;
+        foreach (var dog in DogTools.Dogs)
+        {
+            Console.WriteLine($"{dogCount} {dog.Name}");
+            dogCount++;
+        }
+
+        var selectedDog = int.Parse(Console.ReadLine());
+        var dogIndex = selectedDog - 1;
+        var adoptedDog = DogTools.Dogs[dogIndex];
+        adoptedDog.Owner = specificcPerson;
+        specificcPerson.Dogs.Add(adoptedDog);
+      
+        Prompt.MainMenu();
+    }
     public static void AddPersonsToList(Person person)
     {
         Persons.Add(person);
