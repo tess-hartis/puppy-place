@@ -60,24 +60,29 @@ public static class PersonTools
             Console.WriteLine($"{personCount} {person.Name}");
             personCount++;
         }
-       
-        var chosenPerson = Console.ReadLine();
-        try
-        {
-            var inputToInt = int.Parse(chosenPerson);
-            ShowPerson(inputToInt);
-        }
-        catch (Exception e)
-        {
-            Prompt.MainMenu();
-        } 
+
+        var keyChosenPerson = Console.ReadKey();
+        int integerChosenPerson;
         
+        
+            if (char.IsDigit(keyChosenPerson.KeyChar))
+            {
+                integerChosenPerson = int.Parse(keyChosenPerson.KeyChar.ToString());
+                ShowPerson(integerChosenPerson);
+            }
+            else
+            {
+                integerChosenPerson = -1;
+                Console.WriteLine("\nPlease enter a number");
+                Thread.Sleep(2000);
+                ShowListOfPeople();
+            }
    }
     
-    public static void ShowPerson( int chosenPerson)
+    public static void ShowPerson( int intChosenPerson)
     {
         Console.Clear();
-        var realIndex = chosenPerson - 1;
+        var realIndex = intChosenPerson - 1;
         try
         {
             var personRealIndex= Persons[realIndex];
