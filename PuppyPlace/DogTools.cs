@@ -41,16 +41,16 @@ public static class DogTools
 
     static void PromptToAddAnotherDog()
     {
-        Console.WriteLine("Add another dog? Choose: yes/no");
-        var yesNo = Console.ReadLine();
+        Console.WriteLine("Add another dog? Choose (Y)es or (N)o");
+        var yesNo = Console.ReadKey();
 
-        switch (yesNo)
+        switch (yesNo.Key)
         {
-            case "yes":
+            case ConsoleKey.Y:
                 Console.Clear();
                 AddDog();
                 break;
-            case "no":
+            case ConsoleKey.N:
                 Prompt.ReturnToMainMenu();
                 break;
             default:
@@ -81,14 +81,13 @@ public static class DogTools
             Console.WriteLine($"{dogCount} {dog.Name}");
             dogCount++;
         }
-        
         Console.WriteLine("\n");
-        Console.WriteLine("Press 'e' to exit to Main Menu");
+        Console.WriteLine("Press m for Main Menu");
 
         var chosenDog = Console.ReadLine();
         switch (chosenDog)
         {
-            case "e":
+            case "m":
                 Prompt.ReturnToMainMenu();
                 break;
             default:
@@ -146,7 +145,7 @@ public static class DogTools
                 Console.WriteLine($"Let's give {dog.Name} an owner!");
                 SelectDogOwner(dog);
                 break;
-            case ConsoleKey.D1:
+            case ConsoleKey.D:
                 DeleteDog(dog);
                 break;
             case ConsoleKey.M:

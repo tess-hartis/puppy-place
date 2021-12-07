@@ -50,14 +50,17 @@ public static class PersonTools
         new Person("anthony")
     };
    public static void ShowListOfPeople()
-    {
-        Console.Clear();
-        var personCount = 1;
+   {
+       Console.Clear();
+       Console.WriteLine("Here are the people in the database:" +
+                         "\n====================================");
+       var personCount = 1;
         foreach (var person in Persons)
         {
             Console.WriteLine($"{personCount} {person.Name}");
             personCount++;
         }
+       
         var chosenPerson = Console.ReadLine();
         try
         {
@@ -67,9 +70,9 @@ public static class PersonTools
         catch (Exception e)
         {
             Prompt.MainMenu();
-        }
+        } 
         
-    }
+   }
     
     public static void ShowPerson( int chosenPerson)
     {
@@ -84,17 +87,16 @@ public static class PersonTools
             Console.Clear();
             Console.WriteLine($"Name: {personRealIndex.Name}");
             Console.WriteLine($"ID: {personRealIndex.Id}");
-            Console.WriteLine("Dogs:");
             if (personRealIndex.Dogs.Count > 0)
             {
                 foreach (var dog in personRealIndex.Dogs)
                 {
-                    Console.WriteLine(dog.Name);
+                    Console.WriteLine($"Dogs: {dog.Name}");
                 }
             }
             else
             {
-                Console.WriteLine($"{personRealIndex.Name} has no dogs to show");
+                Console.WriteLine($"Dogs: {personRealIndex.Name} has no dogs to show");
             }
             
             Console.WriteLine("\nWhat would you like to do?" +
@@ -131,6 +133,8 @@ public static class PersonTools
     public static void AdoptDog(Person specificcPerson)
     {
         Console.Clear();
+        Console.WriteLine("Select a dog to adopt them!" +
+                          "\n");
         var dogCount = 1;
         foreach (var dog in DogTools.Dogs)
         {
@@ -143,8 +147,30 @@ public static class PersonTools
         var adoptedDog = DogTools.Dogs[dogIndex];
         adoptedDog.Owner = specificcPerson;
         specificcPerson.Dogs.Add(adoptedDog);
+        Console.Clear();
+        Console.WriteLine($"{specificcPerson.Name} has adopted {adoptedDog.Name}! ");
+        Console.WriteLine("====================================");
+        PromptToAdoptAnotherDog();
       
-        Prompt.MainMenu();
+        Prompt.ReturnToMainMenu();
+    }
+
+    public static void PromptToAdoptAnotherDog()
+    {
+        Console.WriteLine("(A)dopt Another Dog (R)eturn to Main Menu" );
+        var userInput = Console.ReadKey();
+        switch (userInput.Key)
+        {
+            case ConsoleKey.A:
+               ShowListOfPeople();
+                break;
+            case ConsoleKey.R:
+                Prompt.ReturnToMainMenu();
+                break;
+            default:
+                PromptToAdoptAnotherDog();
+                break;
+        }
     }
     public static void AddPersonsToList(Person person)
     {

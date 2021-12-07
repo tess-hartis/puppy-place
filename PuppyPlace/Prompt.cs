@@ -10,29 +10,30 @@ public class Prompt
         Console.WriteLine("=========" +
                           "\n" +
                           "\nWhat would you like to do?" +
-                          "\n1 - Add new Person" +
-                          "\n2 - Add new Dog" +
-                          "\n3 - Show list of People" +
-                          "\n4 - Show list of Dogs" +
                           "\n" +
-                          "\n(Press q to quit)");
-        var answer = Console.ReadLine();
-        switch (answer)
+                          "\n1 - Add New Person" +
+                          "\n2 - Add New Dog" +
+                          "\n3 - Show List of People" +
+                          "\n4 - Show List of Dogs" +
+                          "\n" +
+                          "\n(Press Q to Quit)");
+        var answer = Console.ReadKey();
+        switch (answer.Key)
         {
-            case "1":
+            case ConsoleKey.D1:
                 PersonTools.AddPerson();
                 break;
-            case "2":
+            case ConsoleKey.D2:
                 DogTools.AddDog();
                 break;
-            case "3":
+            case ConsoleKey.D3:
                 PersonTools.ShowListOfPeople();
                 break;
-            case "4":
+            case ConsoleKey.D4:
                 DogTools.ShowListOfDogs();
                 break;
-            case "q":
-                Console.WriteLine("You have entered q");
+            case ConsoleKey.Q:
+                PromptToQuit();
                 break;
             default:
                 MainMenu();
@@ -40,6 +41,27 @@ public class Prompt
             
         }
 
+    }
+
+    public static void PromptToQuit()
+    {
+        Console.Clear();
+        Console.WriteLine("Are you sure you want to Quit? Press Q to continue. Press M to return to the Main Menu");
+        var userInput = Console.ReadKey();
+        switch (userInput.Key)
+        {
+            case ConsoleKey.Q:
+                Console.Clear();
+                System.Environment.ExitCode = 0;
+                break;
+            case ConsoleKey.M:
+                ReturnToMainMenu();
+                break;
+            default:
+                Console.WriteLine("Invalid selection");
+                PromptToQuit();
+                break;
+        }
     }
 
     public static void ReturnToMainMenu()
@@ -52,11 +74,13 @@ public class Prompt
 
     public static void PromptToReturnToMainMenu()
     {
-        Console.WriteLine("Press 'm' to return to the Main Menu");
-        var userInput = Console.ReadLine();
-        switch (userInput)
+        Console.WriteLine("====================================");
+  
+        Console.WriteLine("Press 'M' to return to the Main Menu");
+        var userInput = Console.ReadKey();
+        switch (userInput.Key)
         {
-            case "m":
+            case ConsoleKey.M:
                 ReturnToMainMenu();
                 break;
             default:
