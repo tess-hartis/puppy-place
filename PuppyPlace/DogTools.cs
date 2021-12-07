@@ -116,6 +116,7 @@ public static class DogTools
         Console.WriteLine($"Name: {dog.Name}");
         Console.WriteLine($"Age: {dog.Age}");
         Console.WriteLine($"Breed: {dog.Breed}");
+        
         // try
         // {
         //     Console.WriteLine($"Owners: {dog.Owner.Name}");
@@ -137,12 +138,7 @@ public static class DogTools
         Console.WriteLine("\nWhat would you like to do?" +
                           "\n" + 
                           "\n(A)dd Owner (D)elete Dog (M)ain Menu");
-    //     var userInput = Console.ReadKey();
-    //     switch (userInput.Key)
-    //     {
-    //         case ConsoleKey.D1:
-    //         
-    // }
+    
         var userInput = Console.ReadKey();
         switch (userInput.Key)
         {
