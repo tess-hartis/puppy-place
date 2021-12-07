@@ -96,8 +96,31 @@ public static class PersonTools
             {
                 Console.WriteLine($"{personRealIndex.Name} has no dogs to show");
             }
-
-                Prompt.PromptToReturnToMainMenu();
+            
+            Console.WriteLine("\nWhat would you like to do?" +
+                              "\n" + 
+                              "\n(A)dopt a dog (D)elete Person (M)ain Menu");
+    
+            var userInput = Console.ReadKey();
+            switch (userInput.Key)
+            {
+                case ConsoleKey.A:
+                    Console.WriteLine($"Let's give {personRealIndex.Name} an owner!");
+                    AdoptDog(personRealIndex);
+                    break;
+                // case ConsoleKey.D:
+                //     DeletePerson(personRealIndex);
+                //     break;
+                case ConsoleKey.M:
+                    Prompt.ReturnToMainMenu();
+                    break;
+                default:
+                    Console.WriteLine("Invalid selection. Please select option number.");
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    ShowListOfPeople();
+                    break;
+            }
         }
         catch (Exception e)
         {
