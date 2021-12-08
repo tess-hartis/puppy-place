@@ -49,37 +49,44 @@ public static class PersonTools
         new Person("tess"),
         new Person("anthony")
     };
+
    public static void ShowListOfPeople()
    {
        Console.Clear();
        Console.WriteLine("Here are the people in the database:" +
+                         "\n(Enter a number to view a person or (M)ain Menu)" +
                          "\n====================================");
        var personCount = 1;
-        foreach (var person in Persons)
-        {
-            Console.WriteLine($"{personCount} {person.Name}");
-            personCount++;
-        }
+       foreach (var person in Persons)
+       {
+           Console.WriteLine($"{personCount} {person.Name}");
+           personCount++;
+       }
 
-        var keyChosenPerson = Console.ReadKey();
-        int integerChosenPerson;
-        
-        
-            if (char.IsDigit(keyChosenPerson.KeyChar))
-            {
-                integerChosenPerson = int.Parse(keyChosenPerson.KeyChar.ToString());
-                ShowPerson(integerChosenPerson);
-            }
-            else
-            {
-                integerChosenPerson = -1;
-                Console.WriteLine("\nPlease enter a number");
-                Thread.Sleep(2000);
-                ShowListOfPeople();
-            }
+       var keyChosenPerson = Console.ReadKey();
+       int integerChosenPerson;
+
+        // This will become a switch statement [Anthony]
+       if (char.IsDigit(keyChosenPerson.KeyChar))
+       {
+           integerChosenPerson = int.Parse(keyChosenPerson.KeyChar.ToString());
+           ShowPerson(integerChosenPerson);
+       }
+
+       if (keyChosenPerson.Key == ConsoleKey.M)
+       {
+           Prompt.ReturnToMainMenu();
+       }
+       
+       if (!char.IsDigit(keyChosenPerson.KeyChar) && keyChosenPerson.Key != ConsoleKey.M)
+       {
+           Console.WriteLine("\nPlease enter a number");
+           Thread.Sleep(2000);
+           ShowListOfPeople();
+       }
    }
-    
-    public static void ShowPerson( int intChosenPerson)
+
+   public static void ShowPerson( int intChosenPerson)
     {
         Console.Clear();
         var realIndex = intChosenPerson - 1;
@@ -92,21 +99,22 @@ public static class PersonTools
             Console.Clear();
             Console.WriteLine($"Name: {personRealIndex.Name}");
             Console.WriteLine($"ID: {personRealIndex.Id}");
+            Console.WriteLine("Dogs:");
             if (personRealIndex.Dogs.Count > 0)
             {
                 foreach (var dog in personRealIndex.Dogs)
                 {
-                    Console.WriteLine($"Dogs: {dog.Name}");
+                    Console.WriteLine(dog.Name);
                 }
             }
             else
             {
-                Console.WriteLine($"Dogs: {personRealIndex.Name} has no dogs to show");
+                Console.WriteLine($"{personRealIndex.Name} has no dogs to show");
             }
             
             Console.WriteLine("\nWhat would you like to do?" +
                               "\n" + 
-                              "\n(A)dopt a dog (D)elete Person (M)ain Menu");
+                              "\n(A)dopt a dog (E)dit Name (D)elete Person (M)ain Menu");
     
             var userInput = Console.ReadKey();
             switch (userInput.Key)
@@ -115,9 +123,12 @@ public static class PersonTools
                     Console.WriteLine($"Let's give {personRealIndex.Name} an owner!");
                     AdoptDog(personRealIndex);
                     break;
-                // case ConsoleKey.D:
-                //     DeletePerson(personRealIndex);
-                //     break;
+                case ConsoleKey.D:
+                    DeletePerson(personRealIndex);
+                    break;
+                case ConsoleKey.E:
+                    EditPersonName(personRealIndex);
+                    break;
                 case ConsoleKey.M:
                     Prompt.ReturnToMainMenu();
                     break;
@@ -133,6 +144,27 @@ public static class PersonTools
         {
             Prompt.MainMenu();
         }
+    }
+
+    public static void EditPersonName(Person person)
+    {
+        Console.Clear();
+        Console.WriteLine($"Enter a new name for {person.Name}");
+        var userInput = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(userInput))
+        {
+            person.Name = userInput;
+            Console.Clear();
+            Console.WriteLine("Name has been updated!");
+            Thread.Sleep(1500);
+        }
+        else
+        {
+            Console.WriteLine("No good!");
+            EditPersonName(person);
+        }
+        Prompt.ReturnToMainMenu();
     }
 
     public static void AdoptDog(Person specificcPerson)
@@ -183,4 +215,5 @@ public static class PersonTools
     }
 
 
+    }
 }
