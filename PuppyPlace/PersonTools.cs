@@ -214,6 +214,36 @@ public static class PersonTools
         Persons.Add(person);
     }
 
+    public static void DeletePerson(Person personToDelete)
+    {
+        Console.Clear();
+        Console.WriteLine($"Are you sure you want to delete {personToDelete.Name} from the database? (Y)es (N)o");
+        var yesNo = Console.ReadKey();
+        switch (yesNo.Key)
+        {
+            case ConsoleKey.Y:
+                Persons.Remove(personToDelete);
+                foreach (var dog in personToDelete.Dogs)
+                {
+                    dog.Owner = null;
+                }
+                Console.Clear();
+                Console.WriteLine($"{personToDelete.Name} has been deleted.");
+                Thread.Sleep(1500);
+                ShowListOfPeople();
+                break;
+            case ConsoleKey.N:
+                Console.Clear();
+                ShowListOfPeople();
+                break;
+            default:
+                Console.Clear();
+                Console.WriteLine("Invalid Key Selection");
+                Console.WriteLine("Returning to list of people...");
+                Thread.Sleep(1000);
+                ShowListOfPeople();
+                break;
+        }
 
     }
 }
