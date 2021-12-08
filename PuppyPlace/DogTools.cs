@@ -73,43 +73,42 @@ public static class DogTools
     public static void ShowListOfDogs()
     {
         Console.Clear();
-        Console.WriteLine("Enter a number to select a dog and view options"+
-                          "\n");
+        Console.WriteLine("Here are the dogs in the database:" +
+                          "\n(Enter a number to view a dog or (M)ain Menu)" +
+                          "\n====================================");
         var dogCount = 1;
         foreach (var dog in Dogs)
         {
             Console.WriteLine($"{dogCount} {dog.Name}");
             dogCount++;
         }
-        Console.WriteLine("\n");
-        Console.WriteLine("Press m for Main Menu");
 
-        var chosenDog = Console.ReadLine();
-        switch (chosenDog)
+        var keyChosenDog = Console.ReadKey();
+        int integerChosenDog;
+
+        if (char.IsDigit(keyChosenDog.KeyChar))
         {
-            case "m":
-                Prompt.ReturnToMainMenu();
-                break;
-            default:
-                try
-                {
-                    var inputToInt = int.Parse(chosenDog);
-                    ShowDog(inputToInt);
-                }
-                catch (Exception e)
-                {
-                    ShowListOfDogs();
-                }
-                break;
-                
+            integerChosenDog = int.Parse(keyChosenDog.KeyChar.ToString());
+            ShowDog(integerChosenDog);
         }
-       
-    }
 
-    public static void ShowDog(int chosenDog)
+        if (keyChosenDog.Key == ConsoleKey.M)
+        {
+            Prompt.ReturnToMainMenu();
+        }
+        else
+        {
+            Console.WriteLine("\nPlease enter a number");
+            Thread.Sleep(2000);
+            ShowListOfDogs();
+        }
+    }
+    
+
+    public static void ShowDog(int intChosenDog)
     {
         Console.Clear();
-        var realIndex = chosenDog - 1;
+        var realIndex = intChosenDog - 1;
         var dog = Dogs[realIndex];
 
         Console.WriteLine($"Name: {dog.Name}");
@@ -136,7 +135,7 @@ public static class DogTools
 
         Console.WriteLine("\nWhat would you like to do?" +
                           "\n" + 
-                          "\n(A)dd Owner (D)elete Dog (M)ain Menu");
+                          "\n(A)dd Owner (E)dit Name (D)elete Dog (M)ain Menu");
     
         var userInput = Console.ReadKey();
         switch (userInput.Key)
@@ -144,6 +143,9 @@ public static class DogTools
             case ConsoleKey.A:
                 Console.WriteLine($"Let's give {dog.Name} an owner!");
                 SelectDogOwner(dog);
+                break;
+            case ConsoleKey.E:
+                EditDogName(dog);
                 break;
             case ConsoleKey.D:
                 DeleteDog(dog);
@@ -168,13 +170,16 @@ public static class DogTools
             Console.WriteLine($"{personCount} {person.Name}");
             personCount++;
         }
-
+//need to change to switch statement
         var selectedOwner = int.Parse(Console.ReadLine());
         var ownerIndex = selectedOwner - 1;
         var owner = PersonTools.Persons[ownerIndex];
         specificcDogg.Owner = owner;
         owner.Dogs.Add(specificcDogg);
-        Prompt.MainMenu();
+        Console.Clear();
+        Console.WriteLine($"{owner.Name} is now {specificcDogg.Name}'s owner!");
+        Thread.Sleep(1500);
+        Prompt.ReturnToMainMenu();
     }
     
     public static void AddDogToList(Dog dog)
@@ -191,6 +196,7 @@ public static class DogTools
         {
             case ConsoleKey.Y:
                 Dogs.Remove(dogToDelete);
+                dogToDelete.Owner.Dogs.Remove(dogToDelete);
                 Console.Clear();
                 Console.WriteLine($"{dogToDelete.Name} has been deleted.");
                 Thread.Sleep(1500);
@@ -208,6 +214,26 @@ public static class DogTools
                 ShowListOfDogs();
                 break;
         }
+    }
+    public static void EditDogName(Dog dog)
+    {
+        Console.Clear();
+        Console.WriteLine($"Enter a new name for {dog.Name}");
+        var userInput = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(userInput))
+        {
+            dog.Name = userInput;
+            Console.Clear();
+            Console.WriteLine("Name has been updated!");
+            Thread.Sleep(1500);
+        }
+        else
+        {
+            Console.WriteLine("No good!");
+            EditDogName(dog);
+        }
+        Prompt.ReturnToMainMenu();
     }
 
     
