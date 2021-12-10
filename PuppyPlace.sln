@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace", "PuppyPlace\PuppyPlace.csproj", "{A3EE2B4C-527F-4F4D-B222-B04D3B96DC97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Console", "PuppyPlace.Console\PuppyPlace.Console.csproj", "{A3EE2B4C-527F-4F4D-B222-B04D3B96DC97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Data", "PuppyPlace.Data\PuppyPlace.Data.csproj", "{440A36C2-3FD7-489E-97B1-A979F02C7678}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Domain", "PuppyPlace.Domain\PuppyPlace.Domain.csproj", "{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{440A36C2-3FD7-489E-97B1-A979F02C7678}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{440A36C2-3FD7-489E-97B1-A979F02C7678}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{440A36C2-3FD7-489E-97B1-A979F02C7678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

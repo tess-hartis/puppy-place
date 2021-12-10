@@ -1,9 +1,11 @@
-namespace PuppyPlace;
+using System.ComponentModel.DataAnnotations;
+
+namespace PuppyPlace.Domain;
 
 public class Person
 {
-    public string Name { get; set; }
     public Guid Id { get; set; }
+    public string Name { get; set; }
     public List<Dog> Dogs { get; set; }
 
     public Person(string name)
@@ -15,18 +17,18 @@ public class Person
 
     public void ShowPersonDogs()
     { 
-        Console.WriteLine($"{Name} has the following dogs:");
+        System.Console.WriteLine($"{Name} has the following dogs:");
             
         foreach (var dog in Dogs)
         {
-            Console.WriteLine($"{dog.Name}");
+            System.Console.WriteLine($"{dog.Name}");
         }
     }
 
     public void ShowPersonId()
     {
-        Console.WriteLine($"{Name} has the following ID:");
-        Console.WriteLine(Id);
+        System.Console.WriteLine($"{Name} has the following ID:");
+        System.Console.WriteLine(Id);
     }
 
     public void ChangeName(string updatedName)
