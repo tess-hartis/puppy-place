@@ -1,3 +1,4 @@
+using PuppyPlace.Data;
 using PuppyPlace.Domain;
 
 namespace PuppyPlace.Console;
@@ -5,10 +6,12 @@ namespace PuppyPlace.Console;
 public class DogTools
 {
     private readonly Prompt _prompt;
+    private readonly PuppyPlaceContext _context;
 
     public DogTools(Prompt prompt)
     {
         _prompt = prompt;
+
     }
         
     public void AddDog()
@@ -41,8 +44,9 @@ public class DogTools
                                  $"\nAge: {newDogAge}" +
                                  $"\nBreed: {newDogBreed}" +
                                  $"\n=========================================================");
-        
-        AddDogToList(newDog);
+
+        _context.Dogs.Add(newDog);
+        _context.SaveChanges();
         
         Thread.Sleep(1000);
         PromptToAddAnotherDog();
