@@ -33,7 +33,7 @@ public class Prompt
                 _personTools.AddPerson();
                 break;
             case ConsoleKey.D2:
-                _dogTools.ShowListOfDogs();
+                _dogTools.AddDog();
                 break;
             case ConsoleKey.D3:
                 _personTools.ShowListOfPeople();
