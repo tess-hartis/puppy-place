@@ -72,7 +72,7 @@ public class PersonTools
                                 "\n(Enter a number to view a person or (M)ain Menu)" +
                                 "\n====================================");
        var personCount = 1;
-       foreach (var person in Persons)
+       foreach (var person in _context.Persons.ToList())
        {
            System.Console.WriteLine($"{personCount} {person.Name}");
            personCount++;
@@ -107,7 +107,7 @@ public class PersonTools
         var realIndex = intChosenPerson - 1;
         try
         {
-            var personRealIndex= Persons[realIndex];
+            var personRealIndex= _context.Persons.ToList()[realIndex];
 
             System.Console.WriteLine($"Getting {personRealIndex.Name}'s information...");
             Thread.Sleep(1000);
