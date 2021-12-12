@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
 
@@ -90,6 +91,7 @@ public class DogTools
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
+        var dogs = _context.Dogs.ToList();
         foreach (var dog in _context.Dogs.ToList())
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
@@ -102,7 +104,8 @@ public class DogTools
         if (char.IsDigit(keyChosenDog.KeyChar))
         {
             integerChosenDog = int.Parse(keyChosenDog.KeyChar.ToString());
-            ShowDog(integerChosenDog);
+            var dogId = dogs[integerChosenDog - 1].Id;
+            ShowDog(dogId);
         }
 
         if (keyChosenDog.Key == ConsoleKey.M)
@@ -118,24 +121,17 @@ public class DogTools
     }
     
 
-    public void ShowDog(int intChosenDog)
+    public void ShowDog(Guid id)
     {
         System.Console.Clear();
-        var realIndex = intChosenDog - 1;
-        var dog = Dogs[realIndex];
+        var dog = _context.Dogs
+            .Include(d => d.Owner)
+            .FirstOrDefault(d => d.Id == id);
+
 
         System.Console.WriteLine($"Name: {dog.Name}");
         System.Console.WriteLine($"Age: {dog.Age}");
         System.Console.WriteLine($"Breed: {dog.Breed}");
-        
-        // try
-        // {
-        //     Console.WriteLine($"Owners: {dog.Owner.Name}");
-        // }
-        // catch (Exception e)
-        // {
-        //     Console.WriteLine("Owner: doesn't have an owner yet!");
-        // }
 
         if (dog.Owner is not null)
         {
@@ -178,7 +174,7 @@ public class DogTools
     {
         System.Console.Clear();
         var personCount = 1;
-        foreach (var person in PersonTools.Persons)
+        foreach (var person in _context.Persons.ToList())
         {
             System.Console.WriteLine($"{personCount} {person.Name}");
             personCount++;
@@ -186,19 +182,20 @@ public class DogTools
 //need to change to switch statement
         var selectedOwner = int.Parse(System.Console.ReadLine());
         var ownerIndex = selectedOwner - 1;
-        var owner = PersonTools.Persons[ownerIndex];
+        var owner = _context.Persons.ToList()[ownerIndex];
         specificcDogg.Owner = owner;
         owner.Dogs.Add(specificcDogg);
+        _context.SaveChanges();
         System.Console.Clear();
         System.Console.WriteLine($"{owner.Name} is now {specificcDogg.Name}'s owner!");
         Thread.Sleep(1500);
         Prompt.ReturnToMainMenu();
     }
     
-    public static void AddDogToList(Dog dog)
-    {
-        Dogs.Add(dog);
-    }
+    // public static void AddDogToList(Dog dog)
+    // {
+    //     Dogs.Add(dog);
+    // }
 
     public void DeleteDog(Dog dogToDelete)
     {
@@ -208,8 +205,13 @@ public class DogTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                Dogs.Remove(dogToDelete);
-                dogToDelete.Owner.Dogs.Remove(dogToDelete);
+                // if (dogToDelete.Owner != null)
+                // {
+                //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
+                //     _context.SaveChanges();
+                // }
+                _context.Dogs.Remove(dogToDelete);
+                _context.SaveChanges();
                 System.Console.Clear();
                 System.Console.WriteLine($"{dogToDelete.Name} has been deleted.");
                 Thread.Sleep(1500);
