@@ -103,30 +103,31 @@ public class PersonTools
        }
    }
 
-   public void ShowPerson( int intChosenPerson)
-    {
-        System.Console.Clear();
-        var realIndex = intChosenPerson - 1;
+   public void ShowPerson(Guid id)
+   {
+       System.Console.Clear();
         try
         {
-            var personRealIndex= _context.Persons.ToList()[realIndex];
+            var person = _context.Persons
+                .Include(p => p.Dogs)
+                .FirstOrDefault(p => p.Id == id);
 
-            System.Console.WriteLine($"Getting {personRealIndex.Name}'s information...");
+            System.Console.WriteLine($"Getting {person.Name}'s information...");
             Thread.Sleep(1000);
             System.Console.Clear();
-            System.Console.WriteLine($"Name: {personRealIndex.Name}");
-            System.Console.WriteLine($"ID: {personRealIndex.Id}");
+            System.Console.WriteLine($"Name: {person.Name}");
+            System.Console.WriteLine($"ID: {person.Id}");
             System.Console.WriteLine("Dogs:");
-            if (personRealIndex.Dogs.Count > 0)
+            if (person.Dogs.Count > 0)
             {
-                foreach (var dog in personRealIndex.Dogs)
+                foreach (var dog in person.Dogs)
                 {
                     System.Console.WriteLine(dog.Name);
                 }
             }
             else
             {
-                System.Console.WriteLine($"{personRealIndex.Name} has no dogs to show");
+                System.Console.WriteLine($"{person.Name} has no dogs to show");
             }
             
             System.Console.WriteLine("\nWhat would you like to do?" +
@@ -136,15 +137,15 @@ public class PersonTools
             var userInput = System.Console.ReadKey();
             switch (userInput.Key)
             {
-                case ConsoleKey.A:
-                    System.Console.WriteLine($"Let's give {personRealIndex.Name} an owner!");
-                    AdoptDog(personRealIndex);
-                    break;
+                // case ConsoleKey.A:
+                //     System.Console.WriteLine($"Let's give {personRealIndex.Name} an owner!");
+                //     AdoptDog(personRealIndex);
+                //     break;
                 case ConsoleKey.D:
-                    DeletePerson(personRealIndex);
+                    DeletePerson(person);
                     break;
                 case ConsoleKey.E:
-                    EditPersonName(personRealIndex);
+                    EditPersonName(person);
                     break;
                 case ConsoleKey.M:
                     Prompt.ReturnToMainMenu();
