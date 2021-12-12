@@ -8,10 +8,10 @@ public class DogTools
     private readonly Prompt _prompt;
     private readonly PuppyPlaceContext _context;
 
-    public DogTools(Prompt prompt)
+    public DogTools(Prompt prompt, PuppyPlaceContext context)
     {
         _prompt = prompt;
-
+        _context = context;
     }
         
     public void AddDog()
