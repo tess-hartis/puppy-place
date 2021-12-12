@@ -72,7 +72,8 @@ public class PersonTools
                                 "\n(Enter a number to view a person or (M)ain Menu)" +
                                 "\n====================================");
        var personCount = 1;
-       foreach (var person in _context.Persons.ToList())
+       var persons = _context.Persons.ToList();
+       foreach (var person in persons)
        {
            System.Console.WriteLine($"{personCount} {person.Name}");
            personCount++;
@@ -85,7 +86,8 @@ public class PersonTools
        if (char.IsDigit(keyChosenPerson.KeyChar))
        {
            integerChosenPerson = int.Parse(keyChosenPerson.KeyChar.ToString());
-           ShowPerson(integerChosenPerson);
+           var personId = persons[integerChosenPerson - 1].Id;
+           ShowPerson(personId);
        }
 
        if (keyChosenPerson.Key == ConsoleKey.M)
