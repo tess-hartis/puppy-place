@@ -240,7 +240,8 @@ public class PersonTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                Persons.Remove(personToDelete);
+                _context.Persons.Remove(personToDelete);
+                _context.SaveChanges();
                 foreach (var dog in personToDelete.Dogs)
                 {
                     dog.Owner = null;
