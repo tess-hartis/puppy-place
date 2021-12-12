@@ -90,7 +90,7 @@ public class DogTools
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
-        foreach (var dog in Dogs)
+        foreach (var dog in _context.Dogs.ToList())
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
             dogCount++;
