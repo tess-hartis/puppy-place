@@ -79,16 +79,47 @@ public class PersonTools
            personCount++;
        }
 
-       var keyChosenPerson = System.Console.ReadKey();
-       int integerChosenPerson;
-
-        // This will become a switch statement [Anthony]
-       if (char.IsDigit(keyChosenPerson.KeyChar))
+       var key = System.Console.ReadKey();
+       int integerChosenPerson = 0;
+       if (char.IsDigit(key.KeyChar))
        {
-           integerChosenPerson = int.Parse(keyChosenPerson.KeyChar.ToString());
-           var personId = persons[integerChosenPerson - 1].Id;
-           ShowPerson(personId);
+           integerChosenPerson = int.Parse(key.KeyChar.ToString());
        }
+       else
+       {
+           System.Console.WriteLine("Enter a number");
+           Thread.Sleep(1000);
+           ShowListOfPeople();
+       }
+       switch (integerChosenPerson)
+       {
+           case int when (integerChosenPerson < 10):
+               var personId = persons[integerChosenPerson - 1].Id;
+               ShowPerson(personId);
+               break;
+           default:
+               ShowListOfPeople();
+               break;
+       }
+        // This will become a switch statement [Anthony]
+        // if (char.IsDigit(key.KeyChar))
+       // {
+       //     integerChosenPerson = int.Parse(key.KeyChar.ToString());
+       //     var personId = persons[integerChosenPerson - 1].Id;
+       //     ShowPerson(personId);
+       // }
+       //
+       // if (key.Key == ConsoleKey.M)
+       // {
+       //     Prompt.ReturnToMainMenu();
+       // }
+       //
+       // if (!char.IsDigit(key.KeyChar) && key.Key != ConsoleKey.M)
+       // {
+       //     System.Console.WriteLine("\nPlease enter a number");
+       //     Thread.Sleep(2000);
+       //     ShowListOfPeople();
+       // }
 
        if (keyChosenPerson.Key == ConsoleKey.M)
        {
