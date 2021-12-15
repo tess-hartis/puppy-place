@@ -177,7 +177,7 @@ public class DogTools
 
         System.Console.WriteLine("\nWhat would you like to do?" +
                                  "\n" + 
-                                 "\n(A)dd Owner (E)dit Name (D)elete Dog (M)ain Menu");
+                                 "\n(A)dd Owner (E)dit Name (D)elete Dog (S)how Dogs (M)ain Menu");
     
         var userInput = System.Console.ReadKey();
         switch (userInput.Key)
@@ -191,6 +191,9 @@ public class DogTools
                 break;
             case ConsoleKey.D:
                 DeleteDog(dog);
+                break;
+            case ConsoleKey.S:
+                ShowListOfDogs();
                 break;
             case ConsoleKey.M:
                 Prompt.ReturnToMainMenu();
