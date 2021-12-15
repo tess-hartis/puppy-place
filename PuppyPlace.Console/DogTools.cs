@@ -98,26 +98,59 @@ public class DogTools
             dogCount++;
         }
 
-        var keyChosenDog = System.Console.ReadKey();
-        int integerChosenDog;
+        var key = System.Console.ReadKey();
+        bool isDigit = char.IsDigit(key.KeyChar);
+        switch (key.Key)
+        {
+            case ConsoleKey.M:
+                Prompt.ReturnToMainMenu();
+                break;
+            default:
+                try
+                {
+                    if (isDigit)
+                    {
+                        var userInput = int.Parse(key.KeyChar.ToString());
+                        var dogId = dogs[userInput - 1].Id;
+                        ShowDog(dogId);
+                    }
 
-        if (char.IsDigit(keyChosenDog.KeyChar))
-        {
-            integerChosenDog = int.Parse(keyChosenDog.KeyChar.ToString());
-            var dogId = dogs[integerChosenDog - 1].Id;
-            ShowDog(dogId);
+                    if (!isDigit && key.Key != ConsoleKey.M)
+                    {
+                        System.Console.Clear();
+                        System.Console.WriteLine("Enter a number or M for Main Menu");
+                        Thread.Sleep(1000);
+                        ShowListOfDogs();
+                    }
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    System.Console.Clear();
+                    System.Console.WriteLine("Enter a number or M for Main Menu");
+                    Thread.Sleep(1000);
+                    ShowListOfDogs();
+                }
+                break;
         }
-
-        if (keyChosenDog.Key == ConsoleKey.M)
-        {
-            Prompt.ReturnToMainMenu();
-        }
-        else
-        {
-            System.Console.WriteLine("\nPlease enter a number");
-            Thread.Sleep(2000);
-            ShowListOfDogs();
-        }
+        // int integerChosenDog;
+        //
+        // if (char.IsDigit(keyChosenDog.KeyChar))
+        // {
+        //     integerChosenDog = int.Parse(keyChosenDog.KeyChar.ToString());
+        //     var dogId = dogs[integerChosenDog - 1].Id;
+        //     ShowDog(dogId);
+        // }
+        //
+        // if (keyChosenDog.Key == ConsoleKey.M)
+        // {
+        //     Prompt.ReturnToMainMenu();
+        // }
+        // else
+        // {
+        //     System.Console.WriteLine("\nPlease enter a number");
+        //     Thread.Sleep(2000);
+        //     ShowListOfDogs();
+        // }
     }
     
 
