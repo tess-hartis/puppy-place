@@ -80,27 +80,63 @@ public class PersonTools
        }
 
        var key = System.Console.ReadKey();
-       int integerChosenPerson = 0;
-       if (char.IsDigit(key.KeyChar))
+       bool isDigit = char.IsDigit(key.KeyChar);
+       switch (key.Key)
        {
-           integerChosenPerson = int.Parse(key.KeyChar.ToString());
-       }
-       else
-       {
-           System.Console.WriteLine("Enter a number");
-           Thread.Sleep(1000);
-           ShowListOfPeople();
-       }
-       switch (integerChosenPerson)
-       {
-           case int when (integerChosenPerson < 10):
-               var personId = persons[integerChosenPerson - 1].Id;
-               ShowPerson(personId);
+           case ConsoleKey.M:
+               Prompt.ReturnToMainMenu();
                break;
+           
            default:
-               ShowListOfPeople();
+               try
+               {
+                   if (isDigit)
+                   {
+                       var userInput = int.Parse(key.KeyChar.ToString());
+                       var personId = persons[userInput - 1].Id;
+                       ShowPerson(personId);
+                   }
+
+                   if (!isDigit && key.Key != ConsoleKey.M)
+                   {
+                       System.Console.Clear();
+                       System.Console.WriteLine("Enter a number or M for Main Menu");
+                       Thread.Sleep(1000);
+                       ShowListOfPeople();
+                   }
+               }
+               catch (ArgumentOutOfRangeException e)
+               {
+                   System.Console.Clear();
+                   System.Console.WriteLine("Enter a number or M for Main Menu");
+                   Thread.Sleep(1000);
+                   ShowListOfPeople();
+               }
                break;
+           
        }
+       // int chosenPerson = 0;
+       // if (char.IsDigit(key.KeyChar))
+       // {
+       //     chosenPerson = int.Parse(key.KeyChar.ToString());
+       // }
+       //
+       // else
+       // {
+       //     System.Console.WriteLine("Enter a number");
+       //     Thread.Sleep(1000);
+       //     ShowListOfPeople();
+       // }
+       // switch (chosenPerson)
+       // {
+       //     case int when (chosenPerson >= 1 && chosenPerson <= 9):
+       //         var personId = persons[chosenPerson - 1].Id;
+       //         ShowPerson(personId);
+       //         break;
+       //     default:
+       //         ShowListOfPeople();
+       //         break;
+       // }
         // This will become a switch statement [Anthony]
         // if (char.IsDigit(key.KeyChar))
        // {
