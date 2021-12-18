@@ -97,14 +97,6 @@ public class DogTools
         }
     }
 
-    // public static List<Dog> Dogs = new List<Dog>()
-    // {
-    //      // Dogs[0]
-    //      new Dog("Bucky", 15, "Fox Terrier"),
-    //      //Dogs[1]
-    //      new Dog("Speckles", 16, "Red Heeler")
-    // };
-    
     public void ShowListOfDogs()
     {
         System.Console.Clear();
