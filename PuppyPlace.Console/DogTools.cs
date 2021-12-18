@@ -198,7 +198,7 @@ public class DogTools
 
         System.Console.WriteLine("\nWhat would you like to do?" +
                                  "\n" + 
-                                 "\n(A)dd Owner (E)dit Name (D)elete Dog (S)how Dogs (M)ain Menu");
+                                 "\n(A)dd Owner (E)dit Name (D)elete Dog (L)ist of Dogs (M)ain Menu");
     
         var userInput = System.Console.ReadKey();
         switch (userInput.Key)
@@ -213,7 +213,7 @@ public class DogTools
             case ConsoleKey.D:
                 DeleteDog(dog);
                 break;
-            case ConsoleKey.S:
+            case ConsoleKey.L:
                 ShowListOfDogs();
                 break;
             case ConsoleKey.M:
@@ -246,6 +246,9 @@ public class DogTools
         bool isDigit = char.IsDigit(key.KeyChar);
         switch (key.Key)
         {
+            case ConsoleKey.L:
+                ShowListOfDogs();
+                break;
             case ConsoleKey.M:
                 Prompt.ReturnToMainMenu();
                 break;
