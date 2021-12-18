@@ -28,6 +28,27 @@ public class DogTools
         
         System.Console.WriteLine($"Please insert {newDogName}'s age:");
         var newDogAge = System.Console.ReadLine();
+        var age = 0;
+        try
+        {
+            age = int.Parse(newDogAge);
+        }
+        catch (FormatException e)
+        {
+            System.Console.WriteLine("Dog's age must be a number!");
+            Thread.Sleep(1000);
+            AddDog();
+        }
+
+        // if (int.TryParse(newDogAge, out var age))
+        // {
+        //     
+        // }
+        // else
+        // {
+        //     AddDog();
+        // }
+        
         System.Console.Clear();
         Thread.Sleep(1000); 
         
