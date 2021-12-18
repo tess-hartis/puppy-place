@@ -298,11 +298,11 @@ public class DogTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                // if (dogToDelete.Owner != null)
-                // {
-                //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
-                //     _context.SaveChanges();
-                // }
+                if (dogToDelete.Owner != null)
+                {
+                    dogToDelete.Owner.Dogs.Remove(dogToDelete);
+                    _context.SaveChanges();
+                }
                 _context.Dogs.Remove(dogToDelete);
                 _context.SaveChanges();
                 System.Console.Clear();
