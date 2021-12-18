@@ -58,7 +58,7 @@ public class DogTools
         System.Console.Clear();
         Thread.Sleep(1000);
 
-        var newDog = new Dog(newDogName, Int32.Parse(newDogAge), newDogBreed);
+        var newDog = new Dog(newDogName, age, newDogBreed);
             
         System.Console.WriteLine("Success! We added the following information to the database:" +
                                  "\n==========================================================" +
