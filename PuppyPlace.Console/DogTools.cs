@@ -289,10 +289,6 @@ public class DogTools
         // Prompt.ReturnToMainMenu();
     }
     
-    // public static void AddDogToList(Dog dog)
-    // {
-    //     Dogs.Add(dog);
-    // }
 
     public void DeleteDog(Dog dogToDelete)
     {
