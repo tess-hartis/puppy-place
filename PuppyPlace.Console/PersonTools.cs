@@ -227,7 +227,7 @@ public class PersonTools
         if (!string.IsNullOrEmpty(userInput))
         {
             person.Name = userInput;
-            _context.SaveChanges();
+            _repository.UpdateName(person);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
             Thread.Sleep(1500);
