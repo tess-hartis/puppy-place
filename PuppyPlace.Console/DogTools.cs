@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
+using PuppyPlace.Repository;
 
 namespace PuppyPlace.Console;
 
@@ -14,6 +15,8 @@ public class DogTools
         _prompt = prompt;
         _context = context;
     }
+
+    private DogRepository _repository = new DogRepository();
         
     public void AddDog()
     {
@@ -40,15 +43,6 @@ public class DogTools
             AddDog();
         }
 
-        // if (int.TryParse(newDogAge, out var age))
-        // {
-        //     
-        // }
-        // else
-        // {
-        //     AddDog();
-        // }
-        
         System.Console.Clear();
         Thread.Sleep(1000); 
         
@@ -67,8 +61,7 @@ public class DogTools
                                  $"\nBreed: {newDogBreed}" +
                                  $"\n=========================================================");
 
-        _context.Dogs.Add(newDog);
-        _context.SaveChanges();
+       _repository.AddDog(newDog);
         
         Thread.Sleep(1000);
         PromptToAddAnotherDog();
@@ -104,8 +97,8 @@ public class DogTools
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
-        var dogs = _context.Dogs.ToList();
-        foreach (var dog in _context.Dogs.ToList())
+        var dogs = _context.Dogs.Include(d => d.Owner).ToList();
+        foreach (var dog in dogs)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
             dogCount++;
@@ -247,7 +240,6 @@ public class DogTools
             default:
                 try
                 {
-
                     if (isDigit)
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
@@ -289,20 +281,22 @@ public class DogTools
         // Prompt.ReturnToMainMenu();
     }
     
+    
 
     public void DeleteDog(Dog dogToDelete)
     {
         System.Console.Clear();
         System.Console.WriteLine($"Are you sure you want to delete {dogToDelete.Name} from the database? (Y)es (N)o");
+        
         var yesNo = System.Console.ReadKey();
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                if (dogToDelete.Owner != null)
-                {
-                    dogToDelete.Owner.Dogs.Remove(dogToDelete);
-                    _context.SaveChanges();
-                }
+                // if (dogToDelete.Owner != null)
+                // {
+                //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
+                //     _context.SaveChanges();
+                // }
                 _context.Dogs.Remove(dogToDelete);
                 _context.SaveChanges();
                 System.Console.Clear();
