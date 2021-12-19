@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PuppyPlace.Domain;
@@ -7,7 +8,6 @@ public class Person
     public Guid Id { get; set; }
     public string Name { get; set; }
     public List<Dog> Dogs { get; set; }
-
     public Person(string name)
     {
         Name = name;
@@ -18,7 +18,7 @@ public class Person
     public void ShowPersonDogs()
     { 
         System.Console.WriteLine($"{Name} has the following dogs:");
-            
+
         foreach (var dog in Dogs)
         {
             System.Console.WriteLine($"{dog.Name}");
