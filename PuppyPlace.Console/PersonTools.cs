@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
+using PuppyPlace.Repository;
 
 namespace PuppyPlace.Console;
 
@@ -15,6 +16,8 @@ public class PersonTools
         _prompt = prompt;
         _context = puppyPlaceContext;
     }
+
+    private PersonRepository _repository = new PersonRepository();
 
     public void AddPerson()
     {
@@ -33,13 +36,9 @@ public class PersonTools
             System.Console.WriteLine("==============================================");
             System.Console.WriteLine($"Name: {newPerson.Name}");
             System.Console.WriteLine("==============================================");
-
-            _context.Persons.Add(newPerson);
-            _context.SaveChanges();
+            _repository.AddPerson(newPerson);
         }
-
         PromptToAddAnotherPerson();
-
     }
 
     void PromptToAddAnotherPerson()
@@ -70,7 +69,7 @@ public class PersonTools
                                  "\n(Enter a number to view a person or (M)ain Menu)" +
                                  "\n====================================");
         var personCount = 1;
-        var persons = _context.Persons.ToList();
+        var persons = _repository.Persons();
         foreach (var person in persons)
         {
             System.Console.WriteLine($"{personCount} {person.Name}");
@@ -91,7 +90,7 @@ public class PersonTools
                     if (isDigit)
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
-                        var personId = persons[userInput - 1].Id;
+                        var personId = persons.ElementAtOrDefault(userInput - 1).Id;
                         ShowPerson(personId);
                     }
 
@@ -163,10 +162,7 @@ public class PersonTools
         System.Console.Clear();
         try
         {
-            var person = _context.Persons
-                .Include(p => p.Dogs)
-                .FirstOrDefault(p => p.Id == id);
-            // var person = PersonService.FindById();
+            var person = _repository.FindById(id);
             System.Console.WriteLine($"Getting {person.Name}'s information...");
             Thread.Sleep(1000);
             System.Console.Clear();
