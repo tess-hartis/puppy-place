@@ -35,6 +35,10 @@ public class Person
     {
         Name = updatedName;
     }
-    
+
+    public void AdoptDog(Dog dog)
+    {
+        Dogs.Add(dog);
+    }
     
 }
