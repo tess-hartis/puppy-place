@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PuppyPlace.Data;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
 
@@ -20,7 +17,7 @@ public class PersonTools
         _adoptionService = adoptionService;
     }
 
-    public void AddPerson()
+    public async Task AddPerson()
     {
         System.Console.Clear();
         System.Console.WriteLine("Great! Let's add a new Person!");
@@ -37,12 +34,12 @@ public class PersonTools
             System.Console.WriteLine("==============================================");
             System.Console.WriteLine($"Name: {newPerson.Name}");
             System.Console.WriteLine("==============================================");
-            _personRepository.AddPerson(newPerson);
+           await _personRepository.AddPersonAsync(newPerson);
         }
-        PromptToAddAnotherPerson();
+        await PromptToAddAnotherPerson();
     }
 
-    void PromptToAddAnotherPerson()
+    async Task PromptToAddAnotherPerson()
     {
         System.Console.WriteLine("Add another person? (Y)es (N)o");
         var yesNo = System.Console.ReadKey();
@@ -50,27 +47,27 @@ public class PersonTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                AddPerson();
+                await AddPerson();
                 break;
             case ConsoleKey.N:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             default:
                 System.Console.Clear();
                 System.Console.WriteLine("Invalid option. Please type 'yes' or 'no'");
-                PromptToAddAnotherPerson();
+                await PromptToAddAnotherPerson();
                 break;
         }
     }
 
-    public void ShowListOfPeople()
+    public async Task ShowListOfPeopleAsync()
     {
         System.Console.Clear();
         System.Console.WriteLine("Here are the people in the database:" +
                                  "\n(Enter a number to view a person or (M)ain Menu)" +
                                  "\n====================================");
         var personCount = 1;
-        var persons = _personRepository.Persons();
+        var persons = await _personRepository.PersonsAsync();
         foreach (var person in persons)
         {
             System.Console.WriteLine($"{personCount} {person.Name}");
@@ -82,7 +79,7 @@ public class PersonTools
         switch (key.Key)
         {
             case ConsoleKey.M:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
 
             default:
@@ -92,7 +89,7 @@ public class PersonTools
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
                         var personId = persons.ElementAtOrDefault(userInput - 1).Id;
-                        ShowPerson(personId);
+                        await ShowPerson(personId);
                     }
 
                     if (!isDigit && key.Key != ConsoleKey.M)
@@ -100,7 +97,7 @@ public class PersonTools
                         System.Console.Clear();
                         System.Console.WriteLine("Enter a number or M for Main Menu");
                         Thread.Sleep(1000);
-                        ShowListOfPeople();
+                        await ShowListOfPeopleAsync();
                     }
                 }
                 catch (ArgumentOutOfRangeException e)
@@ -108,7 +105,7 @@ public class PersonTools
                     System.Console.Clear();
                     System.Console.WriteLine("Enter a number or M for Main Menu");
                     Thread.Sleep(1000);
-                    ShowListOfPeople();
+                    await ShowListOfPeopleAsync();
                 }
 
                 break;
@@ -158,12 +155,12 @@ public class PersonTools
 
     }
 
-    public void ShowPerson(Guid id)
+    public async Task ShowPerson(Guid id)
     {
         System.Console.Clear();
         try
         {
-            var person = _personRepository.FindById(id);
+            var person = await _personRepository.FindByIdAsync(id);
             System.Console.WriteLine($"Getting {person.Name}'s information...");
             Thread.Sleep(1000);
             System.Console.Clear();
@@ -191,35 +188,35 @@ public class PersonTools
             {
                 case ConsoleKey.A:
                     System.Console.WriteLine($"Let's give {person.Name} an owner!");
-                    AdoptDog(person);
+                    await AdoptDog(person);
                     break;
                 case ConsoleKey.D:
-                    DeletePerson(person);
+                    await DeletePerson(person);
                     break;
                 case ConsoleKey.S:
-                    ShowListOfPeople();
+                    await ShowListOfPeopleAsync();
                     break;
                 case ConsoleKey.E:
-                    UpdateName(person);
+                    await UpdateName(person);
                     break;
                 case ConsoleKey.M:
-                    Prompt.ReturnToMainMenu();
+                    await Prompt.ReturnToMainMenu();
                     break;
                 default:
                     System.Console.WriteLine("Invalid selection. Please select option number.");
                     Thread.Sleep(1000);
                     System.Console.Clear();
-                    ShowListOfPeople();
+                    await ShowListOfPeopleAsync();
                     break;
             }
         }
         catch (Exception e)
         {
-            Prompt.MainMenu();
+            await Prompt.MainMenu();
         }
     }
 
-    public void UpdateName(Person person)
+    public async Task UpdateName(Person person)
     {
         System.Console.Clear();
         System.Console.WriteLine($"Enter a new name for {person.Name}");
@@ -228,7 +225,7 @@ public class PersonTools
         if (!string.IsNullOrEmpty(input))
         {
             person.Name = input;
-            _personRepository.UpdateName(person);
+            await _personRepository.UpdateNameAsync(person);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
             Thread.Sleep(1500);
@@ -236,13 +233,13 @@ public class PersonTools
         else
         {
             System.Console.WriteLine("No good!");
-            UpdateName(person);
+            await UpdateName(person);
         }
 
-        Prompt.ReturnToMainMenu();
+        await Prompt.ReturnToMainMenu();
     }
 
-    public void AdoptDog(Person person)
+    public async Task AdoptDog(Person person)
     {
         System.Console.Clear();
         System.Console.WriteLine("Here are the dogs in the database:" +
@@ -250,7 +247,7 @@ public class PersonTools
                                  "\n(M)ain Menu (L)ist of People" +
                                  "\n==============================");
         var dogCount = 1;
-        var dogs = _dogRepository.Dogs();
+        var dogs = await _dogRepository.DogsAsync();
         foreach (var dog in dogs)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
@@ -262,10 +259,10 @@ public class PersonTools
         switch (key.Key)
         {
             case ConsoleKey.M:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             case ConsoleKey.L:
-                ShowListOfPeople();
+                await ShowListOfPeopleAsync();
                 break;
             default:
                 try
@@ -274,16 +271,16 @@ public class PersonTools
                     {
                         var input = int.Parse(key.KeyChar.ToString());
                         var dog = dogs[input - 1];
-                        _adoptionService.Adopt(person.Id, dog.Id);
+                        await _adoptionService.Adopt(person.Id, dog.Id);
                         System.Console.Clear();
                         System.Console.WriteLine($"{person.Name} has adopted {dog.Name}!");
-                        PromptToAdoptAnotherDog();
+                        await PromptToAdoptAnotherDog();
                     }
 
                     if (!isDigit)
                     {
                         System.Console.WriteLine("Please enter a number");
-                        AdoptDog(person);
+                        await AdoptDog(person);
                     }
 
                 }
@@ -292,7 +289,7 @@ public class PersonTools
                     System.Console.WriteLine("\n" +
                                              "\nDog not found");
                     Thread.Sleep(1000);
-                    AdoptDog(person);
+                    await AdoptDog(person);
                 }
 
                 break;
@@ -324,25 +321,25 @@ public class PersonTools
     //     Prompt.ReturnToMainMenu();
     // }
 
-    public void PromptToAdoptAnotherDog()
+    public async Task PromptToAdoptAnotherDog()
     {
         System.Console.WriteLine("(A)dopt Another Dog (R)eturn to Main Menu");
         var userInput = System.Console.ReadKey();
         switch (userInput.Key)
         {
             case ConsoleKey.A:
-                ShowListOfPeople();
+                await ShowListOfPeopleAsync();
                 break;
             case ConsoleKey.R:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             default:
-                PromptToAdoptAnotherDog();
+                await PromptToAdoptAnotherDog();
                 break;
         }
     }
 
-    public void DeletePerson(Person person)
+    public async Task DeletePerson(Person person)
     {
         System.Console.Clear();
         System.Console.WriteLine(
@@ -351,7 +348,7 @@ public class PersonTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                _personRepository.DeletePerson(person);
+                await _personRepository.RemovePersonAsync(person);
                 foreach (var dog in person.Dogs)
                 {
                     dog.Owners = null;
@@ -360,18 +357,18 @@ public class PersonTools
                 System.Console.Clear();
                 System.Console.WriteLine($"{person.Name} has been deleted.");
                 Thread.Sleep(1000);
-                ShowListOfPeople();
+                await ShowListOfPeopleAsync();
                 break;
             case ConsoleKey.N:
                 System.Console.Clear();
-                ShowListOfPeople();
+                await ShowListOfPeopleAsync();
                 break;
             default:
                 System.Console.Clear();
                 System.Console.WriteLine("Invalid Key Selection");
                 System.Console.WriteLine("Returning to list of people...");
                 Thread.Sleep(1000);
-                ShowListOfPeople();
+                await ShowListOfPeopleAsync();
                 break;
         }
     }

@@ -3,9 +3,9 @@
     class Program
     {
         
-       static void Main(string[] args)
+       static async Task Main(string[] args)
        {
-           Prompt.MainMenu();
+           await Prompt.MainMenu();
        }
     }
 }

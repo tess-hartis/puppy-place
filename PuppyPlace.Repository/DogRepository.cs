@@ -13,31 +13,31 @@ public class DogRepository
         _context = context;
     }
 
-    public void AddDog(Dog dog)
+    public async Task AddDogAsync(Dog dog)
     {
-        _context.Dogs.Add(dog);
-        _context.SaveChanges();
+        await _context.Dogs.AddAsync(dog);
+        await _context.SaveChangesAsync();
     }
 
-    public IReadOnlyList<Dog> Dogs()
+    public async Task<IReadOnlyList<Dog>> DogsAsync()
     {
-        return _context.Dogs.ToList();
+        return await _context.Dogs.ToListAsync();
     }
 
-    public Dog? FindById(Guid id)
+    public async Task<Dog?> FindByIdAsync(Guid id)
     {
-        return _context.Dogs.Include(d => d.Owners).FirstOrDefault(d => d.Id == id);
+        return await _context.Dogs.Include(d => d.Owners).FirstOrDefaultAsync(d => d.Id == id);
     }
 
-    public void DeleteDog(Dog dog)
+    public async Task RemoveDogAsync(Dog dog)
     {
         _context.Dogs.Remove(dog);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void UpdateName(Dog dog)
+    public async Task UpdateNameAsync(Dog dog)
     {
         _context.Dogs.Update(dog);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

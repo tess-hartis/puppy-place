@@ -1,5 +1,4 @@
 using PuppyPlace.Data;
-using PuppyPlace.Domain;
 
 namespace PuppyPlace.Repository;
 
@@ -28,11 +27,11 @@ public class AdoptionService
             return _personRepository = new PersonRepository(_context);
         }
     }
-    public void Adopt(Guid personId, Guid dogId )
+    public async Task Adopt(Guid personId, Guid dogId )
     {
-        var person = PersonRepo.FindById(personId);
-        var dog = DogRepo.FindById(dogId);
+        var person = await PersonRepo.FindByIdAsync(personId);
+        var dog = await DogRepo.FindByIdAsync(dogId);
         person.AdoptDog(dog);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

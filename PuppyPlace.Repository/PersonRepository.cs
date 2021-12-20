@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
 
@@ -14,29 +13,29 @@ public class PersonRepository
         _context = context;
     }
 
-    public void AddPerson(Person newPerson)
+    public async Task AddPersonAsync(Person newPerson)
     {
-        _context.Persons.Add(newPerson);
-        _context.SaveChanges();
+         await _context.Persons.AddAsync(newPerson);
+         await _context.SaveChangesAsync();
     }
 
-    public IReadOnlyList<Person> Persons()
+    public async Task<IReadOnlyList<Person>> PersonsAsync()
     {
-       return _context.Persons.ToList();
+       return await _context.Persons.ToListAsync();
     }
 
-    public Person? FindById(Guid idPerson)
+    public async Task<Person?> FindByIdAsync(Guid idPerson)
     {
-        return _context.Persons
+        return await _context.Persons
             .Include(p => p.Dogs)
-            .FirstOrDefault(p => p.Id == idPerson);
+            .FirstOrDefaultAsync(p => p.Id == idPerson);
 
     }
 
-    public void UpdateName(Person person)
+    public async Task UpdateNameAsync(Person person)
     {
         _context.Persons.Update(person);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public void AdoptDog()
@@ -44,9 +43,9 @@ public class PersonRepository
         
     }
 
-    public void DeletePerson(Person person)
+    public async Task RemovePersonAsync(Person person)
     {
         _context.Persons.Remove(person);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

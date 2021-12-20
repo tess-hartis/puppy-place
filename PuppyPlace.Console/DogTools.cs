@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using PuppyPlace.Data;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
 
@@ -18,7 +16,7 @@ public class DogTools
         _personRepository = personRepository;
     }
 
-    public void AddDog()
+    public async Task AddDog()
     {
         System.Console.Clear();
         System.Console.WriteLine("You have chosen to add a dog!");
@@ -40,7 +38,7 @@ public class DogTools
         {
             System.Console.WriteLine("Dog's age must be a number!");
             Thread.Sleep(1000);
-            AddDog();
+            await AddDog();
         }
 
         System.Console.Clear();
@@ -61,13 +59,13 @@ public class DogTools
                                  $"\nBreed: {newDogBreed}" +
                                  $"\n=========================================================");
 
-       _dogRepository.AddDog(newDog);
+       await _dogRepository.AddDogAsync(newDog);
         
         Thread.Sleep(1000);
-        PromptToAddAnotherDog();
+        await PromptToAddAnotherDog();
     }
 
-    void PromptToAddAnotherDog()
+    async Task PromptToAddAnotherDog()
     {
         System.Console.WriteLine("Add another dog? Choose (Y)es or (N)o");
         var yesNo = System.Console.ReadKey();
@@ -76,28 +74,28 @@ public class DogTools
         {
             case ConsoleKey.Y:
                 System.Console.Clear();
-                AddDog();
+                await AddDog();
                 break;
             case ConsoleKey.N:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             default:
                 System.Console.Clear();
                 System.Console.WriteLine("Invalid option. Please type 'yes' or 'no'");
-                PromptToAddAnotherDog();
+                await PromptToAddAnotherDog();
                 break;
 
         }
     }
 
-    public void ShowListOfDogs()
+    public async Task ShowListOfDogsAsync()
     {
         System.Console.Clear();
         System.Console.WriteLine("Here are the dogs in the database:" +
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
-        var dogs = _dogRepository.Dogs();
+        var dogs = await _dogRepository.DogsAsync();
         foreach (var dog in dogs)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
@@ -109,7 +107,7 @@ public class DogTools
         switch (key.Key)
         {
             case ConsoleKey.M:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             default:
                 try
@@ -118,7 +116,7 @@ public class DogTools
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
                         var dogId = dogs[userInput - 1].Id;
-                        ShowDog(dogId);
+                        await ShowDogAsync(dogId);
                     }
 
                     if (!isDigit && key.Key != ConsoleKey.M)
@@ -126,7 +124,7 @@ public class DogTools
                         System.Console.Clear();
                         System.Console.WriteLine("Enter a number or M for Main Menu");
                         Thread.Sleep(1000);
-                        ShowListOfDogs();
+                        await ShowListOfDogsAsync();
                     }
                 }
                 catch (ArgumentOutOfRangeException e)
@@ -134,7 +132,7 @@ public class DogTools
                     System.Console.Clear();
                     System.Console.WriteLine("Enter a number or M for Main Menu");
                     Thread.Sleep(1000);
-                    ShowListOfDogs();
+                    await ShowListOfDogsAsync();
                 }
                 break;
         }
@@ -160,10 +158,10 @@ public class DogTools
     }
     
 
-    public void ShowDog(Guid id)
+    public async Task ShowDogAsync(Guid id)
     {
         System.Console.Clear();
-        var dog = _dogRepository.FindById(id);
+        var dog = await _dogRepository.FindByIdAsync(id);
         System.Console.WriteLine($"Name: {dog.Name}");
         System.Console.WriteLine($"Age: {dog.Age}");
         System.Console.WriteLine($"Breed: {dog.Breed}");
@@ -193,22 +191,22 @@ public class DogTools
             //     SelectDogOwner(dog);
             //     break;
             case ConsoleKey.E:
-                EditDogName(dog);
+                await EditDogName(dog);
                 break;
             case ConsoleKey.D:
-                DeleteDog(dog);
+                await DeleteDogAsync(dog);
                 break;
             case ConsoleKey.L:
-                ShowListOfDogs();
+                await ShowListOfDogsAsync();
                 break;
             case ConsoleKey.M:
-                Prompt.ReturnToMainMenu();
+                await Prompt.ReturnToMainMenu();
                 break;
             default:
                 System.Console.WriteLine("Invalid selection. Please select option number.");
                 Thread.Sleep(1000);
                 System.Console.Clear();
-                ShowListOfDogs();
+                await ShowListOfDogsAsync();
                 break;
         }
     }
@@ -283,7 +281,7 @@ public class DogTools
     
     
 
-    public void DeleteDog(Dog dog)
+    public async Task DeleteDogAsync(Dog dog)
     {
         System.Console.Clear();
         System.Console.WriteLine($"Are you sure you want to delete {dog.Name} from the database? (Y)es (N)o");
@@ -297,26 +295,26 @@ public class DogTools
                 //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
                 //     _context.SaveChanges();
                 // }
-                _dogRepository.DeleteDog(dog);
+                await _dogRepository.RemoveDogAsync(dog);
                 System.Console.Clear();
                 System.Console.WriteLine($"{dog.Name} has been deleted.");
                 Thread.Sleep(1000);
-                ShowListOfDogs();
+                await ShowListOfDogsAsync();
                 break;
             case ConsoleKey.N:
                 System.Console.Clear();
-                ShowListOfDogs();
+                await ShowListOfDogsAsync();
                 break;
             default:
                 System.Console.Clear();
                 System.Console.WriteLine("Invalid Key Selection");
                 System.Console.WriteLine("Returning to list of dogs...");
                 Thread.Sleep(1000);
-                ShowListOfDogs();
+                await ShowListOfDogsAsync();
                 break;
         }
     }
-    public void EditDogName(Dog dog)
+    public async Task EditDogName(Dog dog)
     {
         System.Console.Clear();
         System.Console.WriteLine($"Enter a new name for {dog.Name}");
@@ -325,7 +323,7 @@ public class DogTools
         if (!string.IsNullOrEmpty(userInput))
         {
             dog.Name = userInput;
-            _dogRepository.UpdateName(dog);
+            await _dogRepository.UpdateNameAsync(dog);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
             Thread.Sleep(1000);
@@ -333,9 +331,9 @@ public class DogTools
         else
         {
             System.Console.WriteLine("No good!");
-            EditDogName(dog);
+            await EditDogName(dog);
         }
-        Prompt.ReturnToMainMenu();
+        await Prompt.ReturnToMainMenu();
     }
 
     

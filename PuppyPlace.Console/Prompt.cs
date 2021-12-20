@@ -11,7 +11,7 @@ public class Prompt
     //     _dogTools = dogTools;
     //
     // }
-    public static void MainMenu()
+    public static async Task MainMenu()
     {
         System.Console.Clear();
         // Console.WriteLine(Figgle.FiggleFonts.Banner.Render("Puppy Place"));
@@ -30,29 +30,29 @@ public class Prompt
         switch (answer.Key)
         {
             case ConsoleKey.D1:
-                _personTools.AddPerson();
+                await _personTools.AddPerson();
                 break;
             case ConsoleKey.D2:
-                _dogTools.AddDog();
+                await _dogTools.AddDog();
                 break;
             case ConsoleKey.D3:
-                _personTools.ShowListOfPeople();
+                await _personTools.ShowListOfPeopleAsync();
                 break;
             case ConsoleKey.D4:
-                _dogTools.ShowListOfDogs();
+                await _dogTools.ShowListOfDogsAsync();
                 break;
             case ConsoleKey.Q:
-                PromptToQuit();
+                await PromptToQuitAsync();
                 break;
             default:
-                MainMenu();
+                await MainMenu();
                 break;
             
         }
 
     }
 
-    public static void PromptToQuit()
+    public static async Task PromptToQuitAsync()
     {
         System.Console.Clear();
         System.Console.WriteLine("Are you sure you want to Quit? Press Q to continue. Press M to return to the Main Menu");
@@ -64,24 +64,24 @@ public class Prompt
                 System.Environment.ExitCode = 0;
                 break;
             case ConsoleKey.M:
-                ReturnToMainMenu();
+                await ReturnToMainMenu();
                 break;
             default:
                 System.Console.WriteLine("Invalid selection");
-                PromptToQuit();
+                await PromptToQuitAsync();
                 break;
         }
     }
 
-    public static void ReturnToMainMenu()
+    public static async Task ReturnToMainMenu()
     {
         System.Console.Clear();
         System.Console.WriteLine("Returning to Main Menu...");
         Thread.Sleep(1000);
-        MainMenu();
+        await MainMenu();
     }
 
-    public void PromptToReturnToMainMenu()
+    public async Task PromptToReturnToMainMenu()
     {
         System.Console.WriteLine("====================================");
   
@@ -90,12 +90,12 @@ public class Prompt
         switch (userInput.Key)
         {
             case ConsoleKey.M:
-                ReturnToMainMenu();
+                await ReturnToMainMenu();
                 break;
             default:
                 System.Console.WriteLine("Input invalid");
                 Thread.Sleep(1000);
-                PromptToReturnToMainMenu();
+                await PromptToReturnToMainMenu();
                 break;
         }
     }
