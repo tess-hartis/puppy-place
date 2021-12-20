@@ -9,12 +9,15 @@ namespace PuppyPlace.Console;
 public class PersonTools
 {
     private readonly Prompt _prompt;
-    private readonly PuppyPlaceContext _context;
-
-    public PersonTools(Prompt prompt, PuppyPlaceContext puppyPlaceContext)
+    private PersonRepository _personRepository;
+    private DogRepository _dogRepository;
+    private AdoptionService _adoptionService; 
+    public PersonTools(Prompt prompt, PersonRepository personRepository, DogRepository dogRepository, AdoptionService adoptionService)
     {
         _prompt = prompt;
-        _context = puppyPlaceContext;
+        _personRepository = personRepository;
+        _dogRepository = dogRepository;
+        _adoptionService = adoptionService;
     }
 
     private PersonRepository _repository = new PersonRepository();
