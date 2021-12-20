@@ -8,12 +8,14 @@ namespace PuppyPlace.Console;
 public class DogTools
 {
     private readonly Prompt _prompt;
-    private readonly PuppyPlaceContext _context;
+    private readonly DogRepository _dogRepository;
+    private readonly PersonRepository _personRepository;
 
-    public DogTools(Prompt prompt, PuppyPlaceContext context)
+    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository)
     {
         _prompt = prompt;
-        _context = context;
+        _dogRepository = dogRepository;
+        _personRepository = personRepository;
     }
 
     private DogRepository _repository = new DogRepository();
