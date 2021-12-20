@@ -300,7 +300,7 @@ public class DogTools
                 _dogRepository.DeleteDog(dog);
                 System.Console.Clear();
                 System.Console.WriteLine($"{dog.Name} has been deleted.");
-                Thread.Sleep(1500);
+                Thread.Sleep(1000);
                 ShowListOfDogs();
                 break;
             case ConsoleKey.N:
@@ -328,7 +328,7 @@ public class DogTools
             _dogRepository.UpdateName(dog);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         else
         {
