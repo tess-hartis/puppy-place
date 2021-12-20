@@ -39,7 +39,7 @@ public class PersonTools
             System.Console.WriteLine("==============================================");
             System.Console.WriteLine($"Name: {newPerson.Name}");
             System.Console.WriteLine("==============================================");
-            _repository.AddPerson(newPerson);
+            _personRepository.AddPerson(newPerson);
         }
         PromptToAddAnotherPerson();
     }
@@ -72,7 +72,7 @@ public class PersonTools
                                  "\n(Enter a number to view a person or (M)ain Menu)" +
                                  "\n====================================");
         var personCount = 1;
-        var persons = _repository.Persons();
+        var persons = _personRepository.Persons();
         foreach (var person in persons)
         {
             System.Console.WriteLine($"{personCount} {person.Name}");
@@ -165,7 +165,7 @@ public class PersonTools
         System.Console.Clear();
         try
         {
-            var person = _repository.FindById(id);
+            var person = _personRepository.FindById(id);
             System.Console.WriteLine($"Getting {person.Name}'s information...");
             Thread.Sleep(1000);
             System.Console.Clear();
@@ -202,7 +202,7 @@ public class PersonTools
                     ShowListOfPeople();
                     break;
                 case ConsoleKey.E:
-                    EditPersonName(person);
+                    UpdateName(person);
                     break;
                 case ConsoleKey.M:
                     Prompt.ReturnToMainMenu();
@@ -221,16 +221,16 @@ public class PersonTools
         }
     }
 
-    public void EditPersonName(Person person)
+    public void UpdateName(Person person)
     {
         System.Console.Clear();
         System.Console.WriteLine($"Enter a new name for {person.Name}");
-        var userInput = System.Console.ReadLine();
+        var input = System.Console.ReadLine();
 
-        if (!string.IsNullOrEmpty(userInput))
+        if (!string.IsNullOrEmpty(input))
         {
-            person.Name = userInput;
-            _repository.UpdateName(person);
+            person.Name = input;
+            _personRepository.UpdateName(person);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
             Thread.Sleep(1500);
@@ -238,7 +238,7 @@ public class PersonTools
         else
         {
             System.Console.WriteLine("No good!");
-            EditPersonName(person);
+            UpdateName(person);
         }
 
         Prompt.ReturnToMainMenu();
@@ -252,7 +252,7 @@ public class PersonTools
                                  "\n(M)ain Menu (L)ist of People" +
                                  "\n==============================");
         var dogCount = 1;
-        var dogs = _context.Dogs.ToList();
+        var dogs = _dogRepository.Dogs();
         foreach (var dog in dogs)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
@@ -276,10 +276,7 @@ public class PersonTools
                     {
                         var input = int.Parse(key.KeyChar.ToString());
                         var dog = dogs[input - 1];
-                        // dog.Owner = person;
-                        person.Dogs.Add(dog);
-                        // _context.Dogs.Update(dog);
-                        _context.SaveChanges();
+                        _adoptionService.Adopt(person.Id, dog.Id);
                         System.Console.Clear();
                         System.Console.WriteLine($"{person.Name} has adopted {dog.Name}!");
                         PromptToAdoptAnotherDog();
@@ -348,24 +345,23 @@ public class PersonTools
         }
     }
 
-    public void DeletePerson(Person personToDelete)
+    public void DeletePerson(Person person)
     {
         System.Console.Clear();
         System.Console.WriteLine(
-            $"Are you sure you want to delete {personToDelete.Name} from the database? (Y)es (N)o");
+            $"Are you sure you want to delete {person.Name} from the database? (Y)es (N)o");
         var yesNo = System.Console.ReadKey();
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                _context.Persons.Remove(personToDelete);
-                _context.SaveChanges();
-                foreach (var dog in personToDelete.Dogs)
+                _personRepository.DeletePerson(person);
+                foreach (var dog in person.Dogs)
                 {
                     dog.Owner = null;
                 }
 
                 System.Console.Clear();
-                System.Console.WriteLine($"{personToDelete.Name} has been deleted.");
+                System.Console.WriteLine($"{person.Name} has been deleted.");
                 Thread.Sleep(1500);
                 ShowListOfPeople();
                 break;
