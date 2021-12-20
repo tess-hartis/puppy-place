@@ -5,7 +5,7 @@
         
        static void Main(string[] args)
        {
-         Prompt.MainMenu();
-        }
+           Prompt.MainMenu();
+       }
     }
 }
