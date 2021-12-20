@@ -20,8 +20,6 @@ public class PersonTools
         _adoptionService = adoptionService;
     }
 
-    private PersonRepository _repository = new PersonRepository();
-
     public void AddPerson()
     {
         System.Console.Clear();
