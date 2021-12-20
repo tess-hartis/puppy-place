@@ -15,6 +15,7 @@ public class Dog
         Name = name;
         Age = age;
         Breed = breed;
+        Owners = new List<Person>();
     }
     public string Bark()
     {

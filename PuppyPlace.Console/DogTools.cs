@@ -167,14 +167,18 @@ public class DogTools
         System.Console.WriteLine($"Name: {dog.Name}");
         System.Console.WriteLine($"Age: {dog.Age}");
         System.Console.WriteLine($"Breed: {dog.Breed}");
+        System.Console.WriteLine("Owners:");
 
-        if (dog.Owner is not null)
+        if (dog.Owners.Count > 0)
         {
-            System.Console.WriteLine($"Owners: {dog.Owner.Name}");
+            foreach (var person in dog.Owners)
+            {
+                System.Console.WriteLine(person.Name);
+            }
         }
         else
         {
-            System.Console.WriteLine("Owner: doesn't have an owner yet!");
+            System.Console.WriteLine("doesn't have an owner yet!");
         }
 
         System.Console.WriteLine("\nWhat would you like to do?" +
