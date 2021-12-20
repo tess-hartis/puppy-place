@@ -18,8 +18,6 @@ public class DogTools
         _personRepository = personRepository;
     }
 
-    private DogRepository _repository = new DogRepository();
-        
     public void AddDog()
     {
         System.Console.Clear();
