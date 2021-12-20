@@ -18,6 +18,6 @@ public class PuppyPlaceContext : DbContext
     //     
     // }
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql("Host=localhost;Username=itb;Password=itb;Database=PuppyPlace");
+        => options.UseNpgsql("Host=localhost;Username=itb;Password=itb;Database=NEWPuppyPlace");
     
 }
