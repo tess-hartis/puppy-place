@@ -24,7 +24,7 @@ public class PersonTools
     {
         System.Console.Clear();
         System.Console.WriteLine("Great! Let's add a new Person!");
-        Thread.Sleep(2000);
+        Thread.Sleep(1000);
         System.Console.Clear();
         System.Console.WriteLine("Please enter the person's name:");
         var userinput = System.Console.ReadLine();
@@ -283,7 +283,6 @@ public class PersonTools
                     if (!isDigit)
                     {
                         System.Console.WriteLine("Please enter a number");
-                        Thread.Sleep(1500);
                         AdoptDog(person);
                     }
 
@@ -292,7 +291,7 @@ public class PersonTools
                 {
                     System.Console.WriteLine("\n" +
                                              "\nDog not found");
-                    Thread.Sleep(1500);
+                    Thread.Sleep(1000);
                     AdoptDog(person);
                 }
 
@@ -355,12 +354,12 @@ public class PersonTools
                 _personRepository.DeletePerson(person);
                 foreach (var dog in person.Dogs)
                 {
-                    dog.Owner = null;
+                    dog.Owners = null;
                 }
 
                 System.Console.Clear();
                 System.Console.WriteLine($"{person.Name} has been deleted.");
-                Thread.Sleep(1500);
+                Thread.Sleep(1000);
                 ShowListOfPeople();
                 break;
             case ConsoleKey.N:
