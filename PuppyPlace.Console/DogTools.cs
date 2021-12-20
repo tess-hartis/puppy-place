@@ -63,7 +63,7 @@ public class DogTools
                                  $"\nBreed: {newDogBreed}" +
                                  $"\n=========================================================");
 
-       _repository.AddDog(newDog);
+       _dogRepository.AddDog(newDog);
         
         Thread.Sleep(1000);
         PromptToAddAnotherDog();
@@ -99,7 +99,7 @@ public class DogTools
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
-        var dogs = _context.Dogs.Include(d => d.Owner).ToList();
+        var dogs = _dogRepository.Dogs();
         foreach (var dog in dogs)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
@@ -165,11 +165,7 @@ public class DogTools
     public void ShowDog(Guid id)
     {
         System.Console.Clear();
-        var dog = _context.Dogs
-            .Include(d => d.Owner)
-            .FirstOrDefault(d => d.Id == id);
-
-
+        var dog = _dogRepository.FindById(id);
         System.Console.WriteLine($"Name: {dog.Name}");
         System.Console.WriteLine($"Age: {dog.Age}");
         System.Console.WriteLine($"Breed: {dog.Breed}");
@@ -285,10 +281,10 @@ public class DogTools
     
     
 
-    public void DeleteDog(Dog dogToDelete)
+    public void DeleteDog(Dog dog)
     {
         System.Console.Clear();
-        System.Console.WriteLine($"Are you sure you want to delete {dogToDelete.Name} from the database? (Y)es (N)o");
+        System.Console.WriteLine($"Are you sure you want to delete {dog.Name} from the database? (Y)es (N)o");
         
         var yesNo = System.Console.ReadKey();
         switch (yesNo.Key)
@@ -299,10 +295,9 @@ public class DogTools
                 //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
                 //     _context.SaveChanges();
                 // }
-                _context.Dogs.Remove(dogToDelete);
-                _context.SaveChanges();
+                _dogRepository.DeleteDog(dog);
                 System.Console.Clear();
-                System.Console.WriteLine($"{dogToDelete.Name} has been deleted.");
+                System.Console.WriteLine($"{dog.Name} has been deleted.");
                 Thread.Sleep(1500);
                 ShowListOfDogs();
                 break;
@@ -328,6 +323,7 @@ public class DogTools
         if (!string.IsNullOrEmpty(userInput))
         {
             dog.Name = userInput;
+            _dogRepository.UpdateName(dog);
             System.Console.Clear();
             System.Console.WriteLine("Name has been updated!");
             Thread.Sleep(1500);
