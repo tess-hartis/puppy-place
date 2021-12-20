@@ -12,8 +12,8 @@ using PuppyPlace.Data;
 namespace PuppyPlace.Data.Migrations
 {
     [DbContext(typeof(PuppyPlaceContext))]
-    [Migration("20211210003513_init")]
-    partial class init
+    [Migration("20211219234951_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace PuppyPlace.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PuppyPlace.Console.Dog", b =>
+            modelBuilder.Entity("PuppyPlace.Domain.Dog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace PuppyPlace.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid?>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -51,7 +51,7 @@ namespace PuppyPlace.Data.Migrations
                     b.ToTable("Dogs");
                 });
 
-            modelBuilder.Entity("PuppyPlace.Console.Person", b =>
+            modelBuilder.Entity("PuppyPlace.Domain.Person", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,18 +66,16 @@ namespace PuppyPlace.Data.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("PuppyPlace.Console.Dog", b =>
+            modelBuilder.Entity("PuppyPlace.Domain.Dog", b =>
                 {
-                    b.HasOne("PuppyPlace.Console.Person", "Owner")
+                    b.HasOne("PuppyPlace.Domain.Person", "Owner")
                         .WithMany("Dogs")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("PuppyPlace.Console.Person", b =>
+            modelBuilder.Entity("PuppyPlace.Domain.Person", b =>
                 {
                     b.Navigation("Dogs");
                 });
