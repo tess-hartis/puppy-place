@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Data", "PuppyPla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Domain", "PuppyPlace.Domain\PuppyPlace.Domain.csproj", "{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Repository", "PuppyPlace.Repository\PuppyPlace.Repository.csproj", "{0A40DF0A-7867-4894-AC32-2890F25CDEA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{366AA305-1F27-480F-BEDE-C28D9C4EF1A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A40DF0A-7867-4894-AC32-2890F25CDEA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A40DF0A-7867-4894-AC32-2890F25CDEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A40DF0A-7867-4894-AC32-2890F25CDEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A40DF0A-7867-4894-AC32-2890F25CDEA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
