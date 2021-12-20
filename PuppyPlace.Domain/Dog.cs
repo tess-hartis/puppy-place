@@ -8,8 +8,8 @@ public class Dog
     public string Name { get; set; }
     public int Age { get; set; }
     public string Breed { get; set; }
-    public Person? Owner { get; set; }
-    public Guid? OwnerId { get; set; }
+    public List<Person> Owners { get; set; }
+    
     public Dog(string name, int age, string breed)
     {
         Name = name;
