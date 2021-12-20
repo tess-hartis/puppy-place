@@ -7,7 +7,12 @@ namespace PuppyPlace.Repository;
 
 public class PersonRepository
 {
-    private PuppyPlaceContext _context = new PuppyPlaceContext();
+    private PuppyPlaceContext _context;
+    
+    public PersonRepository(PuppyPlaceContext context)
+    {
+        _context = context;
+    }
 
     public void AddPerson(Person newPerson)
     {
@@ -15,7 +20,7 @@ public class PersonRepository
         _context.SaveChanges();
     }
 
-    public IEnumerable<Person> Persons()
+    public IReadOnlyList<Person> Persons()
     {
        return _context.Persons.ToList();
     }
@@ -31,6 +36,17 @@ public class PersonRepository
     public void UpdateName(Person person)
     {
         _context.Persons.Update(person);
+        _context.SaveChanges();
+    }
+
+    public void AdoptDog()
+    {
+        
+    }
+
+    public void DeletePerson(Person person)
+    {
+        _context.Persons.Remove(person);
         _context.SaveChanges();
     }
 }
