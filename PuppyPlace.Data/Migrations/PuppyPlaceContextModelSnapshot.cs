@@ -22,6 +22,21 @@ namespace PuppyPlace.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DogPerson", b =>
+                {
+                    b.Property<Guid>("DogsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OwnersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("DogsId", "OwnersId");
+
+                    b.HasIndex("OwnersId");
+
+                    b.ToTable("DogPerson");
+                });
+
             modelBuilder.Entity("PuppyPlace.Domain.Dog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -39,12 +54,7 @@ namespace PuppyPlace.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Dogs");
                 });
@@ -64,18 +74,19 @@ namespace PuppyPlace.Data.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("PuppyPlace.Domain.Dog", b =>
+            modelBuilder.Entity("DogPerson", b =>
                 {
-                    b.HasOne("PuppyPlace.Domain.Person", "Owner")
-                        .WithMany("Dogs")
-                        .HasForeignKey("OwnerId");
+                    b.HasOne("PuppyPlace.Domain.Dog", null)
+                        .WithMany()
+                        .HasForeignKey("DogsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("PuppyPlace.Domain.Person", b =>
-                {
-                    b.Navigation("Dogs");
+                    b.HasOne("PuppyPlace.Domain.Person", null)
+                        .WithMany()
+                        .HasForeignKey("OwnersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
