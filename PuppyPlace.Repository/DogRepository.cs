@@ -26,7 +26,7 @@ public class DogRepository
 
     public Dog? FindById(Guid id)
     {
-        return _context.Dogs.Include(d => d.Owner).FirstOrDefault(d => d.Id == id);
+        return _context.Dogs.Include(d => d.Owners).FirstOrDefault(d => d.Id == id);
     }
 
     public void DeleteDog(Dog dog)
