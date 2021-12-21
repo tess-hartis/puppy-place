@@ -8,12 +8,14 @@ public class DogTools
     private readonly Prompt _prompt;
     private readonly DogRepository _dogRepository;
     private readonly PersonRepository _personRepository;
+    private readonly AdoptionService _adoptionService;
 
-    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository)
+    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository, AdoptionService adoptionService)
     {
         _prompt = prompt;
         _dogRepository = dogRepository;
         _personRepository = personRepository;
+        _adoptionService = adoptionService;
     }
 
     public async Task AddDog()
@@ -136,27 +138,7 @@ public class DogTools
                 }
                 break;
         }
-        // int integerChosenDog;
-        //
-        // if (char.IsDigit(keyChosenDog.KeyChar))
-        // {
-        //     integerChosenDog = int.Parse(keyChosenDog.KeyChar.ToString());
-        //     var dogId = dogs[integerChosenDog - 1].Id;
-        //     ShowDog(dogId);
-        // }
-        //
-        // if (keyChosenDog.Key == ConsoleKey.M)
-        // {
-        //     Prompt.ReturnToMainMenu();
-        // }
-        // else
-        // {
-        //     System.Console.WriteLine("\nPlease enter a number");
-        //     Thread.Sleep(2000);
-        //     ShowListOfDogs();
-        // }
     }
-    
 
     public async Task ShowDogAsync(Guid id)
     {
@@ -186,10 +168,10 @@ public class DogTools
         var userInput = System.Console.ReadKey();
         switch (userInput.Key)
         {
-            // case ConsoleKey.A:
-            //     System.Console.WriteLine($"Let's give {dog.Name} an owner!");
-            //     SelectDogOwner(dog);
-            //     break;
+            case ConsoleKey.A:
+                System.Console.WriteLine($"Let's give {dog.Name} an owner!");
+                await SelectDogOwner(dog);
+                break;
             case ConsoleKey.E:
                 await EditDogName(dog);
                 break;
@@ -210,74 +192,62 @@ public class DogTools
                 break;
         }
     }
-    // public void SelectDogOwner(Dog specificcDogg)
-    // {
-    //     System.Console.Clear();
-    //     System.Console.WriteLine("Here are the people in the database:");
-    //     System.Console.WriteLine($"Enter a number to give {specificcDogg.Name} an owner!");
-    //     System.Console.WriteLine("(M)ain Menu (L)ist of Dogs");
-    //     System.Console.WriteLine("===================================");
-    //     var personCount = 1;
-    //     var persons = _personRepository.Persons();
-    //     foreach (var person in persons)
-    //     {
-    //         System.Console.WriteLine($"{personCount} {person.Name}");
-    //         personCount++;
-    //     }
-    //
-    //     var key = System.Console.ReadKey();
-    //     bool isDigit = char.IsDigit(key.KeyChar);
-    //     switch (key.Key)
-    //     {
-    //         case ConsoleKey.L:
-    //             ShowListOfDogs();
-    //             break;
-    //         case ConsoleKey.M:
-    //             Prompt.ReturnToMainMenu();
-    //             break;
-    //         default:
-    //             try
-    //             {
-    //                 if (isDigit)
-    //                 {
-    //                     var userInput = int.Parse(key.KeyChar.ToString());
-    //                     var owner = persons[userInput - 1];
-    //                     specificcDogg.Owner = owner;
-    //                     _context.SaveChanges();
-    //                     System.Console.Clear();
-    //                     System.Console.WriteLine($"{owner.Name} is now {specificcDogg.Name}'s owner!");
-    //                     Thread.Sleep(1000);
-    //                     ShowListOfDogs();
-    //                 }
-    //
-    //                 if (!isDigit)
-    //                 {
-    //                     System.Console.WriteLine("Please enter a number");
-    //                     Thread.Sleep(1000);
-    //                     SelectDogOwner(specificcDogg);
-    //                 }
-    //             }
-    //             catch (ArgumentOutOfRangeException)
-    //             {
-    //                 System.Console.WriteLine("\n");
-    //                 System.Console.WriteLine("Owner not found");
-    //                 Thread.Sleep(1500);
-    //                 SelectDogOwner(specificcDogg);
-    //             }
-    //             break;
-    //     }
-        
-        // var selectedOwner = int.Parse(System.Console.ReadLine());
-        // var ownerIndex = selectedOwner - 1;
-        // var owner = persons[ownerIndex];
-        // specificcDogg.Owner = owner;
-        // // owner.Dogs.Add(specificcDogg);
-        // _context.SaveChanges();
-        // System.Console.Clear();
-        // System.Console.WriteLine($"{owner.Name} is now {specificcDogg.Name}'s owner!");
-        // Thread.Sleep(1500);
-        // Prompt.ReturnToMainMenu();
-    // }
+    public async Task SelectDogOwner(Dog dog)
+    {
+        System.Console.Clear();
+        System.Console.WriteLine("Here are the people in the database:");
+        System.Console.WriteLine($"Enter a number to give {dog.Name} an owner!");
+        System.Console.WriteLine("(M)ain Menu (L)ist of Dogs");
+        System.Console.WriteLine("===================================");
+        var personCount = 1;
+        var persons = await _personRepository.PersonsAsync();
+        foreach (var person in persons)
+        {
+            System.Console.WriteLine($"{personCount} {person.Name}");
+            personCount++;
+        }
+    
+        var key = System.Console.ReadKey();
+        bool isDigit = char.IsDigit(key.KeyChar);
+        switch (key.Key)
+        {
+            case ConsoleKey.L:
+                await ShowListOfDogsAsync();
+                break;
+            case ConsoleKey.M:
+                await Prompt.ReturnToMainMenu();
+                break;
+            default:
+                try
+                {
+                    if (isDigit)
+                    {
+                        var userInput = int.Parse(key.KeyChar.ToString());
+                        var owner = persons[userInput - 1];
+                        await _adoptionService.AddOwner(owner.Id, dog.Id);
+                        System.Console.Clear();
+                        System.Console.WriteLine($"{owner.Name} is now {dog.Name}'s owner!");
+                        Thread.Sleep(1000);
+                        await ShowListOfDogsAsync();
+                    }
+    
+                    if (!isDigit)
+                    {
+                        System.Console.WriteLine("Please enter a number");
+                        Thread.Sleep(1000);
+                        await SelectDogOwner(dog);
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    System.Console.WriteLine("\n");
+                    System.Console.WriteLine("Owner not found");
+                    Thread.Sleep(1500);
+                    await SelectDogOwner(dog);
+                }
+                break;
+        }
+    }
     
     
 

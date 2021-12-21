@@ -34,4 +34,12 @@ public class AdoptionService
         person.AdoptDog(dog);
         await _context.SaveChangesAsync();
     }
+
+    public async Task AddOwner(Guid personId, Guid dogId)
+    {
+        var person = await PersonRepo.FindByIdAsync(personId);
+        var dog = await DogRepo.FindByIdAsync(dogId);
+        dog.AddOwner(person);
+        await _context.SaveChangesAsync();
+    }
 }

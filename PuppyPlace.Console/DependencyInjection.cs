@@ -10,7 +10,10 @@ public static class DependencyInjection
         new DogRepository(new PuppyPlaceContext()), 
         new AdoptionService(new PuppyPlaceContext()));
     
-    public static DogTools DogTools = new DogTools(new Prompt(), new DogRepository(new PuppyPlaceContext()), new PersonRepository(new PuppyPlaceContext()));
+    public static DogTools DogTools = new DogTools(new Prompt(), 
+        new DogRepository(new PuppyPlaceContext()), 
+        new PersonRepository(new PuppyPlaceContext()),
+        new AdoptionService(new PuppyPlaceContext()));
     
     public static PuppyPlaceContext _PuppyPlaceContext = new PuppyPlaceContext();
     

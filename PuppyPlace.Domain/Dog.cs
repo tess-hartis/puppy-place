@@ -21,4 +21,9 @@ public class Dog
     {
         return "WOOF!!!";
     }
+
+    public void AddOwner(Person person)
+    {
+        Owners.Add(person);
+    }
 }
