@@ -25,9 +25,6 @@ public class PersonTools
     {
         System.Console.Clear();
         errors.Clear();
-        System.Console.WriteLine("Great! Let's add a new Person!");
-        Thread.Sleep(1000);
-        System.Console.Clear();
         System.Console.WriteLine("Please enter the person's name:");
         var input = System.Console.ReadLine();
         var person = new Person(input);
@@ -37,15 +34,15 @@ public class PersonTools
         {
             foreach (ValidationFailure failure in results.Errors)
             {
-                errors.Add($"{failure.PropertyName}: {failure.ErrorMessage}");
+                errors.Add($"{failure.ErrorMessage}");
             }
 
             foreach (var error in errors)
             {
-                System.Console.WriteLine($"{error}");
+                System.Console.WriteLine($"Name {error}");
             }
             
-            Thread.Sleep(1000);
+            Thread.Sleep(1500);
             await AddPerson();
         }
         
