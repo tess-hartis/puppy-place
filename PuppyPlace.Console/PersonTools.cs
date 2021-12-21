@@ -44,6 +44,9 @@ public class PersonTools
             {
                 System.Console.WriteLine($"{error}");
             }
+            
+            Thread.Sleep(1000);
+            await AddPerson();
         }
         
         System.Console.Clear();
