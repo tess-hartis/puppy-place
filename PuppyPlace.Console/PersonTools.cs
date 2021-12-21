@@ -17,25 +17,41 @@ public class PersonTools
         _adoptionService = adoptionService;
     }
 
+    public PersonValidator Validator = new PersonValidator();
+    private List<string> errors = new List<string>();
+
     public async Task AddPerson()
     {
         System.Console.Clear();
+        errors.Clear();
         System.Console.WriteLine("Great! Let's add a new Person!");
         Thread.Sleep(1000);
         System.Console.Clear();
         System.Console.WriteLine("Please enter the person's name:");
-        var userinput = System.Console.ReadLine();
-
-        if (userinput is not null)
+        var input = System.Console.ReadLine();
+        var person = new Person(input);
+        ValidationResult results = Validator.Validate(person);
+        
+        if (results.IsValid == false)
         {
-            var newPerson = new Person(userinput);
-            System.Console.Clear();
-            System.Console.WriteLine($"The following person has been created:");
-            System.Console.WriteLine("==============================================");
-            System.Console.WriteLine($"Name: {newPerson.Name}");
-            System.Console.WriteLine("==============================================");
-           await _personRepository.AddPersonAsync(newPerson);
+            foreach (ValidationFailure failure in results.Errors)
+            {
+                errors.Add($"{failure.PropertyName}: {failure.ErrorMessage}");
+            }
+
+            foreach (var error in errors)
+            {
+                System.Console.WriteLine($"{error}");
+            }
         }
+        
+        System.Console.Clear();
+        System.Console.WriteLine($"The following person has been created:");
+        System.Console.WriteLine("==============================================");
+        System.Console.WriteLine($"Name: {person.Name}");
+        System.Console.WriteLine("==============================================");
+        Thread.Sleep(1000);
+        await _personRepository.AddPersonAsync(person);
         await PromptToAddAnotherPerson();
     }
 
