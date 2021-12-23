@@ -18,7 +18,7 @@ public class PersonTools
         _adoptionService = adoptionService;
     }
 
-    public PersonValidator Validator = new PersonValidator();
+    public PersonValidator PersonValidator = new PersonValidator();
     private List<string> errors = new List<string>();
 
     public async Task AddPerson()
@@ -28,7 +28,7 @@ public class PersonTools
         System.Console.WriteLine("Please enter the person's name:");
         var input = System.Console.ReadLine();
         var person = new Person(input);
-        ValidationResult results = Validator.Validate(person);
+        ValidationResult results = PersonValidator.Validate(person);
         
         if (results.IsValid == false)
         {

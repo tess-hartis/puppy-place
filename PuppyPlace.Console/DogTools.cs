@@ -1,3 +1,4 @@
+using FluentValidation.Results;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
 
@@ -18,18 +19,20 @@ public class DogTools
         _adoptionService = adoptionService;
     }
 
+    public DogValidator DogValidator = new DogValidator();
+    private List<string> errors = new List<string>();
+
     public async Task AddDog()
     {
+        errors.Clear();
         System.Console.Clear();
-        System.Console.WriteLine("You have chosen to add a dog!");
-        Thread.Sleep(1000);
-        
+
         System.Console.WriteLine("Please insert the dog's name:");
-        var newDogName = System.Console.ReadLine();
+        var dogName = System.Console.ReadLine();
         System.Console.Clear();
         Thread.Sleep(1000);
         
-        System.Console.WriteLine($"Please insert {newDogName}'s age:");
+        System.Console.WriteLine($"Please insert the dog's age:");
         var newDogAge = System.Console.ReadLine();
         var age = 0;
         try
@@ -46,13 +49,31 @@ public class DogTools
         System.Console.Clear();
         Thread.Sleep(1000); 
         
-        System.Console.WriteLine($"Please insert {newDogName}'s breed:");
+        System.Console.WriteLine($"Please insert {dogName}'s breed:");
         var newDogBreed = System.Console.ReadLine();
         
         System.Console.Clear();
         Thread.Sleep(1000);
 
-        var newDog = new Dog(newDogName, age, newDogBreed);
+        var newDog = new Dog(dogName, age, newDogBreed);
+
+        ValidationResult results = DogValidator.Validate(newDog);
+        
+        if (results.IsValid == false)
+        {
+            foreach (ValidationFailure failure in results.Errors)
+            {
+                errors.Add($"{failure.ErrorMessage}");
+            }
+
+            foreach (var error in errors)
+            {
+                System.Console.WriteLine($"{error}");
+            }
+            
+            Thread.Sleep(1500);
+            await AddDog();
+        }
             
         System.Console.WriteLine("Success! We added the following information to the database:" +
                                  "\n==========================================================" +
