@@ -43,9 +43,19 @@ public class PersonRepository
         
     }
 
-    public async Task RemovePersonAsync(Person person)
+    public async Task RemovePersonAsync(Guid id)
     {
-        _context.Persons.Remove(person);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var person = await _context.Persons.FirstOrDefaultAsync(p => p.Id == id);
+            // _context.Persons.Attach(person);
+            _context.Persons.Remove(person);
+            await _context.SaveChangesAsync();
+        }
+        catch (ArgumentNullException)
+        {
+            await RemovePersonAsync(id);
+        }
+        
     }
 }
