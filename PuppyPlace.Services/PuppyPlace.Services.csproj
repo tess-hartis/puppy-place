@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PuppyPlace.Domain\PuppyPlace.Domain.csproj" />
+      <ProjectReference Include="..\PuppyPlace.Repository\PuppyPlace.Repository.csproj" />
+    </ItemGroup>
+
 </Project>
