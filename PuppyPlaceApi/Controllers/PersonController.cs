@@ -38,8 +38,14 @@ public class PersonController : Controller
     [HttpPost]
     public async Task<ActionResult> AddPerson([FromBody]Person person)
     {
-        await _personRepository.AddPersonAsync(person);
-        return new OkResult();
+        if (ModelState.IsValid)
+        {
+            await _personRepository.AddPersonAsync(person);
+            return new OkResult();  
+        }
+
+        return BadRequest();
+
     }
     
     [HttpPut("{id}")]
