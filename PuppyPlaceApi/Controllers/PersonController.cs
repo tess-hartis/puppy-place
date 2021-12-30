@@ -34,6 +34,23 @@ public class PersonController : Controller
 
        return person;
     }
+    
+    [HttpPost]
+    public async Task<ActionResult> AddPerson([FromBody]Person person)
+    {
+        await _personRepository.AddPersonAsync(person);
+        return new OkResult();
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdatePerson(Guid id, [FromBody]Person person)
+    {
+        var foundPerson = await _personRepository.FindByIdAsync(id);
+        foundPerson.Name = person.Name;
+        await _personRepository.UpdateNameAsync(foundPerson);
+        return Ok();
+    }
+
 
     [HttpDelete ("{id}")]
     public async Task<ActionResult> DeletePerson(Guid id)
