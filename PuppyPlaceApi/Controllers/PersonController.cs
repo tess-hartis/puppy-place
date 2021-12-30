@@ -23,9 +23,6 @@ public class PersonController : Controller
         return Ok(await _personRepository.PersonsAsync());
     }
 
-    // localhost/api/Person/{theId}
-    
-    
     [HttpGet("{theId}")]
     public async Task<ActionResult<Person?>> FindPerson(Guid theId)
     {
