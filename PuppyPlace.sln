@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Repository", "Pu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlaceApi", "PuppyPlaceApi\PuppyPlaceApi.csproj", "{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Services", "PuppyPlace.Services\PuppyPlace.Services.csproj", "{02CB3FDC-5055-4711-B135-EF748478A047}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CB3FDC-5055-4711-B135-EF748478A047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CB3FDC-5055-4711-B135-EF748478A047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CB3FDC-5055-4711-B135-EF748478A047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CB3FDC-5055-4711-B135-EF748478A047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
