@@ -8,10 +8,10 @@ namespace PuppyPlaceApi.Controllers;
 [Route("api/[Controller]")]
 public class PersonController : Controller
 {
-    private readonly PersonRepository _personRepository;
+    private readonly IPersonRepository _personRepository;
     private readonly PersonService _personService;
 
-    public PersonController(PersonRepository personRepository, PersonService personService)
+    public PersonController(IPersonRepository personRepository, PersonService personService)
     {
         _personRepository = personRepository;
         _personService = personService;
