@@ -59,20 +59,13 @@ public class PersonController : Controller
         await _personRepository.UpdateNameAsync(foundPerson);
         return Ok();
     }
-
-
+    
     [HttpDelete ("{id}")]
     public async Task<ActionResult> DeletePerson(Guid id)
     {
         await _personRepository.RemovePersonAsync(id);
         return NoContent();
     }
-    
-
-
-
-
-
 
 
 
