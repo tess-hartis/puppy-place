@@ -1,9 +1,13 @@
+using System.Text.Json.Serialization;
 using PuppyPlace.Data;
 using PuppyPlace.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddTransient<DogRepository>();
 builder.Services.AddTransient<PersonRepository>();
 builder.Services.AddDbContext<PuppyPlaceContext>();
 // Add services to the container.
