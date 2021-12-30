@@ -29,8 +29,9 @@ public class DogRepository
         return await _context.Dogs.Include(d => d.Owners).FirstOrDefaultAsync(d => d.Id == id);
     }
 
-    public async Task RemoveDogAsync(Dog dog)
+    public async Task RemoveDogAsync(Guid id)
     {
+        var dog = await _context.Dogs.FirstOrDefaultAsync(d => d.Id == id);
         _context.Dogs.Remove(dog);
         await _context.SaveChangesAsync();
     }
