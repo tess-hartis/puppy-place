@@ -11,7 +11,7 @@ builder.Services.AddControllers()
 builder.Services.AddTransient<PersonService>();
 builder.Services.AddTransient<PersonValidator>();
 builder.Services.AddTransient<DogRepository>();
-builder.Services.AddTransient<PersonRepository>();
+builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddDbContext<PuppyPlaceContext>();
 // Add services to the container.
 
