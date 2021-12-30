@@ -6,10 +6,10 @@ namespace PuppyPlace.Services;
 
 public class PersonService
 {
-    private readonly PersonRepository _repository;
+    private readonly IPersonRepository _repository;
     private readonly PersonValidator _validator;
 
-    public PersonService(PersonRepository repository, PersonValidator validator)
+    public PersonService(IPersonRepository repository, PersonValidator validator)
     {
         _repository = repository;
         _validator = validator;
