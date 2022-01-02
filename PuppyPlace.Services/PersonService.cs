@@ -15,7 +15,8 @@ public class PersonService
         _validator = validator;
     }
 
-    public async Task Validate(Person person)
+
+    public async Task ValidateNewPerson(Person person)
     {
         ValidationResult results = _validator.Validate(person);
 
