@@ -4,7 +4,7 @@ using PuppyPlace.Domain;
 
 namespace PuppyPlace.Repository;
 
-public class DogRepository
+public class DogRepository : IDogRepository
 {
     private PuppyPlaceContext _context;
     
