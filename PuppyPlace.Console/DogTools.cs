@@ -286,7 +286,7 @@ public class DogTools
                 //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
                 //     _context.SaveChanges();
                 // }
-                await _dogRepository.RemoveDogAsync(dog);
+                await _dogRepository.RemoveDogAsync(dog.Id);
                 System.Console.Clear();
                 System.Console.WriteLine($"{dog.Name} has been deleted.");
                 Thread.Sleep(1000);
