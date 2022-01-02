@@ -10,7 +10,7 @@ builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddTransient<PersonService>();
 builder.Services.AddTransient<PersonValidator>();
-builder.Services.AddTransient<DogRepository>();
+builder.Services.AddTransient<IDogRepository, DogRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddDbContext<PuppyPlaceContext>();
 // Add services to the container.
