@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace PuppyPlace.Domain;
 
 public class Dog
