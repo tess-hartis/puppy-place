@@ -365,7 +365,7 @@ public class PersonTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                await _personRepository.RemovePersonAsync(person);
+                await _personRepository.RemovePersonAsync(person.Id);
                 foreach (var dog in person.Dogs)
                 {
                     dog.Owners = null;
