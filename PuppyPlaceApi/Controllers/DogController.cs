@@ -41,8 +41,8 @@ public class DogController : Controller
     [HttpPost]
     public async Task<ActionResult> AddDog([FromBody]Dog dog)
     {
-        await _dogRepository.AddDogAsync(dog);
-        return new OkResult();
+        await _dogService.ValidateDog(dog);
+        return Ok();
     }
     
     [HttpPut("{id}")]
@@ -52,7 +52,7 @@ public class DogController : Controller
         foundDog.Name = dog.Name;
         foundDog.Age = dog.Age;
         foundDog.Breed = dog.Breed;
-        await _dogRepository.UpdateNameAsync(foundDog);
+        await _dogService.ValidateUpdatedDog(dog);
         return Ok();
     }
 
