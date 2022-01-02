@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
+using PuppyPlace.Services;
 
 namespace PuppyPlaceApi.Controllers;
 
@@ -8,11 +9,13 @@ namespace PuppyPlaceApi.Controllers;
 
 public class DogController : Controller
 {
-    private readonly DogRepository _dogRepository;
+    private readonly IDogRepository _dogRepository;
+    private readonly DogService _dogService;
 
-    public DogController(DogRepository dogRepository)
+    public DogController(DogRepository dogRepository, DogService dogService)
     {
         _dogRepository = dogRepository;
+        _dogService = dogService;
     }
     
     [HttpGet]
