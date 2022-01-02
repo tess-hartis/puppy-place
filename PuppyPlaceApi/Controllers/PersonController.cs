@@ -46,7 +46,8 @@ public class PersonController : Controller
         //
         // return BadRequest();
 
-        await _personService.Validate(person);
+
+        await _personService.ValidateNewPerson(person);
         return Ok();
 
     }
