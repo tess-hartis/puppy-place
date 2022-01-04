@@ -1,6 +1,8 @@
 using FluentValidation.Results;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
+using Spectre.Console;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace PuppyPlace.Console;
 
@@ -170,6 +172,25 @@ public class PersonTools
         //     ShowListOfPeople();
         // }
 
+    }
+
+    public async Task ShowList()
+    {
+        // LINQ.Select takes a "lambda"
+        // x -> x.Name
+        // [1,2,3]
+        // [2,3,4]
+        // [P1, P2, P3]
+        // [Name1, Name2, Name3]
+        // Select is "Map"
+        // Select.(lambda)
+        var people = await _personRepository.PersonsAsync();
+        var peepsList = people.ToList();
+        var daNames = peepsList.Select(p => $"{peepsList.IndexOf(p)} - {p.Name}");
+        var person = AnsiConsole.Prompt(new SelectionPrompt<String>()
+            .Title("Select a person to view options")
+            .PageSize(9)
+            .AddChoices(daNames));
     }
 
     public async Task ShowPerson(Guid id)
