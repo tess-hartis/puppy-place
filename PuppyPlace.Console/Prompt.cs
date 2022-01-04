@@ -1,31 +1,53 @@
+using Spectre.Console;
+
 namespace PuppyPlace.Console;
 
 public class Prompt
 {
     private static PersonTools _personTools = DependencyInjection.PersonTools;
     private static readonly DogTools _dogTools = DependencyInjection.DogTools;
-
-    // public Prompt(PersonTools personTools, DogTools dogTools)
-    // {
-    //     _personTools = personTools;
-    //     _dogTools = dogTools;
-    //
-    // }
+    
     public static async Task MainMenu()
     {
         System.Console.Clear();
-        // Console.WriteLine(Figgle.FiggleFonts.Banner.Render("Puppy Place"));
-        System.Console.WriteLine("MAIN MENU");
-        System.Console.WriteLine("=========" +
-                                 "\n" +
-                                 "\nWhat would you like to do?" +
-                                 "\n" +
-                                 "\n1 - Add New Person" +
-                                 "\n2 - Add New Dog" +
-                                 "\n3 - Show List of People" +
-                                 "\n4 - Show List of Dogs" +
-                                 "\n" +
-                                 "\n(Press Q to Quit)");
+        var font = FigletFont.Default;
+        AnsiConsole.Write(new FigletText(font, "Puppy Place")
+            .Centered()
+            .Color(Color.Blue));
+    
+        var table = new Table().Centered();
+        await AnsiConsole.Live(table)
+            .StartAsync(async ctx =>
+            {
+                table.AddColumn("MAIN MENU");
+                ctx.Refresh();
+                await Task.Delay(250);
+
+                table.AddRow("1 - Add Person");
+                ctx.Refresh();
+                await Task.Delay(250);
+                
+                table.AddRow("2 - Add Dog");
+                ctx.Refresh();
+                await Task.Delay(250);
+                
+                table.AddRow("3 - View People");
+                ctx.Refresh();
+                await Task.Delay(250);
+                
+                table.AddRow("4 - View Dogs");
+                ctx.Refresh();
+                await Task.Delay(250);
+                
+                table.AddRow("===========");
+                ctx.Refresh();
+                await Task.Delay(250);
+                
+                table.AddRow("Press Q to Quit");
+                ctx.Refresh();
+                await Task.Delay(250);
+
+            });
         var answer = System.Console.ReadKey();
         switch (answer.Key)
         {
