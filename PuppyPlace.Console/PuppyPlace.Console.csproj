@@ -13,4 +13,10 @@
       <ProjectReference Include="..\PuppyPlace.Repository\PuppyPlace.Repository.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <PackageReference Include="Spectre.Console" Version="0.43.1-preview.0.17" />
+    </ItemGroup>
+
 </Project>
