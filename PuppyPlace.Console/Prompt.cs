@@ -36,7 +36,7 @@ public class Prompt
                 await _dogTools.AddDog();
                 break;
             case ConsoleKey.D3:
-                await _personTools.ShowListOfPeopleAsync();
+                await _personTools.ShowList();
                 break;
             case ConsoleKey.D4:
                 await _dogTools.ShowListOfDogsAsync();
