@@ -7,9 +7,9 @@ public class Person
 {
     public Guid Id { get; set; }
     
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(20, ErrorMessage = "Name cannot be greater than 20 characters")]
-    [RegularExpression("^[a-zA-Z]", ErrorMessage = "Only alphabet characters allowed")]
+    // [Required(ErrorMessage = "Name is required")]
+    // [StringLength(20, ErrorMessage = "Name cannot be greater than 20 characters")]
+    // [RegularExpression("^[a-zA-Z]", ErrorMessage = "Only alphabet characters allowed")]
     public string Name { get; set; }
     public List<Dog> Dogs { get; set; }
     public Person(string name)
