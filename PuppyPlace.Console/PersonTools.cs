@@ -27,9 +27,8 @@ public class PersonTools
     {
         System.Console.Clear();
         errors.Clear();
-        System.Console.WriteLine("Please enter the person's name:");
-        var input = System.Console.ReadLine();
-        var person = new Person(input);
+        var name = AnsiConsole.Ask<string>("What is the person's [green]name[/]?");
+        var person = new Person(name);
         ValidationResult results = PersonValidator.Validate(person);
         
         if (results.IsValid == false)
@@ -49,11 +48,17 @@ public class PersonTools
         }
         
         System.Console.Clear();
-        System.Console.WriteLine($"The following person has been created:");
-        System.Console.WriteLine("==============================================");
-        System.Console.WriteLine($"Name: {person.Name}");
-        System.Console.WriteLine("==============================================");
-        Thread.Sleep(1000);
+        var table = new Table().LeftAligned().Border(TableBorder.Rounded);
+        await AnsiConsole.Live(table).StartAsync(async ctx =>
+        {
+            table.AddColumn("[blue]A new person was successfully created![/]");
+            ctx.Refresh();
+            await Task.Delay(500);
+
+            table.AddRow($"[green]Name: {person.Name}[/]");
+            ctx.Refresh();
+            await Task.Delay(500);
+        });
         await _personRepository.AddPersonAsync(person);
         await PromptToAddAnotherPerson();
     }
