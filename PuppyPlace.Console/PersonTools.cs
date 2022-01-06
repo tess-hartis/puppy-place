@@ -48,17 +48,8 @@ public class PersonTools
         }
         
         System.Console.Clear();
-        var table = new Table().LeftAligned().Border(TableBorder.Rounded);
-        await AnsiConsole.Live(table).StartAsync(async ctx =>
-        {
-            table.AddColumn("[blue]A new person was successfully created![/]");
-            ctx.Refresh();
-            await Task.Delay(500);
-
-            table.AddRow($"[green]Name: {person.Name}[/]");
-            ctx.Refresh();
-            await Task.Delay(500);
-        });
+        System.Console.WriteLine($"The following person has been successfully created: {person.Name}" );
+       
         await _personRepository.AddPersonAsync(person);
         await PromptToAddAnotherPerson();
     }
