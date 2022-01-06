@@ -12,38 +12,38 @@ public class Prompt
         System.Console.Clear();
         var font = FigletFont.Default;
         AnsiConsole.Write(new FigletText(font, "Puppy Place")
-            .Centered()
+            .LeftAligned()
             .Color(Color.Blue));
     
-        var table = new Table().Centered();
+        var table = new Table().LeftAligned().Border(TableBorder.Rounded);
         await AnsiConsole.Live(table)
             .StartAsync(async ctx =>
             {
-                table.AddColumn("MAIN MENU");
+                table.AddColumn("[blue]MAIN MENU[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
 
-                table.AddRow("1 - Add Person");
+                table.AddRow("[green]1 - Add Person[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
                 
-                table.AddRow("2 - Add Dog");
+                table.AddRow("[blue]2 - Add Dog[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
                 
-                table.AddRow("3 - View People");
+                table.AddRow("[green]3 - View People[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
                 
-                table.AddRow("4 - View Dogs");
+                table.AddRow("[blue]4 - View Dogs[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
                 
-                table.AddRow("===========");
+                table.AddRow("[green]===========[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
                 
-                table.AddRow("Press Q to Quit");
+                table.AddRow("[blue]Press Q to Quit[/]");
                 ctx.Refresh();
                 await Task.Delay(250);
 
