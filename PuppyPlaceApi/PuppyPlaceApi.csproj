@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PuppyPlace.CqrsService\PuppyPlace.CqrsService.csproj" />
       <ProjectReference Include="..\PuppyPlace.Repository\PuppyPlace.Repository.csproj" />
       <ProjectReference Include="..\PuppyPlace.Services\PuppyPlace.Services.csproj" />
     </ItemGroup>
