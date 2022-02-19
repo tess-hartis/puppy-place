@@ -7,16 +7,26 @@ namespace PuppyPlace.Domain;
 
 public class Person
 {
+    private Person()
+    {
+        
+    }
     public Guid Id { get; set; }
     public PersonName Name { get; set; }
     
     private List<Dog> _dogs = new List<Dog>();
     public IEnumerable<Dog> Dogs => _dogs;
     
-    public Person(PersonName name)
+    public static Person Create(PersonName name)
     {
-        Name = name;
-        Id = Guid.NewGuid();
+        var person = new Person()
+        {
+            Name = name,
+            Id = Guid.NewGuid()
+        };
+
+        return person;
+
     }
 
     public Unit Update(PersonName name)
