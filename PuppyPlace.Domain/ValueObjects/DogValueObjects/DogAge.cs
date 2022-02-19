@@ -6,7 +6,7 @@ namespace PuppyPlace.Domain.ValueObjects.DogValueObjects;
 
 public record DogAge
 {
-    private readonly int Value;
+    public readonly int Value;
 
     private DogAge(int value)
     {
