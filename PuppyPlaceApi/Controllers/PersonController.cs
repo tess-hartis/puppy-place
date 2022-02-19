@@ -4,6 +4,7 @@ using PuppyPlace.CqrsService.PersonCQ.Commands;
 using PuppyPlace.CqrsService.PersonCQ.Queries;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
+using PuppyPlaceApi.Dtos;
 
 
 namespace PuppyPlaceApi.Controllers;
@@ -23,7 +24,7 @@ public class PersonController : Controller
     {
         var query = new GetPersonsQuery();
         var result = await _mediator.Send(query);
-        return Ok(result.Select(GetPersonDTO.FromPerson));
+        return Ok(result.Select(GetPersonDto.FromPerson));
     }
 
     [HttpGet("{id}")]
@@ -32,7 +33,7 @@ public class PersonController : Controller
         var query = new GetPersonByIdQuery(id);
         var person = await _mediator.Send(query);
         return person
-            .Map(GetPersonDTO.FromPerson)
+            .Map(GetPersonDto.FromPerson)
             .Some<IActionResult>(Ok)
             .None(NotFound);
     }

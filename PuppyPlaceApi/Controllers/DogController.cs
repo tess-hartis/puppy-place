@@ -4,7 +4,7 @@ using PuppyPlace.CqrsService.DogCQ.Commands;
 using PuppyPlace.CqrsService.DogCQ.Queries;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
-using PuppyPlace.Services;
+using PuppyPlaceApi.Dtos;
 
 namespace PuppyPlaceApi.Controllers;
 
@@ -24,7 +24,7 @@ public class DogController : Controller
     {
         var query = new GetDogsQuery();
         var result = await _mediator.Send(query);
-        return Ok(result.Select(GetDogDTO.FromDog));
+        return Ok(result.Select(GetDogDto.FromDog));
     }
     
     [HttpGet("{id}")]
@@ -33,7 +33,7 @@ public class DogController : Controller
         var query = new GetDogByIdQuery(id);
         var dog = await _mediator.Send(query);
         return dog
-            .Map(GetDogDTO.FromDog)
+            .Map(GetDogDto.FromDog)
             .Some<IActionResult>(Ok)
             .None(NotFound);
     }
