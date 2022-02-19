@@ -8,11 +8,11 @@ public interface IPersonRepository
 {
     
 }
-public class PersonRepository : IPersonRepository
+public class PersonRepository : GenericRepository<Person>, IPersonRepository
 {
     private PuppyPlaceContext _context;
     
-    public PersonRepository(PuppyPlaceContext context)
+    public PersonRepository(PuppyPlaceContext context) : base(context)
     {
         _context = context;
     }

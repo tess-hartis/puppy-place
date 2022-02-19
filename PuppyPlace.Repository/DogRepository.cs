@@ -8,11 +8,11 @@ public interface IDogRepository
 {
     
 }
-public class DogRepository : IDogRepository
+public class DogRepository : GenericRepository<Dog>, IDogRepository
 {
     private PuppyPlaceContext _context;
     
-    public DogRepository(PuppyPlaceContext context)
+    public DogRepository(PuppyPlaceContext context) : base(context)
     {
         _context = context;
     }
