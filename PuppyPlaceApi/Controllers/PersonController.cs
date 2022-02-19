@@ -1,71 +1,80 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PuppyPlace.CqrsService.PersonCQ.Commands;
+using PuppyPlace.CqrsService.PersonCQ.Queries;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
-using PuppyPlace.Services;
+
 
 namespace PuppyPlaceApi.Controllers;
 
 [Route("api/[Controller]")]
 public class PersonController : Controller
 {
-    private readonly IPersonRepository _personRepository;
-    private readonly PersonService _personService;
+    private readonly IMediator _mediator;
 
-    public PersonController(IPersonRepository personRepository, PersonService personService)
+    public PersonController(IMediator mediator)
     {
-        _personRepository = personRepository;
-        _personService = personService;
+        _mediator = mediator;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Person>>> PersonsAsync()
+    public async Task<IActionResult> GetAllPersons()
     {
-        return Ok(await _personRepository.PersonsAsync());
+        var query = new GetPersonsQuery();
+        var result = await _mediator.Send(query);
+        return Ok(result.Select(GetPersonDTO.FromPerson));
     }
 
-    [HttpGet("{theId}")]
-    public async Task<ActionResult<Person?>> FindPerson(Guid theId)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> FindPersonById(Guid id)
     {
-       var person = await _personRepository.FindByIdAsync(theId);
-       if (person == null)
-       {
-           return NotFound();
-       }
-
-       return person;
+        var query = new GetPersonByIdQuery(id);
+        var person = await _mediator.Send(query);
+        return person
+            .Map(GetPersonDTO.FromPerson)
+            .Some<IActionResult>(Ok)
+            .None(NotFound);
     }
     
     [HttpPost]
-    public async Task<ActionResult> AddPerson([FromBody]Person person)
+    public async Task<IActionResult> AddPerson([FromBody] AddPersonCommand request)
     {
-        // if (ModelState.IsValid)
-        // {
-        //     await _personRepository.AddPersonAsync(person);
-        //     return new OkResult();  
-        // }
-        //
-        // return BadRequest();
-
-
-        await _personService.ValidateNewPerson(person);
-        return Ok();
-
+        var person = await _mediator.Send(request);
+        return person.Match<IActionResult>(
+            p => Ok(),
+            e =>
+            {
+                var errors = e.Select(e => e.Message).ToList();
+                return UnprocessableEntity(new {errors});
+            });
+        
     }
     
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdatePerson(Guid id, [FromBody]Person person)
+    public async Task<IActionResult> UpdatePerson(Guid id, [FromBody] UpdatePersonCommand request)
     {
-        var foundPerson = await _personRepository.FindByIdAsync(id);
-        foundPerson.Name = person.Name;
-        await _personRepository.UpdateNameAsync(foundPerson);
-        return Ok();
+        request.Id = id;
+        var person = await _mediator.Send(request);
+        return person
+            .Some(x =>
+                x.Succ<IActionResult>(t => Ok())
+                    .Fail(e =>
+                    {
+                        var errors = e.Select(x => x.Message).ToList();
+                        return UnprocessableEntity(new {errors});
+                    }))
+            .None(NotFound);
     }
     
     [HttpDelete ("{id}")]
-    public async Task<ActionResult> DeletePerson(Guid id)
+    public async Task<IActionResult> DeletePerson(Guid id)
     {
-        await _personRepository.RemovePersonAsync(id);
-        return NoContent();
+        var command = new DeletePersonCommand(id);
+        var result = await _mediator.Send(command);
+        return result
+            .Some<IActionResult>(_ => NoContent())
+            .None(NotFound);
     }
 
 
