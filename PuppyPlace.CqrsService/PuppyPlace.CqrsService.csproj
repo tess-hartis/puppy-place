@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="10.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PuppyPlace.Domain\PuppyPlace.Domain.csproj" />
+      <ProjectReference Include="..\PuppyPlace.Repository\PuppyPlace.Repository.csproj" />
+    </ItemGroup>
+
 </Project>
