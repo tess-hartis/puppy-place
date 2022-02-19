@@ -25,9 +25,10 @@ public class Person
         return Unit.Default;
     }
 
-    public void AdoptDog(Dog dog)
+    public Unit AdoptDog(Dog dog)
     {
         _dogs.Add(dog);
+        return Unit.Default;
     }
     
 }

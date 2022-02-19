@@ -25,9 +25,10 @@ public class Dog
         return dog;
     }
     
-    public void AddOwner(Person person)
+    public Unit AddOwner(Person person)
     {
         _owners.Add(person);
+        return Unit.Default;
     }
 
     public Unit Update(DogName name, DogAge age, DogBreed breed)
