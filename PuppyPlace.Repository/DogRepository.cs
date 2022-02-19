@@ -4,7 +4,7 @@ using PuppyPlace.Domain;
 
 namespace PuppyPlace.Repository;
 
-public interface IDogRepository
+public interface IDogRepository : IGenericRepository<Dog>
 {
     
 }
