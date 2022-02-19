@@ -7,17 +7,32 @@ public class PuppyPlaceContext : DbContext
 {
     public DbSet<Person> Persons { get; set; }
     public DbSet<Dog> Dogs { get; set; }
-    //
-    // public PuppyPlaceContext(DbContextOptions<PuppyPlaceContext> options) : base(options)
-    // {
-    //     
-    // }
-    //
-    // public PuppyPlaceContext()
-    // {
-    //     
-    // }
+   
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql("Host=localhost;Username=itb;Password=itb;Database=NEWPuppyPlace");
+        => options.UseNpgsql("Host=localhost;Username=itb;Password=itb;Database=PuppyPlace");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Person>()
+            .OwnsOne(p => p.Name)
+            .Property(x => x.Value)
+            .HasColumnName("Name");
+
+        modelBuilder.Entity<Dog>()
+            .OwnsOne(d => d.Name)
+            .Property(x => x.Value)
+            .HasColumnName("Name");
+
+        modelBuilder.Entity<Dog>()
+            .OwnsOne(d => d.Age)
+            .Property(x => x.Value)
+            .HasColumnName("Age");
+
+        modelBuilder.Entity<Dog>()
+            .OwnsOne(d => d.Breed)
+            .Property(x => x.Value)
+            .HasColumnName("Breed");
+    }
+    
     
 }
