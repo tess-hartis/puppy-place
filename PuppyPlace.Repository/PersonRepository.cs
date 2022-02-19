@@ -41,11 +41,7 @@ public class PersonRepository : IPersonRepository
         _context.Persons.Update(person);
         await _context.SaveChangesAsync();
     }
-
-    public void AdoptDog()
-    {
-        
-    }
+    
 
     public async Task RemovePersonAsync(Guid id)
     {
