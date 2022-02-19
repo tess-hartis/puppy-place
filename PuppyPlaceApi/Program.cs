@@ -2,14 +2,14 @@ using System.Text.Json.Serialization;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
 using PuppyPlace.Repository;
-using PuppyPlace.Services;
+// using PuppyPlace.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-builder.Services.AddTransient<PersonService>();
-builder.Services.AddTransient<PersonValidator>();
+// builder.Services.AddTransient<PersonService>();
+// builder.Services.AddTransient<PersonValidator>();
 builder.Services.AddTransient<IDogRepository, DogRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddDbContext<PuppyPlaceContext>();
