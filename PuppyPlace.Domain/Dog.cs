@@ -5,6 +5,11 @@ namespace PuppyPlace.Domain;
 
 public class Dog
 {
+    private Dog()
+    {
+        
+    }    
+    
     public Guid Id { get; set; }
     public DogName Name { get; set; }
     public DogAge Age { get; set; }
@@ -13,7 +18,7 @@ public class Dog
     private List<Person> _owners = new List<Person>();
     public IEnumerable<Person> Owners => _owners;
     
-    private static Dog Create(DogName name, DogAge age, DogBreed breed)
+    public static Dog Create(DogName name, DogAge age, DogBreed breed)
     {
         var dog = new Dog()
         {
