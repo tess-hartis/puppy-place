@@ -308,7 +308,7 @@ public class PersonTools
                     {
                         var input = int.Parse(key.KeyChar.ToString());
                         var dog = dogs[input - 1];
-                        await _adoptionService.Adopt(person.Id, dog.Id);
+                        await _adoptionService.AdoptDog(person.Id, dog.Id);
                         System.Console.Clear();
                         System.Console.WriteLine($"{person.Name} has adopted {dog.Name}!");
                         await PromptToAdoptAnotherDog();
