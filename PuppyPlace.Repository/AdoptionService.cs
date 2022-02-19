@@ -1,8 +1,15 @@
 using PuppyPlace.Data;
+using LanguageExt;
+using static LanguageExt.Prelude;
 
 namespace PuppyPlace.Repository;
 
-public class AdoptionService
+public interface IAdoptionService
+{
+    Task<Option<Unit>> AdoptDog(Guid personId, Guid dogId);
+    Task<Option<Unit>> AddOwner(Guid personId, Guid dogId);
+}
+public class AdoptionService : IAdoptionService
 {
     private readonly PuppyPlaceContext _context;
     private DogRepository _dogRepository;
@@ -27,19 +34,33 @@ public class AdoptionService
             return _personRepository = new PersonRepository(_context);
         }
     }
-    public async Task Adopt(Guid personId, Guid dogId )
+    public async Task<Option<Unit>> AdoptDog(Guid personId, Guid dogId)
     {
-        var person = await PersonRepo.FindByIdAsync(personId);
-        var dog = await DogRepo.FindByIdAsync(dogId);
-        person.AdoptDog(dog);
-        await _context.SaveChangesAsync();
+        var person = await PersonRepo.FindAsync(personId);
+        var dog = await DogRepo.FindAsync(dogId);
+
+        var result =
+            from p in person
+            from d in dog
+            select p.AdoptDog(d);
+
+        ignore(result.Map(async _ => await _context.SaveChangesAsync()));
+
+        return result;
     }
 
-    public async Task AddOwner(Guid personId, Guid dogId)
+    public async Task<Option<Unit>> AddOwner(Guid personId, Guid dogId)
     {
-        var person = await PersonRepo.FindByIdAsync(personId);
-        var dog = await DogRepo.FindByIdAsync(dogId);
-        dog.AddOwner(person);
-        await _context.SaveChangesAsync();
+        var person = await PersonRepo.FindAsync(personId);
+        var dog = await DogRepo.FindAsync(dogId);
+
+        var result =
+            from d in dog
+            from p in person
+            select d.AddOwner(p);
+
+        ignore(result.Map(async _ => await _context.SaveChangesAsync()));
+
+        return result;
     }
 }
