@@ -1,3 +1,5 @@
+using LanguageExt;
+using LanguageExt.SomeHelp;
 using Microsoft.EntityFrameworkCore;
 using PuppyPlace.Data;
 using PuppyPlace.Domain;
@@ -6,7 +8,7 @@ namespace PuppyPlace.Repository;
 
 public interface IPersonRepository : IGenericRepository<Person>
 {
-    
+    new Task<Option<Person>> FindAsync(Guid id);
 }
 public class PersonRepository : GenericRepository<Person>, IPersonRepository
 {
@@ -28,11 +30,16 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
        return await _context.Persons.ToListAsync();
     }
 
-    public async Task<Person?> FindByIdAsync(Guid idPerson)
+    public override async Task<Option<Person>> FindAsync(Guid id)
     {
-        return await _context.Persons
+        var person = await _context.Persons
             .Include(p => p.Dogs)
-            .FirstOrDefaultAsync(p => p.Id == idPerson);
+            .FirstOrDefaultAsync(p => p.Id == id);
+        
+        if (person == null)
+            return Option<Person>.None;
+
+        return person.ToSome();
 
     }
 
