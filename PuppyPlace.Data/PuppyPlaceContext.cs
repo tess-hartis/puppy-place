@@ -9,7 +9,7 @@ public class PuppyPlaceContext : DbContext
     public DbSet<Dog> Dogs { get; set; }
    
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql("Host=localhost;Username=itb;Password=itb;Database=PuppyPlace");
+        => options.UseNpgsql("Host=localhost;Username=postgres;Password=postgres;Database=PuppyPlace");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
