@@ -19,7 +19,6 @@ public class GetDogsQueryHandler : IRequestHandler<GetDogsQuery, IEnumerable<Dog
     public async Task<IEnumerable<Dog>> Handle
         (GetDogsQuery request, CancellationToken cancellationToken)
     {
-        var dogs = await _dogRepository.GetEntities().ToListAsync();
-        return dogs;
+        return await _dogRepository.GetAll();
     }
 }
