@@ -78,12 +78,13 @@ public class PersonController : Controller
             .None(NotFound);
     }
 
-
-
-
-    // GET
-    // public IActionResult Index()
-    // {
-    //     return View();
-    // }
+    [HttpPost("{personId}/dog/{dogId}")]
+    public async Task<IActionResult> AdoptDog (Guid personId, Guid dogId)
+    {
+        var command = new AdoptDogCommand(personId, dogId);
+        var result = await _mediator.Send(command);
+        return result
+            .Some<IActionResult>(u => Ok())
+            .None(NotFound);
+    }
 }

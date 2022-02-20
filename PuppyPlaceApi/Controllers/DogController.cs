@@ -77,4 +77,14 @@ public class DogController : Controller
             .Some<IActionResult>(_ => NoContent())
             .None(NotFound);
     }
+
+    [HttpPost("{dogId}/owner/{ownerId}")]
+    public async Task<IActionResult> AddOwner(Guid dogId, Guid ownerId)
+    {
+        var command = new AddOwnerCommand(dogId, ownerId);
+        var result = await _mediator.Send(command);
+        return result
+            .Some<IActionResult>(u => Ok())
+            .None(NotFound);
+    }
 }
