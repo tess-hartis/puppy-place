@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PuppyPlace.CqrsService\PuppyPlace.CqrsService.csproj" />
       <ProjectReference Include="..\PuppyPlace.Data\PuppyPlace.Data.csproj" />
       <ProjectReference Include="..\PuppyPlace.Domain\PuppyPlace.Domain.csproj" />
       <ProjectReference Include="..\PuppyPlace.Repository\PuppyPlace.Repository.csproj" />
@@ -18,6 +19,8 @@
     <ItemGroup>
 
       <PackageReference Include="FIGlet.Net" Version="1.1.2" />
+
+      <PackageReference Include="MediatR" Version="10.0.1" />
       <PackageReference Include="Spectre.Console" Version="0.43.1-preview.0.17" />
     </ItemGroup>
 
