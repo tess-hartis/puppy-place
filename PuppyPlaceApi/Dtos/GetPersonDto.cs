@@ -6,7 +6,7 @@ public class GetPersonDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public IEnumerable<string> Dogs { get; set; }
+    public IEnumerable<string> Dogs { get; set; } = new List<string>();
 
     public static GetPersonDto FromPerson(Person person)
     {
