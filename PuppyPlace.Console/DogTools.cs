@@ -9,14 +9,14 @@ public class DogTools
     private readonly Prompt _prompt;
     private readonly DogRepository _dogRepository;
     private readonly PersonRepository _personRepository;
-    private readonly AdoptionService _adoptionService;
+    
 
-    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository, AdoptionService adoptionService)
+    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository)
     {
         _prompt = prompt;
         _dogRepository = dogRepository;
         _personRepository = personRepository;
-        _adoptionService = adoptionService;
+        
     }
 
     public DogValidator DogValidator = new DogValidator();

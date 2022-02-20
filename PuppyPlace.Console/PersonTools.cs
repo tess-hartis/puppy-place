@@ -11,13 +11,11 @@ public class PersonTools
     private readonly Prompt _prompt;
     private PersonRepository _personRepository;
     private DogRepository _dogRepository;
-    private AdoptionService _adoptionService; 
-    public PersonTools(Prompt prompt, PersonRepository personRepository, DogRepository dogRepository, AdoptionService adoptionService)
+    public PersonTools(Prompt prompt, PersonRepository personRepository, DogRepository dogRepository)
     {
         _prompt = prompt;
         _personRepository = personRepository;
         _dogRepository = dogRepository;
-        _adoptionService = adoptionService;
     }
 
     public PersonValidator PersonValidator = new PersonValidator();
