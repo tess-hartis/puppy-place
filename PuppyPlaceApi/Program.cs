@@ -1,18 +1,17 @@
-using System.Text.Json.Serialization;
+using System.Reflection;
+using MediatR;
+using PuppyPlace.CqrsService;
 using PuppyPlace.Data;
-using PuppyPlace.Domain;
 using PuppyPlace.Repository;
-// using PuppyPlace.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-// builder.Services.AddTransient<PersonService>();
-// builder.Services.AddTransient<PersonValidator>();
+builder.Services.AddDbContext<PuppyPlaceContext>();
 builder.Services.AddTransient<IDogRepository, DogRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
-builder.Services.AddDbContext<PuppyPlaceContext>();
+builder.Services.AddMediatR(typeof(MediatorEntry).Assembly);
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
