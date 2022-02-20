@@ -18,7 +18,6 @@ public class GetPersonsQueryHandler : IRequestHandler<GetPersonsQuery, IEnumerab
     public async Task<IEnumerable<Person>> Handle
         (GetPersonsQuery request, CancellationToken cancellationToken)
     {
-        var persons = await _personRepository.GetEntities().ToListAsync();
-        return persons;
+        return await _personRepository.GetAll();
     }
 }
