@@ -15,4 +15,8 @@
       <ProjectReference Include="..\PuppyPlace.Domain\PuppyPlace.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Entities\Persons.razor" />
+    </ItemGroup>
+
 </Project>
