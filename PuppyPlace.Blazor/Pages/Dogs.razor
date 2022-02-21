@@ -1,6 +1,23 @@
 @page "/dogs"
+@using PuppyPlace.Shared
+@inject HttpClient _httpClient;
 <h3>Dogs</h3>
 
 @code {
+    public IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
     
+    protected override async Task OnInitializedAsync()
+    {
+        DogList = await _httpClient
+            .GetFromJsonAsync<IEnumerable<GetDogDto>>("Dog");
+
+        foreach (var dog in DogList)
+        {
+            Console.WriteLine($"Name: {dog.Name}");
+            Console.WriteLine($"ID: {dog.Id}");
+            Console.WriteLine($"Breed: {dog.Breed}");
+            Console.WriteLine($"Age: {dog.Age}");
+        }
+        
+    }
 }
