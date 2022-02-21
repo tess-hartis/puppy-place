@@ -24,15 +24,17 @@
 
 
 @code {
-
-    public List<Person> PersonList { get; set; } = new List<Person>();
-    protected async override Task OnInitializedAsync()
+    public IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
+    
+    protected override async Task OnInitializedAsync()
     {
-        PersonList = await PersonService.GetPersons();
+        PersonList = await _httpClient
+            .GetFromJsonAsync<IEnumerable<GetPersonDto>>("Person");
 
         foreach (var person in PersonList)
         {
-            Console.WriteLine(person.Name.Value);
+            Console.WriteLine($"Name: {person.Name}");
+            Console.WriteLine($"ID: {person.Id}");
         }
         
     }
