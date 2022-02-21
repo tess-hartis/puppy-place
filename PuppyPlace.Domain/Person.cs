@@ -7,7 +7,7 @@ namespace PuppyPlace.Domain;
 
 public class Person
 {
-    private Person()
+    public Person()
     {
         
     }
