@@ -1,0 +1,37 @@
+@page "/persons"
+@using PuppyPlace.Blazor.Services
+@using PuppyPlace.Domain
+@inject IPersonService PersonService
+
+<h3>Persons</h3>
+
+<div class="row">
+    <div class="col-md-10">
+        @*Place for search and sort*@
+    </div>
+    <div class="col-md-2">
+        <a href="/createPerson">link 2 clicc</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for persons*@
+    </div>
+</div>
+
+
+@code {
+
+    public List<Person> PersonList { get; set; } = new List<Person>();
+    protected async override Task OnInitializedAsync()
+    {
+        PersonList = await PersonService.GetPersons();
+
+        foreach (var person in PersonList)
+        {
+            Console.WriteLine(person.Name.Value);
+        }
+        
+    }
+
+}
