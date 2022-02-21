@@ -3,6 +3,28 @@
 @inject HttpClient _httpClient;
 <h3>Dogs</h3>
 
+<table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Breed</th>
+            <th>ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var dog in DogList)
+        {
+            <tr>
+                <td>@dog.Name</td>
+                <td>@dog.Age</td>
+                <td>@dog.Breed</td>
+                <td>@dog.Id</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
 @code {
     public IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
     
