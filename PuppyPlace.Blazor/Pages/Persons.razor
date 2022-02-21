@@ -1,26 +1,40 @@
 @page "/persons"
-@using System.Net.Http
-@using System.Net.Http.Json
-@using System.Threading.Tasks;
-@using System.Net
 @using PuppyPlace.Shared
 @inject HttpClient _httpClient
 
 <h3>Persons</h3>
 
-<div class="row">
-    <div class="col-md-10">
-        @*Place for search and sort*@
-    </div>
-    <div class="col-md-2">
-        <a href="/createPerson">link 2 clicc</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @*Place for persons*@
-    </div>
-</div>
+@* <div class="row"> *@
+@*     <div class="col-md-10"> *@
+@*         $1$Place for search and sort#1# *@
+@*     </div> *@
+@*     <div class="col-md-2"> *@
+@*         <a href="/createPerson">link 2 clicc</a> *@
+@*     </div> *@
+@* </div> *@
+@* <div class="row"> *@
+@*     <div class="col"> *@
+@*         $1$Place for persons#1# *@
+@*     </div> *@
+@* </div> *@
+
+<table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var person in PersonList)
+        {
+            <tr>
+                <td>@person.Name</td>
+                <td>@person.Id</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 
 
 @code {
