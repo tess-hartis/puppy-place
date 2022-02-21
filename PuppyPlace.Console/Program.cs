@@ -1,4 +1,9 @@
-﻿namespace PuppyPlace.Console
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using PuppyPlace.CqrsService;
+using PuppyPlace.Data;
+
+namespace PuppyPlace.Console
 {
     class Program
     {
@@ -7,5 +12,6 @@
        {
            await Prompt.MainMenu();
        }
+       
     }
 }

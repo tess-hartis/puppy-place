@@ -8,6 +8,7 @@ using PuppyPlace.Domain;
 using PuppyPlace.Domain.ValueObjects.PersonValueObjects;
 using PuppyPlace.Repository;
 using Spectre.Console;
+using Unit = LanguageExt.Unit;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace PuppyPlace.Console;
@@ -29,20 +30,20 @@ public class PersonTools
         var nameInput = AnsiConsole.Ask<string>("What is the person's [green]name[/]?");
         var command = new AddPersonCommand(nameInput);
         var person = await _mediator.Send(command);
-        person.Match<>(async p =>
-            {
-                System.Console.Clear();
-                System.Console.WriteLine($"The following person has been successfully created: {p.Name.Value}");
-                await PromptToAddAnotherPerson();
-            },
-            async e =>
-            {
-                var errors = e.Select(e => e.Message).ToList();
-                System.Console.WriteLine($"{errors}");
-                Thread.Sleep(1500);
-                await AddPerson();
-            });
+        if (person.IsSuccess)
+        {
+            System.Console.Clear();
+            System.Console.WriteLine($"The following person has been successfully created: {nameInput}");
+            await PromptToAddAnotherPerson();
+        }
 
+        if (person.IsFail)
+        {
+            var errors = person.FailAsEnumerable().Select(e => e.Message).ToList();
+            System.Console.WriteLine($"{errors}");
+            Thread.Sleep(1500);
+            await AddPerson();
+        }
     }
     
     public async Task PromptToAddAnotherPerson()
@@ -96,7 +97,7 @@ public class PersonTools
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
                         var personId = persons.ElementAtOrDefault(userInput - 1).Id;
-                        await ShowPerson(personId);
+                        // await ShowPerson(personId);
                     }
 
                     if (!isDigit && key.Key != ConsoleKey.M)
@@ -146,6 +147,7 @@ public class PersonTools
         {
             var query = new GetPersonByIdQuery(id);
             var person = await _mediator.Send(query);
+            
             person.Some(async p =>
                 {
                     System.Console.WriteLine($"Getting {p.Name}'s information...");
@@ -165,11 +167,11 @@ public class PersonTools
                     {
                         System.Console.WriteLine($"{p.Name} has no dogs to show");
                     }
-
+    
                     System.Console.WriteLine("\nWhat would you like to do?" +
                                              "\n" +
                                              "\n(A)dopt a dog (E)dit Name (D)elete Person (S)how People (M)ain Menu");
-
+    
                     var userInput = System.Console.ReadKey();
                     switch (userInput.Key)
                     {
@@ -197,7 +199,11 @@ public class PersonTools
                             break;
                     }
                 })
-                .None(async x => await Prompt.ReturnToMainMenu());
+                .None(() =>
+                {
+                    System.Console.WriteLine("No person was found");
+                    return await Prompt.MainMenu();
+                });
         }
         catch (Exception e)
         {
@@ -212,19 +218,24 @@ public class PersonTools
         var nameInput = System.Console.ReadLine();
         var command = new UpdatePersonCommand(person.Id, nameInput);
         var updatedPerson = await _mediator.Send(command);
+        
         updatedPerson
             .Some(async x =>
-                x.Match<>(async p =>
-                    {
-                        System.Console.Clear();
-                        System.Console.WriteLine("Name has been updated!");
-                        Thread.Sleep(1500);
-                        await Prompt.ReturnToMainMenu();
-                    }, e =>
-                    {
-                        var errors = e.Select(x => x.Message).ToList();
-                        System.Console.WriteLine($"{errors}");
-                    }))
+            {
+                if (x.IsSuccess)
+                {
+                    System.Console.Clear();
+                    System.Console.WriteLine("Name has been updated!");
+                    Thread.Sleep(1500);
+                    await Prompt.ReturnToMainMenu();
+                }
+
+                if (x.IsFail)
+                {
+                    var errors = x.FailAsEnumerable().Select(x => x.Message).ToList();
+                    System.Console.WriteLine($"{errors}");
+                }
+            })
             .None(async () =>
             {
                 System.Console.WriteLine("No good!");
@@ -271,26 +282,32 @@ public class PersonTools
                         var dog = dogsList[input - 1];
                         var adoptCommand = new AdoptDogCommand(person.Id, dog.Id);
                         var result = await _mediator.Send(adoptCommand);
-                        result
-                            .Some(async x =>
-                            {
-                                System.Console.Clear();
-                                System.Console.WriteLine($"{person.Name} has adopted {dog.Name}!");
-                                await PromptToAdoptAnotherDog();
-                            })
-                            .None(async _ =>
-                            {
-                                System.Console.WriteLine("Please enter a number");
-                                await AdoptDog(person);
-                            });
+                        if (result.IsSome)
+                        {
+                            System.Console.Clear();
+                            System.Console.WriteLine($"{person.Name} has adopted {dog.Name}!");
+                            await PromptToAdoptAnotherDog();
+                        }
+
+                        if (result.IsNone)
+                        {
+                            System.Console.WriteLine("\n");
+                            System.Console.WriteLine("Dog not found");
+                            Thread.Sleep(1500);
+                            await AdoptDog(person);
+                        }
+                    }
+
+                    if (!isDigit)
+                    {
+                        System.Console.WriteLine("Please enter a number");
+                        Thread.Sleep(1000);
+                        await AdoptDog(person);
                     }
                 }
-                catch (ArgumentOutOfRangeException)
+                catch (Exception)
                 {
-                    System.Console.WriteLine("\n" +
-                                             "\nDog not found");
-                    Thread.Sleep(1000);
-                    await AdoptDog(person);
+                    await Prompt.MainMenu();
                 }
 
                 break;
@@ -326,19 +343,21 @@ public class PersonTools
             case ConsoleKey.Y:
                 var command = new DeletePersonCommand(person.Id);
                 var result = await _mediator.Send(command);
-                result.Match<>(async s =>
+                if (result.IsSome)
                 {
                     System.Console.Clear();
                     System.Console.WriteLine($"{person.Name} has been deleted.");
                     Thread.Sleep(1000);
                     await ShowListOfPeopleAsync();
-                }, e =>
+                }
+
+                if (result.IsNone)
                 {
-                    System.Console.WriteLine($"Nothing");
+                    System.Console.WriteLine($"The person was not found");
                     await ShowListOfPeopleAsync();
-                });
-                
+                }
                 break;
+            
             case ConsoleKey.N:
                 System.Console.Clear();
                 await ShowListOfPeopleAsync();

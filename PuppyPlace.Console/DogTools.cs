@@ -1,5 +1,13 @@
+using System.Reflection.Metadata;
 using FluentValidation.Results;
+using LanguageExt;
+using LanguageExt.Common;
+using MediatR;
+using PuppyPlace.CqrsService.DogCQ.Commands;
+using PuppyPlace.CqrsService.DogCQ.Queries;
+using PuppyPlace.CqrsService.PersonCQ.Queries;
 using PuppyPlace.Domain;
+using PuppyPlace.Domain.ValueObjects.DogValueObjects;
 using PuppyPlace.Repository;
 
 namespace PuppyPlace.Console;
@@ -7,85 +15,68 @@ namespace PuppyPlace.Console;
 public class DogTools
 {
     private readonly Prompt _prompt;
-    private readonly DogRepository _dogRepository;
-    private readonly PersonRepository _personRepository;
+    private readonly IMediator _mediator;
     
-
-    public DogTools(Prompt prompt, DogRepository dogRepository, PersonRepository personRepository)
+    public DogTools(Prompt prompt, IMediator mediator)
     {
         _prompt = prompt;
-        _dogRepository = dogRepository;
-        _personRepository = personRepository;
-        
+        _mediator = mediator;
     }
-
-    public DogValidator DogValidator = new DogValidator();
-    private List<string> errors = new List<string>();
 
     public async Task AddDog()
     {
-        errors.Clear();
         System.Console.Clear();
 
         System.Console.WriteLine("Please insert the dog's name:");
-        var dogName = System.Console.ReadLine();
+        
+        var dogNameInput = System.Console.ReadLine();
+
         System.Console.Clear();
         Thread.Sleep(1000);
         
         System.Console.WriteLine($"Please insert the dog's age:");
-        var newDogAge = System.Console.ReadLine();
-        var age = 0;
-        try
+        var dogAgeInput = System.Console.ReadLine();
+        int number;
+        var success = int.TryParse(dogAgeInput, out number);
+        if (!success)
         {
-            age = int.Parse(newDogAge);
+            System.Console.WriteLine("Dog's age must be a number");
         }
-        catch (FormatException e)
-        {
-            System.Console.WriteLine("Dog's age must be a number!");
-            Thread.Sleep(1000);
-            await AddDog();
-        }
-
+        
         System.Console.Clear();
         Thread.Sleep(1000); 
         
-        System.Console.WriteLine($"Please insert {dogName}'s breed:");
-        var newDogBreed = System.Console.ReadLine();
-        
+        System.Console.WriteLine($"Please insert the dog's breed:");
+        var dogBreedInput = System.Console.ReadLine();
+
         System.Console.Clear();
         Thread.Sleep(1000);
 
-        var newDog = new Dog(dogName, age, newDogBreed);
+        var command = new AddDogCommand(dogNameInput, number, dogBreedInput);
+        var result = await _mediator.Send(command);
 
-        ValidationResult results = DogValidator.Validate(newDog);
-        
-        if (results.IsValid == false)
+        if (result.IsSuccess)
         {
-            foreach (ValidationFailure failure in results.Errors)
-            {
-                errors.Add($"{failure.ErrorMessage}");
-            }
-
-            foreach (var error in errors)
-            {
-                System.Console.WriteLine($"{error}");
-            }
+            System.Console.WriteLine("Success! We added the following information to the database:" +
+                                     "\n==========================================================" +
+                                     $"\nName: {dogNameInput}" +
+                                     $"\nAge: {number}" +
+                                     $"\nBreed: {dogBreedInput}" +
+                                     $"\n=========================================================");
             
+            Thread.Sleep(1000);
+            await PromptToAddAnotherDog();
+        }
+        
+        if(result.IsFail)
+        {
+            var errors = result.FailAsEnumerable();
+            var errorsToList = errors.Select(e => e.Message).ToList();
+            System.Console.WriteLine($"{errorsToList}");
             Thread.Sleep(1500);
             await AddDog();
         }
-            
-        System.Console.WriteLine("Success! We added the following information to the database:" +
-                                 "\n==========================================================" +
-                                 $"\nName: {newDog.Name}" +
-                                 $"\nAge: {newDogAge}" +
-                                 $"\nBreed: {newDogBreed}" +
-                                 $"\n=========================================================");
-
-       await _dogRepository.AddDogAsync(newDog);
         
-        Thread.Sleep(1000);
-        await PromptToAddAnotherDog();
     }
 
     async Task PromptToAddAnotherDog()
@@ -118,8 +109,10 @@ public class DogTools
                                  "\n(Enter a number to view a dog or (M)ain Menu)" +
                                  "\n====================================");
         var dogCount = 1;
-        var dogs = await _dogRepository.DogsAsync();
-        foreach (var dog in dogs)
+        var query = new GetDogsQuery();
+        var dogs = await _mediator.Send(query);
+        var dogsList = dogs.ToList();
+        foreach (var dog in dogsList)
         {
             System.Console.WriteLine($"{dogCount} {dog.Name}");
             dogCount++;
@@ -138,8 +131,8 @@ public class DogTools
                     if (isDigit)
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
-                        var dogId = dogs[userInput - 1].Id;
-                        await ShowDogAsync(dogId);
+                        var dogId = dogsList[userInput - 1].Id;
+                        // await ShowDogAsync(dogId);
                     }
 
                     if (!isDigit && key.Key != ConsoleKey.M)
@@ -161,58 +154,64 @@ public class DogTools
         }
     }
 
-    public async Task ShowDogAsync(Guid id)
-    {
-        System.Console.Clear();
-        var dog = await _dogRepository.FindByIdAsync(id);
-        System.Console.WriteLine($"Name: {dog.Name}");
-        System.Console.WriteLine($"Age: {dog.Age}");
-        System.Console.WriteLine($"Breed: {dog.Breed}");
-        System.Console.WriteLine("Owners:");
-
-        if (dog.Owners.Count > 0)
-        {
-            foreach (var person in dog.Owners)
-            {
-                System.Console.WriteLine(person.Name);
-            }
-        }
-        else
-        {
-            System.Console.WriteLine("doesn't have an owner yet!");
-        }
-
-        System.Console.WriteLine("\nWhat would you like to do?" +
-                                 "\n" + 
-                                 "\n(A)dd Owner (E)dit Name (D)elete Dog (L)ist of Dogs (M)ain Menu");
-    
-        var userInput = System.Console.ReadKey();
-        switch (userInput.Key)
-        {
-            case ConsoleKey.A:
-                System.Console.WriteLine($"Let's give {dog.Name} an owner!");
-                await SelectDogOwner(dog);
-                break;
-            case ConsoleKey.E:
-                await EditDogName(dog);
-                break;
-            case ConsoleKey.D:
-                await DeleteDogAsync(dog);
-                break;
-            case ConsoleKey.L:
-                await ShowListOfDogsAsync();
-                break;
-            case ConsoleKey.M:
-                await Prompt.ReturnToMainMenu();
-                break;
-            default:
-                System.Console.WriteLine("Invalid selection. Please select option number.");
-                Thread.Sleep(1000);
-                System.Console.Clear();
-                await ShowListOfDogsAsync();
-                break;
-        }
-    }
+    // public async Task ShowDogAsync(Guid id)
+    // {
+    //     System.Console.Clear();
+    //     var query = new GetDogByIdQuery(id);
+    //     var dog = await _mediator.Send(query);
+    //     dog.Some(async d =>
+    //         {
+    //             System.Console.WriteLine($"Name: {d.Name.Value}");
+    //             System.Console.WriteLine($"Age: {d.Age.Value}");
+    //             System.Console.WriteLine($"Breed: {d.Breed.Value}");
+    //             System.Console.WriteLine("Owners:");
+    //
+    //             if (d.Owners.Count() > 0)
+    //             {
+    //                 foreach (var person in d.Owners)
+    //                 {
+    //                     System.Console.WriteLine(person.Name);
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 System.Console.WriteLine("doesn't have an owner yet!");
+    //             }
+    //
+    //             System.Console.WriteLine("\nWhat would you like to do?" +
+    //                                      "\n" +
+    //                                      "\n(A)dd Owner (E)dit Name (D)elete Dog (L)ist of Dogs (M)ain Menu");
+    //
+    //             var userInput = System.Console.ReadKey();
+    //             switch (userInput.Key)
+    //             {
+    //                 case ConsoleKey.A:
+    //                     System.Console.WriteLine($"Let's give {d.Name} an owner!");
+    //                     await SelectDogOwner(d);
+    //                     break;
+    //                 case ConsoleKey.E:
+    //                     await UpdateDog(d);
+    //                     break;
+    //                 case ConsoleKey.D:
+    //                     await DeleteDogAsync(d);
+    //                     break;
+    //                 case ConsoleKey.L:
+    //                     await ShowListOfDogsAsync();
+    //                     break;
+    //                 case ConsoleKey.M:
+    //                     await Prompt.ReturnToMainMenu();
+    //                     break;
+    //                 default:
+    //                     System.Console.WriteLine("Invalid selection. Please select option number.");
+    //                     Thread.Sleep(1000);
+    //                     System.Console.Clear();
+    //                     await ShowListOfDogsAsync();
+    //                     break;
+    //             }
+    //         })
+    //         .None(_ => await Prompt.MainMenu());
+    //
+    // }
     public async Task SelectDogOwner(Dog dog)
     {
         System.Console.Clear();
@@ -221,8 +220,10 @@ public class DogTools
         System.Console.WriteLine("(M)ain Menu (L)ist of Dogs");
         System.Console.WriteLine("===================================");
         var personCount = 1;
-        var persons = await _personRepository.PersonsAsync();
-        foreach (var person in persons)
+        var personsQuery = new GetPersonsQuery();
+        var persons = await _mediator.Send(personsQuery);
+        var personsList = persons.ToList();
+        foreach (var person in personsList)
         {
             System.Console.WriteLine($"{personCount} {person.Name}");
             personCount++;
@@ -244,12 +245,24 @@ public class DogTools
                     if (isDigit)
                     {
                         var userInput = int.Parse(key.KeyChar.ToString());
-                        var owner = persons[userInput - 1];
-                        await _adoptionService.AddOwner(owner.Id, dog.Id);
-                        System.Console.Clear();
-                        System.Console.WriteLine($"{owner.Name} is now {dog.Name}'s owner!");
-                        Thread.Sleep(1000);
-                        await ShowListOfDogsAsync();
+                        var owner = personsList[userInput - 1];
+                        var addOwnerCommand = new AddOwnerCommand(dog.Id, owner.Id);
+                        var result = await _mediator.Send(addOwnerCommand);
+                        if (result.IsSome)
+                        {
+                            System.Console.Clear();
+                            System.Console.WriteLine($"{owner.Name} is now {dog.Name}'s owner!");
+                            Thread.Sleep(1000);
+                            await ShowListOfDogsAsync();
+                        }
+
+                        if (result.IsNone)
+                        {
+                            System.Console.WriteLine("\n");
+                            System.Console.WriteLine("Owner not found");
+                            Thread.Sleep(1500);
+                            await SelectDogOwner(dog);
+                        }
                     }
     
                     if (!isDigit)
@@ -259,12 +272,9 @@ public class DogTools
                         await SelectDogOwner(dog);
                     }
                 }
-                catch (ArgumentOutOfRangeException)
+                catch (Exception)
                 {
-                    System.Console.WriteLine("\n");
-                    System.Console.WriteLine("Owner not found");
-                    Thread.Sleep(1500);
-                    await SelectDogOwner(dog);
+                    await Prompt.MainMenu();
                 }
                 break;
         }
@@ -281,17 +291,24 @@ public class DogTools
         switch (yesNo.Key)
         {
             case ConsoleKey.Y:
-                // if (dogToDelete.Owner != null)
-                // {
-                //     dogToDelete.Owner.Dogs.Remove(dogToDelete);
-                //     _context.SaveChanges();
-                // }
-                await _dogRepository.RemoveDogAsync(dog.Id);
-                System.Console.Clear();
-                System.Console.WriteLine($"{dog.Name} has been deleted.");
-                Thread.Sleep(1000);
-                await ShowListOfDogsAsync();
+                var command = new DeleteDogCommand(dog.Id);
+                var result = await _mediator.Send(command);
+                if (result.IsSome)
+                {
+                    System.Console.Clear();
+                    System.Console.WriteLine($"{dog.Name} has been deleted.");
+                    Thread.Sleep(1000);
+                    await ShowListOfDogsAsync();
+                }
+
+                if (result.IsNone)
+                {
+                    System.Console.WriteLine("The dog was not found");
+                    Thread.Sleep(1000);
+                    await ShowListOfDogsAsync();
+                }
                 break;
+            
             case ConsoleKey.N:
                 System.Console.Clear();
                 await ShowListOfDogsAsync();
@@ -305,25 +322,53 @@ public class DogTools
                 break;
         }
     }
-    public async Task EditDogName(Dog dog)
+    public async Task UpdateDog(Dog dog)
     {
         System.Console.Clear();
-        System.Console.WriteLine($"Enter a new name for {dog.Name}");
-        var userInput = System.Console.ReadLine();
+        System.Console.WriteLine($"Enter name for {dog.Name.Value}");
+        var dogNameInput = System.Console.ReadLine();
+        Thread.Sleep(1000);
+        
+        System.Console.Clear();
+        System.Console.WriteLine($"Enter age for {dog.Name.Value}");
+        var dogAgeInput = System.Console.ReadLine();
+        Thread.Sleep(1000);
 
-        if (!string.IsNullOrEmpty(userInput))
+        int number;
+        var success = int.TryParse(dogAgeInput, out number);
+        if (!success)
         {
-            dog.Name = userInput;
-            await _dogRepository.UpdateNameAsync(dog);
-            System.Console.Clear();
-            System.Console.WriteLine("Name has been updated!");
-            Thread.Sleep(1000);
+            await UpdateDog(dog);
         }
-        else
+        
+        System.Console.Clear();
+        System.Console.WriteLine($"Enter breed for {dog.Name.Value}");
+        var dogBreedInput = System.Console.ReadLine();
+        Thread.Sleep(1000);
+
+        var command = new UpdateDogCommand(dog.Id, dogNameInput, number, dogBreedInput);
+        var result = await _mediator.Send(command);
+        result.Some(async x =>
         {
-            System.Console.WriteLine("No good!");
-            await EditDogName(dog);
-        }
+            if (x.IsSuccess)
+            {
+                System.Console.Clear();
+                System.Console.WriteLine("Dog has been updated!");
+                Thread.Sleep(1500);
+                await Prompt.ReturnToMainMenu();
+            }
+
+            if (x.IsFail)
+            {
+                var errors = x.FailAsEnumerable().Select(x => x.Message).ToList();
+                System.Console.WriteLine($"{errors}");
+            }
+        })
+            .None(async () =>
+            {
+                System.Console.WriteLine("No good!");
+                await UpdateDog(dog);
+            });
         await Prompt.ReturnToMainMenu();
     }
 
