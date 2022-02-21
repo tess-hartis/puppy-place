@@ -37,7 +37,7 @@ public class PersonController : Controller
             .Some<IActionResult>(Ok)
             .None(NotFound);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> AddPerson([FromBody] AddPersonCommand request)
     {
@@ -49,9 +49,8 @@ public class PersonController : Controller
                 var errors = e.Select(e => e.Message).ToList();
                 return UnprocessableEntity(new {errors});
             });
-        
     }
-    
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePerson(Guid id, [FromBody] UpdatePersonCommand request)
     {
