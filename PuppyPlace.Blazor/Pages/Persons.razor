@@ -1,7 +1,10 @@
 @page "/persons"
-@using PuppyPlace.Blazor.Services
-@using PuppyPlace.Domain
-@inject IPersonService PersonService
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks;
+@using System.Net
+@using PuppyPlace.Shared
+@inject HttpClient _httpClient
 
 <h3>Persons</h3>
 
