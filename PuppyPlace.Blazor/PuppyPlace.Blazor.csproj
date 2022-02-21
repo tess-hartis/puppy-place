@@ -13,10 +13,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PuppyPlace.Domain\PuppyPlace.Domain.csproj" />
+      <ProjectReference Include="..\PuppyPlace.Shared\PuppyPlace.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Entities\Persons.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>
