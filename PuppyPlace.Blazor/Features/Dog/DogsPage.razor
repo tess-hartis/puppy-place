@@ -9,25 +9,31 @@
             <th>Name</th>
             <th>Age</th>
             <th>Breed</th>
-            <th>ID</th>
+            <th>     </th>
+            <th>     </th>
         </tr>
         </thead>
         <tbody>
         @foreach (var dog in DogList)
         {
             <tr>
-                <td>@dog.Name</td>
-                <td>@dog.Age</td>
+                    <td>@dog.Name</td>
+                    <td>@dog.Age</td>
                 <td>@dog.Breed</td>
-                <td>@dog.Id</td>
+                <td>
+                    <a href="@($"dog/{dog.Id}")" class="btn btn-primary table-btn">View</a>
+                </td>
+                <td>
+                    <a href="" class="btn btn-primary table-btn">Edit</a>
+                </td>
             </tr>
+            
         }
         </tbody>
-    </table>
+</table>
 
 @code {
     public IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
-    
     protected override async Task OnInitializedAsync()
     {
         DogList = await _httpClient
