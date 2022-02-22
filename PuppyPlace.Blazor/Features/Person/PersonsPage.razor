@@ -4,25 +4,18 @@
 
 <h3>Persons</h3>
 
-@* <div class="row"> *@
-@*     <div class="col-md-10"> *@
-@*         $1$Place for search and sort#1# *@
-@*     </div> *@
-@*     <div class="col-md-2"> *@
-@*         <a href="/createPerson">link 2 clicc</a> *@
-@*     </div> *@
-@* </div> *@
-@* <div class="row"> *@
-@*     <div class="col"> *@
-@*         $1$Place for persons#1# *@
-@*     </div> *@
-@* </div> *@
+@if (PersonList == null)
+{
+    <p><em>Loading...</em></p>
+} 
+else{
 
 <table class="table">
         <thead>
         <tr>
             <th>Name</th>
-            <th>ID</th>
+            <th>  </th>
+            <th>  </th>
         </tr>
         </thead>
         <tbody>
@@ -30,12 +23,17 @@
         {
             <tr>
                 <td>@person.Name</td>
-                <td>@person.Id</td>
+                <td>
+                    <a href="@($"person/{person.Id}")" class="btn btn-primary table-btn">View</a>
+                </td>
+                <td>
+                    <a href="" class="btn btn-primary table-btn">Edit</a>
+                </td>
             </tr>
         }
         </tbody>
     </table>
-
+}
 
 @code {
     public IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
