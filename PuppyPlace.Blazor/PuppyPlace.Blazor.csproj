@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+        <PackageReference Include="Syncfusion.Blazor" Version="19.4.0.53" />
     </ItemGroup>
 
     <ItemGroup>
@@ -18,10 +19,13 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Entities\Persons.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services" />
+      <Folder Include="Features\Home" />
+      <Folder Include="Features\Layout" />
+      <Folder Include="Features\Shared" />
     </ItemGroup>
 
 </Project>
