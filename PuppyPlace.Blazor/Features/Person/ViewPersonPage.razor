@@ -1,0 +1,20 @@
+@page "/person/{id:guid}"
+@using PuppyPlace.Shared
+@inject HttpClient _httpClient;
+
+<h3 class="page-item">@PersonDto.Name</h3>
+<body>ID: @PersonDto.Id</body>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    public GetPersonDto? PersonDto { get; set; } = new GetPersonDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PersonDto = await _httpClient
+            .GetFromJsonAsync<GetPersonDto>($"Person/{Id}");
+    }
+
+}
