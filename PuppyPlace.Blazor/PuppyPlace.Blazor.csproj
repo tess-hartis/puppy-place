@@ -25,7 +25,6 @@
     <ItemGroup>
       <Folder Include="Features\Home" />
       <Folder Include="Features\Layout" />
-      <Folder Include="Features\Shared" />
     </ItemGroup>
 
 </Project>
