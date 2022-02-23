@@ -1,0 +1,39 @@
+@page "/add-dog"
+@using PuppyPlace.Blazor.Features.Shared
+@inject HttpClient _httpClient;
+
+<PageTitle>Add Dog</PageTitle>
+
+<h4>Add Dog</h4>
+
+<EditForm Model="_dog" OnSubmit="SubmitForm">
+    
+    <FormSection Title="Details" HelpText="All u gots to do is type the doggie's name, age, and breed">
+        <FormFieldSet Width="col-6">
+            <label for="dogName" class="font-weight-bold text-secondary">Name</label>
+            <InputText @bind-Value="_dog.Name" rows="6" class="form-control" id="dogName"></InputText>
+        </FormFieldSet>
+        <FormFieldSet Width="col-6">
+            <label for="dogAge" class="font-weight-bold text-secondary">Age</label>
+            <InputText @bind-Value="_dog.Age" rows="6" class="form-control" id="dogAge"></InputText>
+        </FormFieldSet>
+        <FormFieldSet Width="col-6">
+            <label for="dogBreed" class="font-weight-bold text-secondary">Breed</label>
+            <InputText @bind-Value="_dog.Breed" rows="6" class="form-control" id="dogBreed"></InputText>
+        </FormFieldSet>
+        
+    </FormSection>
+
+    <button class="btn btn-primary" type="reset">Reset</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private AddDogDto _dog = new AddDogDto();
+
+    private async Task SubmitForm()
+    {
+    // await _httpClient.PostAsJsonAsync()
+    }
+    
+}
