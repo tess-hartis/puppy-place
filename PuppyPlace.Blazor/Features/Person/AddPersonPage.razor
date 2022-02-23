@@ -1,0 +1,32 @@
+@page "/add-person"
+@using PuppyPlace.Blazor.Features.Shared
+@inject HttpClient _httpClient;
+
+<PageTitle>Add Person</PageTitle>
+
+<h4>Add Person</h4>
+
+
+
+<EditForm Model="_person" OnSubmit="SubmitForm">
+    
+    <FormSection Title="Details" HelpText="All u gots to do is type the person's name">
+        <FormFieldSet Width="col-6">
+            <label for="personName" class="font-weight-bold text-secondary">Name</label>
+            <InputText @bind-Value="_person.Name" rows="6" class="form-control" id="personName"></InputText>
+        </FormFieldSet>
+    </FormSection>
+
+    <button class="btn btn-primary" type="reset">Reset</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private AddPersonDto _person = new AddPersonDto();
+
+    private async Task SubmitForm()
+    {
+        // await _httpClient.PostAsJsonAsync()
+    }
+    
+}
