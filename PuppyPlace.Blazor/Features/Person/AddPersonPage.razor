@@ -4,21 +4,24 @@
 
 <PageTitle>Add Person</PageTitle>
 
-<h4>Add Person</h4>
+<h4>Add a person</h4>
 
+<EditForm Model="_person" OnValidSubmit="SubmitForm">
+    <FluentValidationValidator/>
 
-
-<EditForm Model="_person" OnSubmit="SubmitForm">
-    
     <FormSection Title="Details" HelpText="All u gots to do is type the person's name">
         <FormFieldSet Width="col-6">
             <label for="personName" class="font-weight-bold text-secondary">Name</label>
-            <InputText @bind-Value="_person.Name" rows="6" class="form-control" id="personName"></InputText>
+            <InputText @bind-Value="_person.Name" rows="6" class="form-control" id="personName"/>
+            <ValidationMessage For="@(() => _person.Name)"/>
         </FormFieldSet>
     </FormSection>
 
+    <a href="@($"persons")" class="btn btn-primary">Previous page</a>
     <button class="btn btn-primary" type="reset">Reset</button>
     <button class="btn btn-primary" type="submit">Submit</button>
+    
+
 </EditForm>
 
 @code {
@@ -26,7 +29,7 @@
 
     private async Task SubmitForm()
     {
-        // await _httpClient.PostAsJsonAsync()
+        var postBody = _person;
+        var response = await _httpClient.PostAsJsonAsync("Person", postBody);
     }
-    
 }
