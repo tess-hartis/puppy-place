@@ -14,10 +14,10 @@ public class UpdateDogCommand : IRequest<Option<Validation<Error,Unit >>>
 {
     public Guid Id { get; set; }
     public string Name { get; }
-    public int Age { get; }
+    public string Age { get; }
     public string Breed { get; }
 
-    public UpdateDogCommand(Guid id, string name, int age, string breed)
+    public UpdateDogCommand(Guid id, string name, string age, string breed)
     {
         Id = id;
         Name = name;

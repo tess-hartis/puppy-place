@@ -1,16 +1,16 @@
 using PuppyPlace.Domain;
 
-namespace PuppyPlace.Shared;
+namespace PuppyPlace.Blazor.Features.Dog;
 
 public class GetDogDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public int Age { get; set; }
+    public string Age { get; set; }
     public string Breed { get; set; }
     public IEnumerable<string> Owners { get; set; }
 
-    public static GetDogDto FromDog(Dog dog)
+    public static GetDogDto FromDog(Domain.Dog dog)
     {
         var ownerNames = dog.Owners.Select(x => x.Name.Value);
 

@@ -10,10 +10,10 @@ namespace PuppyPlace.CqrsService.DogCQ.Commands;
 public class AddDogCommand : IRequest<Validation<Error, Dog>>
 {
     public string Name { get; }
-    public int Age { get; }
+    public string Age { get; }
     public string Breed { get; }
 
-    public AddDogCommand(string name, int age, string breed)
+    public AddDogCommand(string name, string age, string breed)
     {
         Name = name;
         Age = age;

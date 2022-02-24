@@ -6,20 +6,24 @@ namespace PuppyPlace.Domain.ValueObjects.DogValueObjects;
 
 public record DogAge
 {
-    public readonly int Value;
+    public readonly string Value;
 
-    private DogAge(int value)
+    private DogAge(string value)
     {
         Value = value;
     }
 
-    public static Validation<Error, DogAge> Create(int value)
+    public static Validation<Error, DogAge> Create(string value)
     {
-        if (value > 25)
-            return Fail<Error, DogAge>("Too old");
-        if (value < 0)
-            return Fail<Error, DogAge>("Too young");
+        if (!int.TryParse(value, out var parsed)) 
+            return Fail<Error, DogAge>("Invalid age");
+        
+        if (parsed > 25 || parsed < 0)
+        {
+            return Fail<Error, DogAge>("Invalid age");
+        }
 
         return Success<Error, DogAge>(new DogAge(value));
+
     }
 }
