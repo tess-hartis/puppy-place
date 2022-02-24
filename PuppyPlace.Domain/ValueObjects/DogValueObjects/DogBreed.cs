@@ -22,16 +22,11 @@ public record DogBreed
         if (string.IsNullOrWhiteSpace(trimmed))
             return Fail<Error, DogBreed>("Breed cannot be empty");
 
-        if (trimmed.Length < 5 && trimmed.Length > 0)
+        if (trimmed.Length < 2)
             return Fail<Error, DogBreed>("Breed is too short");
 
         if (trimmed.Length > 100)
             return Fail<Error, DogBreed>("Breed is too long");
-
-        var pattern = @"^[a-zA-Z0-9\s]+$";
-        
-        if (!Regex.IsMatch(trimmed, pattern))
-            return Fail<Error, DogBreed>("Breed contains invalid characters");
         
         
         return Success<Error, DogBreed>(new DogBreed(trimmed));

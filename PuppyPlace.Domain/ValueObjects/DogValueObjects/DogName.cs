@@ -21,16 +21,11 @@ public record DogName
         if (string.IsNullOrWhiteSpace(trimmed))
             return Fail<Error, DogName>("Name cannot be empty");
 
-        if (trimmed.Length < 5 && trimmed.Length > 0)
+        if (trimmed.Length < 2)
             return Fail<Error, DogName>("Name is too short");
 
         if (trimmed.Length > 100)
             return Fail<Error, DogName>("Name is too long");
-
-        var pattern = @"^[a-zA-Z0-9\s]+$";
-        
-        if (!Regex.IsMatch(trimmed, pattern))
-            return Fail<Error, DogName>("Name contains invalid characters");
         
         
         return Success<Error, DogName>(new DogName(trimmed));
