@@ -1,8 +1,7 @@
 @page "/persons"
-@using PuppyPlace.Shared
 @inject HttpClient _httpClient
 
-<h3>Persons</h3>
+<a href="@($"add-person")" class="btn btn-primary">Add Person</a>
 
 @if (PersonList == null)
 {
@@ -25,9 +24,6 @@ else{
                 <td>@person.Name</td>
                 <td>
                     <a href="@($"person/{person.Id}")" class="btn btn-primary table-btn">View</a>
-                </td>
-                <td>
-                    <a href="" class="btn btn-primary table-btn">Edit</a>
                 </td>
             </tr>
         }
