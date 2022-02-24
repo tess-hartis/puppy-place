@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PuppyPlace.Data;
@@ -11,9 +12,10 @@ using PuppyPlace.Data;
 namespace PuppyPlace.Data.Migrations
 {
     [DbContext(typeof(PuppyPlaceContext))]
-    partial class PuppyPlaceContextModelSnapshot : ModelSnapshot
+    [Migration("20220224040303_DogAgeToString")]
+    partial class DogAgeToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
