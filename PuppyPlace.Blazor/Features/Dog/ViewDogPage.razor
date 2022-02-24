@@ -1,11 +1,11 @@
 @page "/dog/{id:guid}"
-@using PuppyPlace.Shared
 @inject HttpClient _httpClient;
 
 <h3 class="page-item">@DogDto.Name</h3>
 <body>ID: @DogDto.Id</body>
 <body>Age: @DogDto.Age</body>
 <body>Breed: @DogDto.Breed</body>
+<a href="@("edit-dog")" class="btn btn-primary">Edit</a>
 
 @code {
     [Parameter]
