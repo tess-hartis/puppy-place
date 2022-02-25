@@ -1,6 +1,7 @@
 using PuppyPlace.Domain;
 
-namespace PuppyPlace.Shared;
+namespace PuppyPlace.Blazor.Features.Person;
+
 
 public class GetPersonDto
 {
@@ -8,7 +9,7 @@ public class GetPersonDto
     public string Name { get; set; }
     public IEnumerable<string> Dogs { get; set; } = new List<string>();
 
-    public static GetPersonDto FromPerson(Person person)
+    public static GetPersonDto FromPerson(Domain.Person person)
     {
         var dogNames = person.Dogs.Select(x => x.Name.Value);
 
