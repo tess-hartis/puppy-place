@@ -1,6 +1,6 @@
 @page "/add-dog"
 @using PuppyPlace.Blazor.Features.Shared
-@inject HttpClient _httpClient;
+@inject HttpClient _httpClient
 
 <PageTitle>Add Dog</PageTitle>
 
@@ -35,7 +35,7 @@
 </EditForm>
 
 @code {
-    private AddDogDto _dog = new AddDogDto();
+    private AddEditDogDto _dog = new AddEditDogDto();
 
     private async Task SubmitForm()
     {
