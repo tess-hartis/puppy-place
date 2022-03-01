@@ -1,0 +1,84 @@
+@page "/add-owner/{id:guid}"
+@inject HttpClient _httpClient
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                Choose an owner for @DogName
+            </div>
+            <div class="card-body">
+                <EditForm Model="OwnerId" OnSubmit="@SubmitForm">
+                    <InputRadioGroup @bind-Value="OwnerId">
+                        @foreach (var person in PersonList)
+                        {
+                            <InputRadio Value="@person.Id"/> @person.Name<br/>
+                        }
+                    </InputRadioGroup>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                     <div>&nbsp;</div>
+                    <div>@_message</div>
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    
+    [Parameter]
+    public Guid OwnerId { get; set; }
+    
+    [Parameter]
+    public string DogName { get; set; }
+    
+    private bool _submitSuccessful;
+    private string? _message = "";
+
+    private IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPeople();
+        await LoadDog();
+    }
+
+    private async Task LoadPeople()
+    {
+        PersonList = await _httpClient.GetFromJsonAsync<IEnumerable<GetPersonDto>>("Person");
+        StateHasChanged();
+    }
+
+    private async Task LoadDog()
+    {
+        var dog = await _httpClient.GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
+        DogName = dog.Name;
+    }
+
+    private async Task SubmitForm()
+    {
+        var httpRequestMessage = new HttpRequestMessage()
+        {
+            Method = new HttpMethod("POST"),
+            RequestUri = new Uri($"https://localhost:7079/api/Dog/{Id}/owner/{OwnerId}")
+        };
+
+        var response = await _httpClient.SendAsync(httpRequestMessage);
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            _message = "There was a problem adopting the dog";
+            _submitSuccessful = false;
+        }
+
+        _message = "Success!";
+        _submitSuccessful = true;
+    }
+   
+    
+    
+
+}
