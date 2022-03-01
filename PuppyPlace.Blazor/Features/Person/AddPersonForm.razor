@@ -25,10 +25,25 @@
 
 @code {
     private AddPersonDto _person = new AddPersonDto();
+    private bool _submitSuccessful;
+    private string? _message = "";
+    
+    [Parameter]
+    public EventCallback OnSubmitCallback { get; set; }
 
     private async Task SubmitForm()
     {
         var postBody = _person;
         var response = await _httpClient.PostAsJsonAsync("Person", postBody);
+        await OnSubmitCallback.InvokeAsync();
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            _message = "There was a problem saving the person";
+            _submitSuccessful = false;
+        }
+
+        _message = "Success!";
+        _submitSuccessful = true;
     }
 }
