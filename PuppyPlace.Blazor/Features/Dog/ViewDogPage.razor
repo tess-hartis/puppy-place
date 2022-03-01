@@ -5,7 +5,10 @@
 <body>ID: @DogDto.Id</body>
 <body>Age: @DogDto.Age</body>
 <body>Breed: @DogDto.Breed</body>
-<a href="@("edit-dog")" class="btn btn-primary">Edit</a>
+<a href="@($"/edit-dog/{Id}")" class="btn btn-primary">Edit</a>
+<a href="@($"/add-owner/{Id}")" class="btn btn-primary">Add Owner</a>
+<button class="btn btn-primary">Delete</button>
+
 
 @code {
     [Parameter]
