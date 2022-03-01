@@ -43,7 +43,7 @@ public class DogController : Controller
     {
         var dog = await _mediator.Send(request);
         return dog.Match<IActionResult>(
-            t => Ok(),
+            t => Ok($"{t.Id}"),
             e =>
             {
                 var errors = e.Select(e => e.Message).ToList();
