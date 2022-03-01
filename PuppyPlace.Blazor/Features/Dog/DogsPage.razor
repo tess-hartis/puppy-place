@@ -1,48 +1,135 @@
 @page "/dogs"
+@using PuppyPlace.Blazor.Features.Shared
 @inject HttpClient _httpClient;
 
-<a href="@($"add-dog")" class="btn btn-primary">Add Dog</a>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                Dogs
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Breed</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (DogList == null)
+                    {
+                        <tr><td><em>Loading...</em></td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var dog in DogList)
+                        {
+                            <tr>
+                                <td>@dog.Name</td>
+                                <td>@dog.Age</td>
+                                <td>@dog.Breed</td>
+                                <td><button type="button" 
+                                            class="btn btn-danger"
+                                            @onclick="(() => OpenDeleteDialogue(dog))">Delete</button></td>
+                                <td><button type="button" 
+                                            class="btn btn-info"
+                                            @onclick="(() => OpenViewDialogue(dog))">Info</button></td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <AddDogForm OnSubmitCallback="@Refresh"></AddDogForm>
+    </div>
+</div>
+<div>&nbsp;</div>
 
-<table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Breed</th>
-            <th>     </th>
-            <th>     </th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var dog in DogList)
-        {
-            <tr>
-                    <td>@dog.Name</td>
-                    <td>@dog.Age</td>
-                <td>@dog.Breed</td>
-                <td>
-                    <a href="@($"dog/{dog.Id}")" class="btn btn-primary table-btn">View</a>
-                </td>
-            </tr>
-            
-        }
-        </tbody>
-</table>
+@if (DeleteDialogueOpen)
+{
+    <ModalDialogue
+        Title="Are you sure?"
+        Text="Do you want to delete this entry?"
+        OnClose="@OnDeleteDialogueClose"
+        DialogueType="ModalDialogue.ModalDialogueType.DeleteCancel">
+    </ModalDialogue>
+}
+
+@if (ViewEntityDialogueOpen)
+{
+    <ViewDogDialogue
+        Name="@_dogToView.Name"
+        Age ="@_dogToView.Age"
+        Breed="@_dogToView.Breed"
+        id="@_dogToView.Id"
+        Owners="@_dogToView.Owners"
+        OnClose="@OnViewDialogueClose">
+    </ViewDogDialogue>
+}
+
+
 
 @code {
-    public IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
+    private IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
+
+    private GetDogDto? _dogToDelete;
+    public bool DeleteDialogueOpen { get; set; }
+
+    private GetDogDto? _dogToView;
+    public bool ViewEntityDialogueOpen { get; set; }
+
+    private async Task OnDeleteDialogueClose(bool accepted)
+    {
+        if (accepted)
+        {
+            await _httpClient.DeleteAsync($"Dog/{_dogToDelete.Id}");
+            await LoadData();
+            _dogToDelete = null;
+        }
+        
+        DeleteDialogueOpen = false;
+        StateHasChanged();
+    }
+    
+    private void OpenDeleteDialogue(GetDogDto dog)
+    {
+        DeleteDialogueOpen = true;
+        _dogToDelete = dog;
+        StateHasChanged();
+    }
+
+    private async Task OnViewDialogueClose(bool accepted)
+    {
+        ViewEntityDialogueOpen = false;
+    }
+    
+    private void OpenViewDialogue(GetDogDto dog)
+    {
+        ViewEntityDialogueOpen = true;
+        _dogToView = dog;
+    }
+    
     protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
     {
         DogList = await _httpClient
             .GetFromJsonAsync<IEnumerable<GetDogDto>>("Dog");
+        StateHasChanged();
+    }
 
-        foreach (var dog in DogList)
-        {
-            Console.WriteLine($"Name: {dog.Name}");
-            Console.WriteLine($"ID: {dog.Id}");
-            Console.WriteLine($"Breed: {dog.Breed}");
-            Console.WriteLine($"Age: {dog.Age}");
-        }
-        
+    private async void Refresh()
+    {
+        await LoadData();
     }
 }
