@@ -11,13 +11,13 @@ public class GetPersonDto
 
     public static GetPersonDto FromPerson(Domain.Person person)
     {
-        var dogNames = person.Dogs.Select(x => x.Name.Value);
+        var dogs = person.Dogs.Select(x => x.Name.Value);
 
         return new GetPersonDto
         {
             Id = person.Id,
             Name = person.Name.Value,
-            Dogs = dogNames
+            Dogs = dogs
         };
     }
 }
