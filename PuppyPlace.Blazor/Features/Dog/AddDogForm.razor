@@ -1,0 +1,59 @@
+@inject HttpClient _httpClient
+<div class="card">
+    <div class="card-header">Add a dog</div>
+    <div class="card-body">
+        <EditForm Model="_dog" OnValidSubmit="SubmitForm">
+            <FluentValidationValidator/>
+            <div class="form-group">
+                <label for="dogName" class="font-weight-bold text-secondary">Name</label>
+                <InputText @bind-Value="_dog.Name" class="form-control" id="dogName"/>
+                <ValidationMessage For="@(() => _dog.Name)"/>
+            </div>
+            <div class="form-group">
+                <label for="dogAge" class="font-weight-bold text-secondary">Age</label>
+                <InputText @bind-Value="_dog.Age" class="form-control" id="dogAge"/>
+                <ValidationMessage For="@(() => _dog.Age)"/>  
+            </div>
+            <div class="form-group">
+                <label for="dogBreed" class="font-weight-bold text-secondary">Breed</label>
+                <InputText @bind-Value="_dog.Breed" class="form-control" id="dogBreed"/>
+                <ValidationMessage For="@(() => _dog.Breed)"/>
+            </div>
+            <div>&nbsp;</div>
+            <div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <div>&nbsp;</div>
+                <div>@_message</div>
+            </div>
+        </EditForm>
+        
+    </div>
+    </div>
+
+@code {
+    private AddEditDogDto _dog = new AddEditDogDto();
+    private bool _submitSuccessful;
+    private string? _message = "";
+    
+    [Parameter]
+    public EventCallback OnSubmitCallback { get; set; }
+
+    private async Task SubmitForm()
+    {
+        var postBody = _dog;
+        var response = await _httpClient.PostAsJsonAsync("Dog", postBody);
+        await OnSubmitCallback.InvokeAsync();
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            _message = "There was a problem saving the dog";
+            _submitSuccessful = false;
+        }
+
+        _message = "Success!";
+        _submitSuccessful = true;
+        
+        //need to add alerts to show whether the submit was successful or not
+    }
+    
+}
