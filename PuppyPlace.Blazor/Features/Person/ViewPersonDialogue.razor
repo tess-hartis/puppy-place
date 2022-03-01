@@ -1,0 +1,57 @@
+<div class="modal fade show" id="viewPersonModal" style="display: block; 
+background-color: rgba(10, 10, 10, .8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Name</h4>
+                <button type="button" class="btn-close" @onclick="@ModalCancel"></button>
+            </div>
+            <div class="modal-body">
+                <p>ID: @Id</p>
+                <p>Dogs:</p>
+                @if (Dogs != null)
+                {
+                    @if (Dogs.Any())
+                    {
+                        @foreach (var dog in Dogs)
+                        {
+                            <p>@dog</p>
+                        }
+                    }
+                    else
+                    {
+                        <p>There are no dogs to show</p>
+                    }
+                }
+                else
+                {
+                    <p>There are no dogs to show</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <a href="/adopt-dog/{@Id}" class="btn btn-dark">Adopt Dog</a>
+                <button type="button" class="btn btn-primary" @onclick="@ModalOk">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    [Parameter]
+    public Guid Id { get; set; }
+    [Parameter]
+    public IEnumerable<string>? Dogs { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private Task ModalCancel()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    private Task ModalOk()
+    {
+        return OnClose.InvokeAsync(true);
+    }
+}
