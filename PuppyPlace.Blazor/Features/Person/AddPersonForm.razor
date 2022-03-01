@@ -1,0 +1,34 @@
+@inject HttpClient _httpClient;
+<div class="card">
+    <div class="card-header">Add a person</div>
+    <div class="card-body">
+        <EditForm Model="_person" OnValidSubmit="SubmitForm">
+            <FluentValidationValidator/>
+            <div class="form-group">
+                <label for="personName" class="font-weight-bold text-secondary">Name</label>
+                <InputText @bind-Value="_person.Name" rows="6" class="form-control" id="personName"/>
+                <ValidationMessage For="@(() => _person.Name)"/> 
+            </div>
+            <div>&nbsp;</div>
+            <div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <div>@_message</div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+
+
+
+
+@code {
+    private AddPersonDto _person = new AddPersonDto();
+
+    private async Task SubmitForm()
+    {
+        var postBody = _person;
+        var response = await _httpClient.PostAsJsonAsync("Person", postBody);
+    }
+}
