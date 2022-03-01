@@ -3,7 +3,10 @@
 
 <h3 class="page-item">@PersonDto.Name</h3>
 <body>ID: @PersonDto.Id</body>
-<a href="@("edit-person")" class="btn btn-primary">Edit</a>
+<a href="@($"/edit-person/{Id}")" class="btn btn-primary">Edit</a>
+<a href="@($"/adopt-dog/{Id}")" class="btn btn-primary">Adopt Dog</a>
+<button class="btn btn-primary">Delete</button>
+
 
 @code {
     [Parameter]
