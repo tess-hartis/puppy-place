@@ -80,10 +80,10 @@
     private IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
 
     private GetDogDto? _dogToDelete;
-    public bool DeleteDialogueOpen { get; set; }
+    private bool DeleteDialogueOpen { get; set; }
 
     private GetDogDto? _dogToView;
-    public bool ViewEntityDialogueOpen { get; set; }
+    private bool ViewEntityDialogueOpen { get; set; }
 
     private async Task OnDeleteDialogueClose(bool accepted)
     {
