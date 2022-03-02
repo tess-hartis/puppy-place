@@ -1,11 +1,12 @@
 @page "/adopt-dog/{id:guid}"
+@using PuppyPlace.Blazor.Features.Shared
 @inject HttpClient _httpClient
 
 <div class="row">
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header">
-                Choose an dog for @PersonName
+                Choose a dog for @PersonName
             </div>
             <div class="card-body">
                 <EditForm Model="DogId" OnSubmit="@SubmitForm">
@@ -25,6 +26,16 @@
     </div>
 </div>
 
+@if (SuccessDialogueOpen)
+{
+    <ModalDialogue
+        Title="Success!"
+        Text="What would you like to do?"
+        OnClose="@OnSuccessDialogueClose"
+        DialogueType="ModalDialogue.ModalDialogueType.AddAnotherDogsPeople">
+    </ModalDialogue>
+}
+
 @code {
     [Parameter]
     public Guid Id { get; set; }
@@ -37,6 +48,8 @@
     private string? _message = "";
 
     private IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
+    
+    private bool SuccessDialogueOpen { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,6 +89,12 @@
 
         _message = "Success!";
         _submitSuccessful = true;
+        SuccessDialogueOpen = true;
 
+    }
+    
+    private async Task OnSuccessDialogueClose(bool accepted)
+    {
+        SuccessDialogueOpen = false;
     }
 }
