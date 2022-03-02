@@ -1,0 +1,73 @@
+@page "/update-person/{id:guid}"
+@inject HttpClient _httpClient
+
+<div class="card">
+    <div class="card-header">Update info for @_personOriginal.Name</div>
+    <div class="card-body">
+        <EditForm Model="_personNew" OnValidSubmit="SubmitForm">
+            <FluentValidationValidator/>
+            <div class="form-group">
+                <label for="personName" class="font-weight-bold text-secondary">Name</label>
+                <InputText @bind-Value="_personNew.Name" class="form-control" id="personName"/>
+                <ValidationMessage For="@(() => _personNew.Name)"/>
+            </div>
+            <div>&nbsp;</div>
+            <div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <div>&nbsp;</div>
+                <div>@_message</div>
+            </div>
+             <div>&nbsp;</div>
+                <a href="/dogs" class="btn btn-dark">View Dogs</a>
+                <a href="/persons" class="btn btn-dark">View Persons</a>
+                <button type="reset" class="btn btn-primary">Clear Form</button>
+        </EditForm>
+        
+    </div>
+    </div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private GetPersonDto _personOriginal = new GetPersonDto();
+    private AddPersonDto _personNew = new AddPersonDto();
+    private bool _submitSuccessful;
+    private string? _message = "";
+    
+    
+    
+    private async Task SubmitForm()
+    {
+        var postBody = _personNew;
+        var response = await _httpClient.PutAsJsonAsync($"Person/{Id}", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            _message = "There was a problem saving the person";
+            _submitSuccessful = false;
+        }
+
+        _message = "Success!";
+        _submitSuccessful = true;
+        
+    //need to add alerts to show whether the submit was successful or not
+    }
+
+    private async Task GetPersonInfo()
+    {
+        var response = await _httpClient.GetFromJsonAsync<GetPersonDto>($"Person/{Id}");
+        if (response != null)
+        {
+            _personOriginal = response;
+            _personNew.Name = response.Name;
+           
+        }
+    //else do something
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPersonInfo();
+    } 
+}
