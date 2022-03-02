@@ -1,4 +1,5 @@
 @page "/add-owner/{id:guid}"
+@using PuppyPlace.Blazor.Features.Shared
 @inject HttpClient _httpClient
 
 <div class="row">
@@ -16,7 +17,7 @@
                         }
                     </InputRadioGroup>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                     <div>&nbsp;</div>
+                    <div>&nbsp;</div>
                     <div>@_message</div>
                 </EditForm>
 
@@ -24,6 +25,16 @@
         </div>
     </div>
 </div>
+
+@if (SuccessDialogueOpen)
+{
+    <ModalDialogue
+        Title="Success!"
+        Text="What would you like to do?"
+        OnClose="@OnSuccessDialogueClose"
+        DialogueType="ModalDialogue.ModalDialogueType.AddAnotherDogsPeople">
+    </ModalDialogue>
+}
 
 @code {
     [Parameter]
@@ -39,6 +50,9 @@
     private string? _message = "";
 
     private IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
+    
+    private bool SuccessDialogueOpen { get; set; }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,12 +84,18 @@
         
         if (!response.IsSuccessStatusCode)
         {
-            _message = "There was a problem adopting the dog";
+            _message = "There was a problem adding the owner";
             _submitSuccessful = false;
         }
 
         _message = "Success!";
         _submitSuccessful = true;
+        SuccessDialogueOpen = true;
+    }
+
+    private async Task OnSuccessDialogueClose(bool accepted)
+    {
+        SuccessDialogueOpen = false;
     }
    
     
