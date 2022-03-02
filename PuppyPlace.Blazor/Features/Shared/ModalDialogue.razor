@@ -1,10 +1,10 @@
-<div class="modal fade show" id="deleteModal" style="display: block; 
+<div class="modal fade show" id="GenericModal" style="display: block; 
 background-color: rgba(10, 10, 10, .8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@Title</h4>
-                <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                <button type="button" class="btn btn-close" @onclick="@ModalCancel"></button>
             </div>
             <div class="modal-body">
                 <p>@Text</p>
@@ -23,6 +23,12 @@ background-color: rgba(10, 10, 10, .8);" aria-modal="true" role="dialog">
                        <button type="button" class="btn" @onclick="ModalCancel">Cancel</button>
                        <button type="button" class="btn btn-danger" @onclick="@ModalOk">Delete</button>
                        break;
+                   case ModalDialogueType.AddAnotherDogsPeople:
+                       <a href="/dogs" class="btn btn-info">View Dogs</a>
+                       <a href="/persons" class="btn btn-info">View Persons</a>
+                       <button type="button" class="btn btn-primary" @onclick="ModalOk">Add Another</button>
+                       break;
+                                                                 
                }
             </div>
         </div>
@@ -54,6 +60,7 @@ background-color: rgba(10, 10, 10, .8);" aria-modal="true" role="dialog">
     {
         Ok,
         OkCancel,
-        DeleteCancel
+        DeleteCancel,
+        AddAnotherDogsPeople
     }
 }
