@@ -1,0 +1,86 @@
+@page "/update-dog/{id:guid}"
+@inject HttpClient _httpClient
+
+<div class="card">
+    <div class="card-header">Update info for @_dogOriginal.Name</div>
+    <div class="card-body">
+        <EditForm Model="_dogNew" OnValidSubmit="SubmitForm">
+            <FluentValidationValidator/>
+            <div class="form-group">
+                <label for="dogName" class="font-weight-bold text-secondary">Name</label>
+                <InputText @bind-Value="_dogNew.Name" class="form-control" id="dogName"/>
+                <ValidationMessage For="@(() => _dogNew.Name)"/>
+            </div>
+            <div class="form-group">
+                <label for="dogAge" class="font-weight-bold text-secondary">Age</label>
+                <InputText @bind-Value="_dogNew.Age" class="form-control" id="dogAge"/>
+                <ValidationMessage For="@(() => _dogNew.Age)"/>  
+            </div>
+            <div class="form-group">
+                <label for="dogBreed" class="font-weight-bold text-secondary">Breed</label>
+                <InputText @bind-Value="_dogNew.Breed" class="form-control" id="dogBreed"/>
+                <ValidationMessage For="@(() => _dogNew.Breed)"/>
+            </div>
+            <div>&nbsp;</div>
+            <div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <div>&nbsp;</div>
+                <div>@_message</div>
+                <div>&nbsp;</div>
+                        <a href="/dogs" class="btn btn-dark">View Dogs</a>
+                        <a href="/persons" class="btn btn-dark">View Persons</a>
+                        <button type="reset" class="btn btn-primary">Clear Form</button>
+            </div>
+        </EditForm>
+        
+        
+    </div>
+    </div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private GetDogDto _dogOriginal = new GetDogDto();
+    private AddEditDogDto _dogNew = new AddEditDogDto();
+    private bool _submitSuccessful;
+    private string? _message = "";
+    
+    
+    
+    private async Task SubmitForm()
+    {
+        var postBody = _dogNew;
+        var response = await _httpClient.PutAsJsonAsync($"Dog/{Id}", postBody);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            _message = "There was a problem saving the dog";
+            _submitSuccessful = false;
+        }
+
+        _message = "Success!";
+        _submitSuccessful = true;
+        
+    //need to add alerts to show whether the submit was successful or not
+    }
+
+    private async Task GetDogInfo()
+    {
+        var response = await _httpClient.GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
+        if (response != null)
+        {
+            _dogOriginal = response;
+            _dogNew.Name = response.Name;
+            _dogNew.Age = response.Age;
+            _dogNew.Breed = response.Breed;
+        }
+        //else do something
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDogInfo();
+    }
+
+}
