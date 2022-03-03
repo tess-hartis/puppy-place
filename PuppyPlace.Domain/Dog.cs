@@ -7,7 +7,7 @@ public class Dog
 {
     private Dog() { }    
     
-    public Guid Id { get;}
+    public Guid Id { get; private init; }
     public DogName Name { get; private set; }
     public DogAge Age { get; private set; }
     public DogBreed Breed { get; private set; }
@@ -19,6 +19,7 @@ public class Dog
     {
         var dog = new Dog()
         {
+            Id = Guid.NewGuid(),
             Name = name,
             Age = age,
             Breed = breed,
