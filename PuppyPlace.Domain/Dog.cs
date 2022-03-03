@@ -12,12 +12,7 @@ public class Dog
     public DogAge Age { get; private set; }
     public DogBreed Breed { get; private set; }
     
-    public Guid Id { get; set; }
-    public DogName Name { get; set; }
-    public DogAge Age { get; set; }
-    public DogBreed Breed { get; set; }
-    
-    private List<Person> _owners = new List<Person>();
+    private readonly List<Person> _owners = new List<Person>();
     public IEnumerable<Person> Owners => _owners;
     
     public static Dog Create(DogName name, DogAge age, DogBreed breed)
