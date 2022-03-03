@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Domain", "PuppyP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Repository", "PuppyPlace.Repository\PuppyPlace.Repository.csproj", "{0A40DF0A-7867-4894-AC32-2890F25CDEA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlaceApi", "PuppyPlaceApi\PuppyPlaceApi.csproj", "{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Api", "PuppyPlace.Api\PuppyPlace.Api.csproj", "{8DB46D0D-1C82-4512-A3B5-38540F6CDA81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppyPlace.Services", "PuppyPlace.Services\PuppyPlace.Services.csproj", "{02CB3FDC-5055-4711-B135-EF748478A047}"
 EndProject
