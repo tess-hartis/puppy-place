@@ -34,5 +34,4 @@ public class Person
         _dogs.Add(dog);
         return Unit.Default;
     }
-    
 }
