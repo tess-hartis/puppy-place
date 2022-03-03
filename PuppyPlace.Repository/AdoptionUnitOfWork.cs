@@ -9,7 +9,7 @@ public interface IAdoptionUnitOfWork
     IDogRepository DogRepo { get; }
 }
 
-public class AdoptionUnitOfWork
+public class AdoptionUnitOfWork : IAdoptionUnitOfWork
 {
     private readonly PuppyPlaceContext _context;
     private IPersonRepository _personRepository;
@@ -28,7 +28,7 @@ public class AdoptionUnitOfWork
         }
     }
 
-    private IPersonRepository PersonRepo
+    public IPersonRepository PersonRepo
     {
         get
         {
