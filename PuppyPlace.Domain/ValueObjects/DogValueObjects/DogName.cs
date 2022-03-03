@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
@@ -26,7 +25,6 @@ public record DogName
 
         if (trimmed.Length > 100)
             return Fail<Error, DogName>("Name is too long");
-        
         
         return Success<Error, DogName>(new DogName(trimmed));
     }
