@@ -20,7 +20,6 @@ public class Person
         var person = new Person()
         {
             Name = name,
-            Id = Guid.NewGuid()
         };
 
         return person;
