@@ -5,10 +5,12 @@ namespace PuppyPlace.Domain;
 
 public class Dog
 {
-    private Dog()
-    {
-        
-    }    
+    private Dog() { }    
+    
+    public Guid Id { get;}
+    public DogName Name { get; private set; }
+    public DogAge Age { get; private set; }
+    public DogBreed Breed { get; private set; }
     
     public Guid Id { get; set; }
     public DogName Name { get; set; }
