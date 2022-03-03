@@ -19,24 +19,14 @@ public class DogRepository : GenericRepository<Dog>, IDogRepository
     {
 
     }
-
-    // public async Task AddDogAsync(Dog dog)
-    // {
-    //     await _context.Dogs.AddAsync(dog);
-    //     await _context.SaveChangesAsync();
-    // }
-    //
-    // public async Task<IReadOnlyList<Dog>> DogsAsync()
-    // {
-    //     return await _context.Dogs.ToListAsync();
-    // }
-
+    
     public async Task<IEnumerable<Dog>> GetAll()
     {
         return await Context.Dogs
             .Include(d => d.Owners)
             .ToListAsync();
     }
+    
     public override async Task<Option<Dog>> FindAsync(Guid id)
     {
         var dog = await Context.Dogs
@@ -49,17 +39,3 @@ public class DogRepository : GenericRepository<Dog>, IDogRepository
         return dog.ToSome();
     }
 }
-
-//     public async Task RemoveDogAsync(Guid id)
-//     {
-//         var dog = await _context.Dogs.FirstOrDefaultAsync(d => d.Id == id);
-//         _context.Dogs.Remove(dog);
-//         await _context.SaveChangesAsync();
-//     }
-//
-//     public async Task UpdateNameAsync(Dog dog)
-//     {
-//         _context.Dogs.Update(dog);
-//         await _context.SaveChangesAsync();
-//     }
-// }
