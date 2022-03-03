@@ -20,9 +20,9 @@ public interface IGenericRepository<T> where T : class
 public abstract class GenericRepository<T> :
     IGenericRepository<T> where T : class
 {
-    protected PuppyPlaceContext Context;
+    protected readonly PuppyPlaceContext Context;
 
-    public GenericRepository(PuppyPlaceContext context)
+    protected GenericRepository(PuppyPlaceContext context)
     {
         Context = context;
     }
