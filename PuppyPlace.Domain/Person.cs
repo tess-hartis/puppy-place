@@ -12,7 +12,7 @@ public class Person
     public Guid Id { get;}
     public PersonName Name { get; private set; }
     
-    private List<Dog> _dogs = new List<Dog>();
+    private readonly List<Dog> _dogs = new List<Dog>();
     public IEnumerable<Dog> Dogs => _dogs;
     
     public static Person Create(PersonName name)
