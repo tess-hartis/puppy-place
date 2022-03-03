@@ -24,6 +24,5 @@ public record DogAge
         }
 
         return Success<Error, DogAge>(new DogAge(value));
-
     }
 }
