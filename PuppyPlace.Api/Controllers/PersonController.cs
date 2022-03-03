@@ -2,14 +2,14 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PuppyPlace.CqrsService.PersonCQ.Commands;
 using PuppyPlace.CqrsService.PersonCQ.Queries;
-using PuppyPlace.Domain;
-using PuppyPlace.Repository;
 using PuppyPlace.Api.Dtos;
 
 
 namespace PuppyPlaceApi.Controllers;
 
-[Route("api/[Controller]")]
+[Route("api/[controller]")]
+[ApiController]
+
 public class PersonController : Controller
 {
     private readonly IMediator _mediator;
