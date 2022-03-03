@@ -7,12 +7,10 @@ namespace PuppyPlace.Domain;
 
 public class Person
 {
-    public Person()
-    {
-        
-    }
-    public Guid Id { get; set; }
-    public PersonName Name { get; set; }
+    private Person() { }
+    
+    public Guid Id { get;}
+    public PersonName Name { get; private set; }
     
     private List<Dog> _dogs = new List<Dog>();
     public IEnumerable<Dog> Dogs => _dogs;
