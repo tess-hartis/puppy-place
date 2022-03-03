@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PuppyPlaceContext>();
 builder.Services.AddTransient<IDogRepository, DogRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
+builder.Services.AddTransient<IAdoptionUnitOfWork, AdoptionUnitOfWork>();
 builder.Services.AddMediatR(typeof(MediatorEntry).Assembly);
 
 // Add services to the container.
