@@ -7,7 +7,7 @@ public class Person
 {
     private Person() { }
     
-    public Guid Id { get;}
+    public Guid Id { get; private init; }
     public PersonName Name { get; private set; }
     
     private readonly List<Dog> _dogs = new List<Dog>();
@@ -18,6 +18,7 @@ public class Person
         var person = new Person()
         {
             Name = name,
+            Id = Guid.NewGuid()
         };
 
         return person;
