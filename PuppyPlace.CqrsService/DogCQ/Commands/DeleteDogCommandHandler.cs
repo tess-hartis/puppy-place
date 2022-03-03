@@ -15,6 +15,7 @@ public class DeleteDogCommand : IRequest<Option<Unit>>
         Id = id;
     }
 }
+
 public class DeleteDogCommandHandler : IRequestHandler<DeleteDogCommand, Option<Unit>>
 {
     private readonly IDogRepository _dogRepository;
@@ -30,6 +31,5 @@ public class DeleteDogCommandHandler : IRequestHandler<DeleteDogCommand, Option<
         var dog = await _dogRepository.FindAsync(command.Id);
         ignore(dog.Map(async d => await _dogRepository.DeleteAsync(d)));
         return dog.Map(d => unit);
-
     }
 }

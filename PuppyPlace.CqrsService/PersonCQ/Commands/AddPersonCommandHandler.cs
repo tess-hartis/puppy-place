@@ -16,6 +16,7 @@ public class AddPersonCommand : IRequest<Validation<Error, Person>>
         Name = name;
     }
 }
+
 public class AddPersonCommandHandler : 
     IRequestHandler<AddPersonCommand, Validation<Error, Person>>
 {

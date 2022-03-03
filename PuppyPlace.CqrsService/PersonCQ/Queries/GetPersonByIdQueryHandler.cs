@@ -28,5 +28,4 @@ public class GetPersonByIdQueryHandler : IRequestHandler<GetPersonByIdQuery, Opt
     {
         return await _personRepository.FindAsync(request.Id);
     }
-
 }

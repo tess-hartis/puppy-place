@@ -2,7 +2,6 @@ using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
 using MediatR;
-using PuppyPlace.Domain;
 using PuppyPlace.Domain.ValueObjects.PersonValueObjects;
 using PuppyPlace.Repository;
 using Unit = LanguageExt.Unit;
@@ -20,6 +19,7 @@ public class UpdatePersonCommand : IRequest<Option<Validation<Error, Unit>>>
         Name = name;
     }
 }
+
 public class UpdatePersonCommandHandler : 
     IRequestHandler<UpdatePersonCommand, Option<Validation<Error, Unit>>>
 {
@@ -44,6 +44,5 @@ public class UpdatePersonCommandHandler :
                 p.Map(async x => await _personRepository.SaveAsync())));
 
         return updatedPerson;
-
     }
 }

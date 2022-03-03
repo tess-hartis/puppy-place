@@ -2,11 +2,9 @@ using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
 using MediatR;
-using PuppyPlace.Domain;
 using PuppyPlace.Domain.ValueObjects.DogValueObjects;
 using PuppyPlace.Repository;
 using Unit = LanguageExt.Unit;
-
 
 namespace PuppyPlace.CqrsService.DogCQ.Commands;
 
@@ -25,6 +23,7 @@ public class UpdateDogCommand : IRequest<Option<Validation<Error,Unit >>>
         Breed = breed;
     }
 }
+
 public class UpdateDogCommandHandler : 
     IRequestHandler<UpdateDogCommand, Option<Validation<Error, Unit>>>
 {
@@ -52,7 +51,5 @@ public class UpdateDogCommandHandler :
                 d.Map(async d => await _dogRepository.SaveAsync())));
 
         return updatedDog;
-
     }
-
 }

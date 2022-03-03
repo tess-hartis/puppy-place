@@ -20,6 +20,7 @@ public class AddDogCommand : IRequest<Validation<Error, Dog>>
         Breed = breed;
     }
 }
+
 public class AddDogCommandHandler : IRequestHandler<AddDogCommand, Validation<Error, Dog>>
 {
     private readonly IDogRepository _dogRepository;
