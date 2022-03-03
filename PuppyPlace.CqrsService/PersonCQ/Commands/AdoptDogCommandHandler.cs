@@ -1,7 +1,6 @@
 using LanguageExt;
 using static LanguageExt.Prelude;
 using MediatR;
-using PuppyPlace.Data;
 using PuppyPlace.Repository;
 using Unit = LanguageExt.Unit;
 
@@ -21,43 +20,25 @@ public class AdoptDogCommand : IRequest<Option<Unit>>
 public class AdoptDogCommandHandler : 
     IRequestHandler<AdoptDogCommand, Option<Unit>>
 {
-    private readonly PuppyPlaceContext _context;
-    private IDogRepository _dogRepository;
-    private IPersonRepository _personRepository;
+    private readonly IAdoptionUnitOfWork _unitOfWork;
 
-    public AdoptDogCommandHandler(PuppyPlaceContext context)
+    public AdoptDogCommandHandler(IAdoptionUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
     
-    private IDogRepository DogRepo
-    {
-        get
-        {
-            return _dogRepository = new DogRepository(_context);
-        }
-    }
-
-    private IPersonRepository PersonRepo
-    {
-        get
-        {
-            return _personRepository = new PersonRepository(_context);
-        }
-    }
-
     public async Task<Option<Unit>> Handle
         (AdoptDogCommand command, CancellationToken cancellationToken)
     {
-        var person = await PersonRepo.FindAsync(command.PersonId);
-        var dog = await DogRepo.FindAsync(command.DogId);
+        var person = await _unitOfWork.PersonRepo.FindAsync(command.PersonId);
+        var dog = await _unitOfWork.DogRepo.FindAsync(command.DogId);
 
         var result =
             from p in person
             from d in dog
             select p.AdoptDog(d);
 
-        ignore(result.Map(async _ => await _context.SaveChangesAsync()));
+        ignore(result.Map(async _ => await _unitOfWork.Save()));
 
         return result;
     }
