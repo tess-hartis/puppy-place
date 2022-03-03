@@ -11,6 +11,7 @@ public interface IPersonRepository : IGenericRepository<Person>
     new Task<Option<Person>> FindAsync(Guid id);
     Task<IEnumerable<Person>> GetAll();
 }
+
 public class PersonRepository : GenericRepository<Person>, IPersonRepository
 {
     public PersonRepository(PuppyPlaceContext context) : base(context)
@@ -40,29 +41,5 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
             return Option<Person>.None;
 
         return person.ToSome();
-
     }
-
-    // public async Task UpdateNameAsync(Person person)
-    // {
-    //     Context.Persons.Update(person);
-    //     await Context.SaveChangesAsync();
-    // }
-    
-
-    // public async Task RemovePersonAsync(Guid id)
-    // {
-    //     try
-    //     {
-    //         var person = await _context.Persons.FirstOrDefaultAsync(p => p.Id == id);
-    //         // _context.Persons.Attach(person);
-    //         _context.Persons.Remove(person);
-    //         await _context.SaveChangesAsync();
-    //     }
-    //     catch (ArgumentNullException)
-    //     {
-    //         await RemovePersonAsync(id);
-    //     }
-    //     
-    // }
 }
