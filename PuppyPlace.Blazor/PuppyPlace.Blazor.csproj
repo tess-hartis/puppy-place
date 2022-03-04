@@ -23,9 +23,4 @@
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Home" />
-      <Folder Include="Features\Layout" />
-    </ItemGroup>
-
 </Project>
