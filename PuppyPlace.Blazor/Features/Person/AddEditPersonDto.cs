@@ -2,12 +2,12 @@ using FluentValidation;
 
 namespace PuppyPlace.Blazor.Features.Person;
 
-public class AddPersonDto
+public class AddEditPersonDto
 {
     public string Name { get; set; } = "";
 }
 
-public class PersonValidator : AbstractValidator<AddPersonDto>
+public class PersonValidator : AbstractValidator<AddEditPersonDto>
 {
     public PersonValidator()
     {
