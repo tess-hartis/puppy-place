@@ -72,10 +72,7 @@
     {
         var response = await _httpClient.PutAsJsonAsync($"Dog/{Id}", _dogNew);
 
-        _message = "Success!";
-        _submitSuccessful = true;
-        
-    //need to add alerts to show whether the submit was successful or not
+        _message = !response.IsSuccessStatusCode ? "There was a problem saving the dog" : "Success!";
     }
 
     private async Task GetDogInfo()
