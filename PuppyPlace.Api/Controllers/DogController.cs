@@ -65,8 +65,7 @@ public class DogController : Controller
                     }))
             .None(NotFound);
     }
-
-
+    
     [HttpDelete ("{id}")]
     public async Task<IActionResult> DeleteDog(Guid id)
     {
