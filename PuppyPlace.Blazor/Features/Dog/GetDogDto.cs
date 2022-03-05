@@ -9,7 +9,7 @@ public class GetDogDto
     public string Name { get; set; }
     public string Age { get; set; }
     public string Breed { get; set; }
-    public IEnumerable<string>? Owners { get; set; } = new List<string>();
+    public IEnumerable<string> Owners { get; set; } = new List<string>();
 
     public static GetDogDto FromDog(Domain.Dog dog)
     {
