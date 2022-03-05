@@ -18,11 +18,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @if (PersonList == null)
-                    {
-                        <tr><td><em>Loading...</em></td></tr>
-                    }
-                    else
+                    @if (PersonList != null)
                     {
                         @foreach (var person in PersonList)
                         {
