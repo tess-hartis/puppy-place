@@ -25,9 +25,8 @@
                 <a href="/dogs" class="btn btn-dark">View Dogs</a>
                 <a href="/persons" class="btn btn-dark">View Persons</a>
                 <button type="reset" class="btn btn-primary">Clear Form</button>
-        </EditForm>
-        
-    </div>
+            </EditForm>
+        </div>
     </div>
 }
 else
@@ -46,8 +45,6 @@ else
     private AddPersonDto _personNew = new AddPersonDto();
     private bool _submitSuccessful;
     private string? _message = "";
-    
-    
     
     private async Task SubmitForm()
     {
@@ -73,9 +70,7 @@ else
         {
             _personOriginal = response;
             _personNew.Name = response.Name;
-           
         }
-    //else do something
     }
 
     protected override async Task OnInitializedAsync()
