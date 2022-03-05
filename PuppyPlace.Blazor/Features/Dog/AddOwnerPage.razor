@@ -61,16 +61,15 @@ else
     public Guid OwnerId { get; set; }
     
     [Parameter]
-    public string DogName { get; set; }
-    
-    private bool _submitSuccessful;
-    private string? _message = "";
+    public string? DogName { get; set; }
 
     private IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
     
+    private string? _message = "";
+    
     private bool SuccessDialogueOpen { get; set; }
     
-
+    
     protected override async Task OnInitializedAsync()
     {
         await LoadPeople();
