@@ -26,17 +26,11 @@ public class DogValidator : AbstractValidator<AddEditDogDto>
         return name.All(char.IsLetter);
     }
 
-    private bool BeValidInt(string number)
+    private static bool BeValidInt(string number)
     {
         if (!int.TryParse(number, out var parsed)) 
             return false;
         
-        if (parsed > 25 || parsed < 0)
-        {
-            return false;
-        }
-
-        return true;
-
+        return parsed is <= 25 and >= 0;
     }
 }
