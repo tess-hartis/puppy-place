@@ -1,23 +1,27 @@
 @page "/update-person/{id:guid}"
 @inject HttpClient _httpClient
 
-<div class="card">
-    <div class="card-header">Update info for @_personOriginal.Name</div>
-    <div class="card-body">
-        <EditForm Model="_personNew" OnValidSubmit="SubmitForm">
-            <FluentValidationValidator/>
-            <div class="form-group">
-                <label for="personName" class="font-weight-bold text-secondary">Name</label>
-                <InputText @bind-Value="_personNew.Name" class="form-control" id="personName"/>
-                <ValidationMessage For="@(() => _personNew.Name)"/>
-            </div>
-            <div>&nbsp;</div>
-            <div>
-                <button class="btn btn-primary" type="submit">Submit</button>
+@if (PersonOriginal != null)
+{
+    <div class="card">
+        <div class="card-header">Update info for @PersonOriginal.Name</div>
+        <div class="card-body">
+            <EditForm Model="_personNew" OnValidSubmit="SubmitForm">
+                <FluentValidationValidator/>
+                <div class="form-group">
+                    <label for="personName" class="font-weight-bold text-secondary">Name</label>
+                    <InputText @bind-Value="_personNew.Name" class="form-control" id="personName"/>
+                    <ValidationMessage For="@(() => _personNew.Name)"/>
+                </div>
                 <div>&nbsp;</div>
-                <div>@_message</div>
-            </div>
-             <div>&nbsp;</div>
+                <div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <div>&nbsp;</div>
+                    <div>
+                        @_message
+                    </div>
+                </div>
+                <div>&nbsp;</div>
                 <a href="/dogs" class="btn btn-dark">View Dogs</a>
                 <a href="/persons" class="btn btn-dark">View Persons</a>
                 <button type="reset" class="btn btn-primary">Clear Form</button>
@@ -25,6 +29,14 @@
         
     </div>
     </div>
+}
+else
+{
+    <div>There was a problem loading the person to update</div>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a> 
+}
+
 
 @code {
     [Parameter]
