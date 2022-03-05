@@ -49,11 +49,12 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    public GetPersonDto? PersonDto { get; set; } = new GetPersonDto();
+    private GetPersonDto? Person { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        PersonDto = await _httpClient
+        Person = new GetPersonDto(); 
+        Person = await _httpClient
             .GetFromJsonAsync<GetPersonDto>($"Person/{Id}");
     }
 
