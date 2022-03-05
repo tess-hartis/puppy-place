@@ -80,5 +80,24 @@
     {
         await LoadData();
     }
+    
+    private async Task OnDeleteDialogueClose(bool accepted)
+    {
+        if (accepted)
+        {
+            await _httpClient.DeleteAsync($"Person/{PersonToDelete.Id}");
+                await LoadData();
+                PersonToDelete = null;
+        }
 
+        DeleteDialogueOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenDeleteDialogue(GetPersonDto person)
+    {
+        DeleteDialogueOpen = true;
+        PersonToDelete = person;
+        StateHasChanged();
+    }
 }
