@@ -2,29 +2,46 @@
 @using PuppyPlace.Blazor.Features.Shared
 @inject HttpClient _httpClient
 
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header">
-                Choose an owner for @DogName
-            </div>
-            <div class="card-body">
-                <EditForm Model="OwnerId" OnSubmit="@SubmitForm">
-                    <InputRadioGroup @bind-Value="OwnerId">
-                        @foreach (var person in PersonList)
+@if (DogName != null)
+{
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Choose an owner for @DogName
+                </div>
+                <div class="card-body">
+                    <EditForm Model="OwnerId" OnSubmit="@SubmitForm">
+                        @if (PersonList != null)
                         {
-                            <InputRadio Value="@person.Id"/> @person.Name<br/>
+                            <InputRadioGroup @bind-Value="OwnerId">
+                                @foreach (var person in PersonList)
+                                {
+                                    <InputRadio Value="@person.Id"/>@person.Name<br/>
+                                }
+                            </InputRadioGroup>
+                            <div>&nbsp;</div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <div>&nbsp;</div>
+                            <div>@_message</div>
                         }
-                    </InputRadioGroup>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <div>&nbsp;</div>
-                    <div>@_message</div>
-                </EditForm>
-
+                        else
+                        {
+                            <div>Loading...</div>
+                        }
+                    </EditForm>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div>There was a problem loading the dog to update</div>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a> 
+}
+
 
 @if (SuccessDialogueOpen)
 {
