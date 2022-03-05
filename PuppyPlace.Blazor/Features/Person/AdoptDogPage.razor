@@ -83,9 +83,7 @@ else
     private async Task LoadPerson()
     {
         var person = await _httpClient.GetFromJsonAsync<GetPersonDto>($"Person/{Id}");
-        PersonName = person.Name;
-        StateHasChanged();
-        //else show error
+        PersonName = person?.Name;
     }
     
     private async Task SubmitForm()
