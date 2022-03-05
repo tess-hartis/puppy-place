@@ -57,15 +57,6 @@
         DialogueType="ModalDialogue.ModalDialogueType.DeleteCancel">
     </ModalDialogue>
 }
-@if (ViewEntityDialogueOpen)
-{
-    <ViewPersonDialogue 
-        Name="@_personToView.Name"
-        Id="@_personToView.Id"
-        Dogs="@_personToView.Dogs"
-        OnClose="@OnViewDialogueClose">
-    </ViewPersonDialogue>
-}
 
 @code {
     public IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
