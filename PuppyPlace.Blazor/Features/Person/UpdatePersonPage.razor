@@ -41,9 +41,8 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    private GetPersonDto _personOriginal = new GetPersonDto();
-    private AddPersonDto _personNew = new AddPersonDto();
-    private bool _submitSuccessful;
+    private GetPersonDto? PersonOriginal { get; set; }
+    private readonly AddEditPersonDto _personNew = new AddEditPersonDto();
     private string? _message = "";
     
     private async Task SubmitForm()
