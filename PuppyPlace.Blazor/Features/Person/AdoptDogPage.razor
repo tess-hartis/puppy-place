@@ -99,7 +99,11 @@ else
         if (!response.IsSuccessStatusCode)
         {
             _message = "There was a problem adopting the dog";
-            _submitSuccessful = false;
+        }
+        else
+        {
+            _message = "Success!";
+            SuccessDialogueOpen = true; 
         }
 
         _message = "Success!";
