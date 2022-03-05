@@ -70,14 +70,7 @@
     
     private async Task SubmitForm()
     {
-        var postBody = _dogNew;
-        var response = await _httpClient.PutAsJsonAsync($"Dog/{Id}", postBody);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _message = "There was a problem saving the dog";
-            _submitSuccessful = false;
-        }
+        var response = await _httpClient.PutAsJsonAsync($"Dog/{Id}", _dogNew);
 
         _message = "Success!";
         _submitSuccessful = true;
