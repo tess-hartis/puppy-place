@@ -1,12 +1,49 @@
 @page "/person/{id:guid}"
 @inject HttpClient _httpClient;
 
-<h3 class="page-item">@PersonDto.Name</h3>
-<body>ID: @PersonDto.Id</body>
-<a href="@($"/edit-person/{Id}")" class="btn btn-primary">Edit</a>
-<a href="@($"/adopt-dog/{Id}")" class="btn btn-primary">Adopt Dog</a>
-<button class="btn btn-primary">Delete</button>
-
+@if (Person != null)
+{
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    @Person.Name
+                </div>
+                <div class="card-body">
+                    <div>
+                        ID: @Person.Id
+                    </div>
+                    <div>
+                        <div>&nbsp;</div>
+                        Dogs:
+                        @if (Person.Dogs.Any())
+                        {
+                            @foreach (var dog in Person.Dogs)
+                            {
+                                <div>@dog</div>
+                            }
+                        }
+                        else
+                        {
+                            <div>There are no dogs to show</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <a href="@($"/update-person/{Person.Id}")" class="btn btn-primary">Edit Info</a>
+    <a href="@($"/adopt-dog/{Person.Id}")" class="btn btn-primary">Adopt Dog</a>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a> 
+}
+else
+{
+    <h3>There was a problem displaying the person :(</h3>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a> 
+}
 
 @code {
     [Parameter]
