@@ -49,10 +49,7 @@ else
     {
         var response = await _httpClient.PutAsJsonAsync($"Person/{Id}", _personNew);
 
-        _message = "Success!";
-        _submitSuccessful = true;
-        
-    //need to add alerts to show whether the submit was successful or not
+        _message = !response.IsSuccessStatusCode ? "There was a problem saving the person" : "Success!";
     }
 
     private async Task GetPersonInfo()
