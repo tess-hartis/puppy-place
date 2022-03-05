@@ -27,9 +27,9 @@
                                 <td><button type="button"
                                             class="btn btn-danger"
                                             @onclick="(() => OpenDeleteDialogue(person))">Delete</button></td>
-                                <td><button type="button" 
-                                            class="btn btn-info"
-                                            @onclick="(() => OpenViewDialogue(person))">Info</button></td>
+                                <td>
+                                    <a href="@($"/person/{person.Id}")" class="btn btn-info">Info</a>
+                                </td>
                             </tr>
                         }
                     }
