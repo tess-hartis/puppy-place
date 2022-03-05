@@ -55,12 +55,12 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    public GetDogDto? DogDto { get; set; } = new GetDogDto();
+    private GetDogDto? Dog { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        DogDto = await _httpClient
+        Dog = new GetDogDto(); 
+        Dog = await _httpClient
             .GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
     }
-
 }
