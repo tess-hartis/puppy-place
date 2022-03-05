@@ -101,12 +101,12 @@ else
         if (!response.IsSuccessStatusCode)
         {
             _message = "There was a problem adding the owner";
-            _submitSuccessful = false;
         }
-
-        _message = "Success!";
-        _submitSuccessful = true;
-        SuccessDialogueOpen = true;
+        else
+        {
+            _message = "Success!";
+            SuccessDialogueOpen = true;
+        }
     }
 
     private async Task OnSuccessDialogueClose(bool accepted)
