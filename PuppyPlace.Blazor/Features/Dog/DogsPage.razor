@@ -35,9 +35,9 @@
                                 <td><button type="button" 
                                             class="btn btn-danger"
                                             @onclick="(() => OpenDeleteDialogue(dog))">Delete</button></td>
-                                <td><button type="button" 
-                                            class="btn btn-info"
-                                            @onclick="(() => OpenViewDialogue(dog))">Info</button></td>
+                                <td>
+                                    <a href="@($"/dog/{dog.Id}")" class="btn btn-info">Info</a>
+                                </td>
                             </tr>
                         }
                     }
@@ -62,29 +62,12 @@
     </ModalDialogue>
 }
 
-@if (ViewEntityDialogueOpen)
-{
-    <ViewDogDialogue
-        Name="@_dogToView.Name"
-        Age ="@_dogToView.Age"
-        Breed="@_dogToView.Breed"
-        id="@_dogToView.Id"
-        Owners="@_dogToView.Owners"
-        OnClose="@OnViewDialogueClose">
-    </ViewDogDialogue>
-}
-
-
-
 @code {
     private IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
 
     private GetDogDto? _dogToDelete;
     private bool DeleteDialogueOpen { get; set; }
-
-    private GetDogDto? _dogToView;
-    private bool ViewEntityDialogueOpen { get; set; }
-
+    
     private async Task OnDeleteDialogueClose(bool accepted)
     {
         if (accepted)
@@ -105,17 +88,6 @@
         StateHasChanged();
     }
 
-    private async Task OnViewDialogueClose(bool accepted)
-    {
-        ViewEntityDialogueOpen = false;
-    }
-    
-    private void OpenViewDialogue(GetDogDto dog)
-    {
-        ViewEntityDialogueOpen = true;
-        _dogToView = dog;
-    }
-    
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
