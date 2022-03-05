@@ -26,7 +26,7 @@ public class DogController : Controller
         return Ok(result.Select(GetDogDto.FromDog));
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> FindDogById(Guid id)
     {
         var query = new GetDogByIdQuery(id);
@@ -50,7 +50,7 @@ public class DogController : Controller
             });
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateDog(Guid id, [FromBody] UpdateDogCommand request)
     {
         request.Id = id;
@@ -66,7 +66,7 @@ public class DogController : Controller
             .None(NotFound);
     }
     
-    [HttpDelete ("{id}")]
+    [HttpDelete ("{id:guid}")]
     public async Task<IActionResult> DeleteDog(Guid id)
     {
         var command = new DeleteDogCommand(id);
@@ -76,7 +76,7 @@ public class DogController : Controller
             .None(NotFound);
     }
 
-    [HttpPost("{dogId}/owner/{ownerId}")]
+    [HttpPost("{dogId:guid}/owner/{ownerId:guid}")]
     public async Task<IActionResult> AddOwner(Guid dogId, Guid ownerId)
     {
         var command = new AddOwnerCommand(dogId, ownerId);

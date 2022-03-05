@@ -27,7 +27,7 @@ public class PersonController : Controller
         return Ok(result.Select(GetPersonDto.FromPerson));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> FindPersonById(Guid id)
     {
         var query = new GetPersonByIdQuery(id);
@@ -51,7 +51,7 @@ public class PersonController : Controller
             });
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdatePerson(Guid id, [FromBody] UpdatePersonCommand request)
     {
         request.Id = id;
@@ -67,7 +67,7 @@ public class PersonController : Controller
             .None(NotFound);
     }
     
-    [HttpDelete ("{id}")]
+    [HttpDelete ("{id:guid}")]
     public async Task<IActionResult> DeletePerson(Guid id)
     {
         var command = new DeletePersonCommand(id);
@@ -77,7 +77,7 @@ public class PersonController : Controller
             .None(NotFound);
     }
 
-    [HttpPost("{personId}/dog/{dogId}")]
+    [HttpPost("{personId:guid}/dog/{dogId:guid}")]
     public async Task<IActionResult> AdoptDog (Guid personId, Guid dogId)
     {
         var command = new AdoptDogCommand(personId, dogId);
