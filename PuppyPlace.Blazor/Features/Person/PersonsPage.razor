@@ -59,44 +59,10 @@
 }
 
 @code {
-    public IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
+    private IEnumerable<GetPersonDto>? PersonList { get; set; } = new List<GetPersonDto>();
 
-    private GetPersonDto? _persontoDelete;
-    public bool DeleteDialogueOpen { get; set; }
-
-    private GetPersonDto _personToView;
-    public bool ViewEntityDialogueOpen { get; set; }
-
-    private async Task OnDeleteDialogueClose(bool accepted)
-    {
-        if (accepted)
-        {
-            await _httpClient.DeleteAsync($"Person/{_persontoDelete.Id}");
-            await LoadData();
-            _persontoDelete = null;
-        }
-        
-        DeleteDialogueOpen = false;
-        StateHasChanged();
-    }
-    
-    private void OpenDeleteDialogue(GetPersonDto person)
-    {
-        DeleteDialogueOpen = true;
-        _persontoDelete = person;
-        StateHasChanged();
-    }
-    
-    private async Task OnViewDialogueClose(bool accepted)
-    {
-        ViewEntityDialogueOpen = false;
-    }
-
-    private void OpenViewDialogue(GetPersonDto person)
-    {
-        ViewEntityDialogueOpen = true;
-        _personToView = person;
-    }
+    private GetPersonDto? PersonToDelete { get; set; }
+    private bool DeleteDialogueOpen { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
