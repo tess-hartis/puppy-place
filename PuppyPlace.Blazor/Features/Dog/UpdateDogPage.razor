@@ -46,7 +46,27 @@
     private readonly AddEditDogDto _dogNew = new AddEditDogDto();
     private string? _message = "";
     
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDogInfo();
+    }
     
+    private async Task GetDogInfo()
+    {
+        var response = await _httpClient.GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
+        
+        if (response == null)
+        {
+            DogOriginal = null;
+        }
+        else
+        {
+            DogOriginal = response;
+            _dogNew.Name = response.Name;
+            _dogNew.Age = response.Age;
+            _dogNew.Breed = response.Breed;
+        }
+    }
     
     private async Task SubmitForm()
     {
