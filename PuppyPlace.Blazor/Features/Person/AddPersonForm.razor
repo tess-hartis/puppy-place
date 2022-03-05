@@ -2,12 +2,12 @@
 <div class="card">
     <div class="card-header">Add a person</div>
     <div class="card-body">
-        <EditForm Model="_person" OnValidSubmit="SubmitForm">
+        <EditForm Model="_editPerson" OnValidSubmit="SubmitForm">
             <FluentValidationValidator/>
             <div class="form-group">
                 <label for="personName" class="font-weight-bold text-secondary">Name</label>
-                <InputText @bind-Value="_person.Name" rows="6" class="form-control" id="personName"/>
-                <ValidationMessage For="@(() => _person.Name)"/> 
+                <InputText @bind-Value="_editPerson.Name" rows="6" class="form-control" id="personName"/>
+                <ValidationMessage For="@(() => _editPerson.Name)"/> 
             </div>
             <div>&nbsp;</div>
             <div>
@@ -24,7 +24,7 @@
 
 
 @code {
-    private AddPersonDto _person = new AddPersonDto();
+    private AddEditPersonDto _editPerson = new AddEditPersonDto();
     private bool _submitSuccessful;
     private string? _message = "";
     
@@ -33,7 +33,7 @@
 
     private async Task SubmitForm()
     {
-        var postBody = _person;
+        var postBody = _editPerson;
         var response = await _httpClient.PostAsJsonAsync("Person", postBody);
         await OnSubmitCallback.InvokeAsync();
         
@@ -45,6 +45,6 @@
 
         _message = "Success!";
         _submitSuccessful = true;
-        _person = new AddPersonDto();
+        _editPerson = new AddEditPersonDto();
     }
 }
