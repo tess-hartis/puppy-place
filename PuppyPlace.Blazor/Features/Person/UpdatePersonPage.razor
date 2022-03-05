@@ -55,9 +55,13 @@ else
     private async Task GetPersonInfo()
     {
         var response = await _httpClient.GetFromJsonAsync<GetPersonDto>($"Person/{Id}");
-        if (response != null)
+        if (response == null)
         {
-            _personOriginal = response;
+            PersonOriginal = null;
+        }
+        else
+        {
+            PersonOriginal = response;
             _personNew.Name = response.Name;
         }
     }
