@@ -60,9 +60,8 @@ else
     [Parameter]
     public Guid DogId { get; set; }
 
-    private string PersonName { get; set; }
-    
-    private bool _submitSuccessful;
+    private string? PersonName { get; set; }
+   
     private string? _message = "";
 
     private IEnumerable<GetDogDto>? DogList { get; set; } = new List<GetDogDto>();
