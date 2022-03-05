@@ -85,7 +85,7 @@ else
     private async Task LoadDog()
     {
         var dog = await _httpClient.GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
-        DogName = dog.Name;
+        DogName = dog?.Name;
     }
 
     private async Task SubmitForm()
