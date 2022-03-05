@@ -75,22 +75,7 @@
         _message = !response.IsSuccessStatusCode ? "There was a problem saving the dog" : "Success!";
     }
 
-    private async Task GetDogInfo()
-    {
-        var response = await _httpClient.GetFromJsonAsync<GetDogDto>($"Dog/{Id}");
-        if (response != null)
-        {
-            _dogOriginal = response;
-            _dogNew.Name = response.Name;
-            _dogNew.Age = response.Age;
-            _dogNew.Breed = response.Breed;
-        }
-        //else do something
-    }
+    
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetDogInfo();
-    }
-
+    
 }
