@@ -17,7 +17,7 @@ public class PersonValidator : AbstractValidator<AddEditPersonDto>
             .Must(BeValidName).WithMessage("Name cannot contain special characters");
     }
 
-    private bool BeValidName(string name)
+    private static bool BeValidName(string name)
     {
         name = name.Replace(" ", "");
          name = name.Replace("-", "");
