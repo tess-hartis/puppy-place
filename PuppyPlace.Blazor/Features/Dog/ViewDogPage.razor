@@ -1,14 +1,55 @@
 @page "/dog/{id:guid}"
 @inject HttpClient _httpClient;
 
-<h3 class="page-item">@DogDto.Name</h3>
-<body>ID: @DogDto.Id</body>
-<body>Age: @DogDto.Age</body>
-<body>Breed: @DogDto.Breed</body>
-<a href="@($"/edit-dog/{Id}")" class="btn btn-primary">Edit</a>
-<a href="@($"/add-owner/{Id}")" class="btn btn-primary">Add Owner</a>
-<button class="btn btn-primary">Delete</button>
-
+@if (Dog != null)
+{
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    @Dog.Name
+                </div>
+                <div class="card-body">
+                    <div>
+                        ID: @Dog.Id
+                    </div>
+                    <div>
+                        Age: @Dog.Age
+                    </div>
+                    <div>
+                        Breed: @Dog.Breed
+                    </div>
+                    <div>
+                        <div>&nbsp;</div>
+                        Owners:
+                        @if (Dog.Owners.Any())
+                        {
+                            @foreach (var owner in Dog.Owners)
+                            {
+                                <div>@owner</div>
+                            }
+                        }
+                        else
+                        {
+                            <div>There are no owners to show</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <a href="@($"/update-dog/{Dog.Id}")" class="btn btn-primary">Edit Info</a>
+    <a href="@($"/add-owner/{Dog.Id}")" class="btn btn-primary">Add Owner</a>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a>
+}
+else
+{
+    <h3>There was a problem displaying the dog :(</h3>
+    <a href="@("/dogs")" class="btn btn-info">View Dogs</a>
+    <a href="@("/persons")" class="btn btn-info">View People</a>
+}
 
 @code {
     [Parameter]
